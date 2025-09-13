@@ -7,6 +7,6 @@ use Illuminate\Http\Request;
 class LandingPageController extends Controller
 {
     public function index() {
-        
+        dd('here');
     }
 }
