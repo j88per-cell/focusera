@@ -26,7 +26,10 @@ function requestOtp() {
 
 function verifyOtp() {
   verifyForm.post('/login/verify-otp', {
-    onSuccess: close,
+    onSuccess: () => {
+      close()
+      window.location.href = '/dashboard'
+    },
     preserveScroll: true,
   })
 }
