@@ -1,4 +1,8 @@
 <script setup>
+import { ref } from 'vue'
+import LoginModal from '../Components/Auth/Login.vue'
+
+const showLogin = ref(false)
 </script>
 
 <template>
@@ -6,19 +10,20 @@
     <header class="bg-primary text-primary-foreground shadow-sm">
       <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
-          <div class="flex-shrink-0">
-            <h1 class="text-xl font-bold">PhotoStudio</h1>
-          </div>
-          <div class="hidden md:block">
-            <div class="ml-10 flex items-baseline space-x-4">
-              <slot name="nav">
-                <!-- default nav (can be overridden by pages) -->
-                <a class="hover:text-accent px-3 py-2 rounded-md text-sm font-medium" href="#">Home</a>
-                <a class="hover:text-accent px-3 py-2 rounded-md text-sm font-medium" href="#">Galleries</a>
-                <a class="hover:text-accent px-3 py-2 rounded-md text-sm font-medium" href="#">News</a>
-                <a class="hover:text-accent px-3 py-2 rounded-md text-sm font-medium" href="#">Contact</a>
-              </slot>
-            </div>
+          <div class="text-xl font-bold">PhotoStudio</div>
+          <div class="hidden md:flex items-center gap-4">
+            <a href="/" class="hover:text-accent px-3 py-2 text-sm">Home</a>
+            <a href="/galleries" class="hover:text-accent px-3 py-2 text-sm">Galleries</a>
+            <a href="/news" class="hover:text-accent px-3 py-2 text-sm">News</a>
+            <a href="/contact" class="hover:text-accent px-3 py-2 text-sm">Contact</a>
+
+            <button class="px-3 py-2 rounded-md text-sm bg-accent text-white hover:bg-accent/90"
+                    @click="showLogin = true">
+              Log in
+            </button>
+            <a href="/register" class="px-3 py-2 rounded-md text-sm border border-accent hover:bg-accent/10">
+              Sign up
+            </a>
           </div>
         </div>
       </nav>
@@ -28,44 +33,10 @@
       <slot />
     </main>
 
-    <footer class="bg-primary text-primary-foreground py-12 mt-16">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <slot name="footer">
-          <!-- default footer content -->
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div class="col-span-1 md:col-span-2">
-              <h5 class="text-2xl font-bold mb-4">PhotoStudio</h5>
-              <p class="text-primary-foreground/80 mb-4 max-w-md">
-                Professional photography services capturing life's most precious moments with artistic vision and technical excellence.
-              </p>
-            </div>
-            <div>
-              <h6 class="font-semibold mb-4">Services</h6>
-              <ul class="space-y-2 text-primary-foreground/80">
-                <li>Wedding Photography</li>
-                <li>Portrait Sessions</li>
-                <li>Event Photography</li>
-                <li>Commercial Work</li>
-              </ul>
-            </div>
-            <div>
-              <h6 class="font-semibold mb-4">Contact</h6>
-              <ul class="space-y-2 text-primary-foreground/80">
-                <li>hello@photostudio.com</li>
-                <li>+1 (555) 123-4567</li>
-                <li>123 Photography Lane</li>
-                <li>Creative City, CC 12345</li>
-              </ul>
-            </div>
-          </div>
-          <div class="border-t border-primary-foreground/20 mt-8 pt-8 text-center text-primary-foreground/60">
-            <p>&copy; 2025 PhotoStudio. All rights reserved.</p>
-          </div>
-        </slot>
-      </div>
-    </footer>
+    <LoginModal v-model:open="showLogin" />
   </div>
 </template>
+
 
 <style scoped>
 .bg-background { background-color: #ffffff; }

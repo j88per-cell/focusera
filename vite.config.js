@@ -18,6 +18,7 @@ const inputs = [
   ...themes.map((t) => `resources/css/Themes/${t}.css`),
 ]
 
+
 export default defineConfig({
   plugins: [
     laravel({
@@ -26,4 +27,9 @@ export default defineConfig({
     }),
 	vue()
   ],
+  resolve: {
+  alias: {
+    '@': path.resolve(__dirname, 'resources/js')
+  }
+}
 })
