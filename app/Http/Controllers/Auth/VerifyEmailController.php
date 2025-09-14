@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class VerifyEmailController extends Controller
 {
@@ -27,6 +28,8 @@ class VerifyEmailController extends Controller
             $user->markEmailAsVerified();
             event(new Verified($user));
         }
+
+        Auth::login($user);
 
         return Redirect::to('/');
     }
