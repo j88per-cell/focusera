@@ -29,7 +29,8 @@ export default defineConfig({
   ],
   resolve: {
   alias: {
-    '@': path.resolve(__dirname, 'resources/js')
+    '@': path.resolve(__dirname, 'resources/js/Themes/Default'),
+    '@admin': path.resolve(__dirname, 'resources/js/Admin')
   }
 }
 })

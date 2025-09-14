@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Admin • {{ config('app.name') }}</title>
-  {!! \App\Support\Vite::asset('resources/js/Admin/app.js') !!}
+  <meta charset="utf-8">
+  <title>{{ config('app.name') }}</title>
+   @vite('resources/js/Admin/app.js')
+  @inertiaHead
 </head>
 <body>
-  <div id="admin-app"></div>
+  @inertia
 </body>
 </html>
 

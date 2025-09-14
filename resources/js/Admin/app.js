@@ -8,14 +8,22 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
-    setup({ el, App, props, plugin }) {
-        return createApp({ render: () => h(App, props) })
-            .use(plugin)
-            .mount(el);
-    },
-    progress: {
-        color: '#4B5563',
-    },
-});
+  resolve: (name) => {
+    console.log('[Inertia Admin Resolver] Trying to resolve page:', name)
+
+    const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
+    const match = pages[`./Pages/${name}.vue`]
+
+    if (!match) {
+      console.error('[Inertia Admin Resolver] Could not resolve:', name)
+      console.log('[Inertia Admin Resolver] Available pages:', Object.keys(pages))
+    }
+
+    return match
+  },
+  setup({ el, App, props, plugin }) {
+    createApp({ render: () => h(App, props) })
+      .use(plugin)
+      .mount(el)
+  },
+})
