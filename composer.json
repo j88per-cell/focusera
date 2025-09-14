@@ -9,7 +9,6 @@
         "filp/whoops": "^2.18",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.6.8",
-        "laragear/two-factor": "^2.1",
         "laravel/breeze": "^1.29",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
