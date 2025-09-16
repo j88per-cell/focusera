@@ -11,6 +11,7 @@ class GalleryController extends Controller
     public function index()
     {
         $galleries = Gallery::latest()->paginate(12);
+        //dd($galleries);
         return inertia('Gallery/Index', compact('galleries'));
     }
 

@@ -1,3 +1,7 @@
+<?php
+
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use App\Models\Gallery;
 use App\Models\Photo;
@@ -15,27 +19,28 @@ class GallerySeeder extends Seeder
         ]);
 
         $files = [
-            'IMG_0002.CR2',
-            'IMG_0003.CR2',
-            'IMG_0004.CR2',
-            'IMG_0006.CR2',
-            'IMG_0007.CR2',
-            'IMG_0008.CR2',
-            'IMG_0012.CR2',
-            'IMG_0023.CR2',
-            'IMG_0024.CR2',
-            'IMG_0025.CR2',
-            'IMG_0026.CR2',
+            'IMG_0002.jpg',
+            'IMG_0003.jpg',
+            'IMG_0004.jpg',
+            'IMG_0006.jpg',
+            'IMG_0007.jpg',
+            'IMG_0008.jpg',
+            'IMG_0012.jpg',
+            'IMG_0023.jpg',
+            'IMG_0024.jpg',
+            'IMG_0025.jpg',
+            'IMG_0026.jpg',
         ];
 
         foreach ($files as $file) {
-            $jpg = preg_replace('/\.CR2$/i', '.jpg', $file);
-
+            $jpg = preg_replace('/\.jpg$/i', '.jpg', $file);
             Photo::create([
                 'gallery_id'  => $gallery->id,
                 'title'       => pathinfo($jpg, PATHINFO_FILENAME),
                 'description' => null,
-                'path'        => "galleries/colorado/$jpg",
+                'path_original'    => "storage/app/private/colorado/$jpg",
+                'path_web' => "storage/colorado/$jpg",
+                'path_thumb' => "storage/colorado/$jpg",
                 'exif'        => json_encode([]), // can parse later
             ]);
         }
