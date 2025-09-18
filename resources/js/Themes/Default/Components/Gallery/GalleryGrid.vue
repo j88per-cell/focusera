@@ -1,16 +1,19 @@
 <template>
   <div :class="gridClasses" class="grid gap-4 mb-8">
-    <PhotoCard
+    <Link
       v-for="gallery in galleries"
       :key="gallery.id"
-      :gallery="gallery"
-      @click="$emit('select', photo)"
-    />
+      :href="`/galleries/${gallery.id}`"
+      class="block"
+    >
+      <PhotoCard :gallery="gallery" />
+    </Link>
   </div>
 </template>
 
 <script setup>
 import { computed } from 'vue'
+import { Link } from '@inertiajs/vue3'
 import PhotoCard from './PhotoCard.vue'
 
 const props = defineProps({

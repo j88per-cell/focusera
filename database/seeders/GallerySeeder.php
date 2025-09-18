@@ -11,26 +11,14 @@ class GallerySeeder extends Seeder
     public function run()
     {
         $gallery = Gallery::create([
-            'title'       => 'Colorado Nature',
-            'description' => 'Sample gallery',
+            'title'       => 'Colorado',
+            'description' => 'Nature',
             'date'        => now(),
             'public'      => true,
-            'thumbnail'   => 'galleries/colorado/IMG_0002.jpg',
+            'thumbnail'   => 'storage/colorado/IMG_0007.jpg',
         ]);
 
-        $files = [
-            'IMG_0002.jpg',
-            'IMG_0003.jpg',
-            'IMG_0004.jpg',
-            'IMG_0006.jpg',
-            'IMG_0007.jpg',
-            'IMG_0008.jpg',
-            'IMG_0012.jpg',
-            'IMG_0023.jpg',
-            'IMG_0024.jpg',
-            'IMG_0025.jpg',
-            'IMG_0026.jpg',
-        ];
+        $files = array_diff(scandir(storage_path('app/public/colorado')), ['.', '..']);
 
         foreach ($files as $file) {
             $jpg = preg_replace('/\.jpg$/i', '.jpg', $file);

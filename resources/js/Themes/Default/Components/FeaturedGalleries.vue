@@ -1,6 +1,15 @@
 <script setup>
+import { computed } from 'vue'
+
 const props = defineProps({ items: { type: Array, required: true } })
 const emit = defineEmits(['open'])
+
+function normalizeSrc(src) {
+  if (!src) return ''
+  if (/^(https?:)?\/\//.test(src) || src.startsWith('data:') || src.startsWith('/')) return src
+  if (src.startsWith('storage/')) return `/${src}`
+  return `/${src}`
+}
 </script>
 
 <template>
@@ -15,7 +24,7 @@ const emit = defineEmits(['open'])
         <div v-for="g in props.items" :key="g.id" class="group cursor-pointer" @click="$emit('open', g.id)">
           <div class="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
             <div class="relative overflow-hidden">
-              <img :src="g.thumbnail" :alt="g.title" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
+              <img :src="normalizeSrc(g.thumbnail)" :alt="g.title" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
               <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
                 <span class="text-white font-semibold opacity-0 group-hover:opacity-100 transition-opacity">View Gallery</span>
               </div>

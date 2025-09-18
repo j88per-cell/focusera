@@ -9,7 +9,9 @@ class Photo extends Model
 {
     use HasFactory;
 
-    public function gallery() {
-        return $this->belongsTo('App\Models\Photo');
+    public function gallery()
+    {
+        return $this->belongsTo(Gallery::class);
     }
 }
+

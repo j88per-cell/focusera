@@ -1,10 +1,9 @@
 <template>
   <div
-    class="group relative overflow-hidden rounded-lg bg-gray-100 aspect-square cursor-pointer hover:shadow-lg transition-all duration-300"
-    @click="$emit('click', photo)"
+    class="group relative overflow-hidden rounded-lg bg-gray-100 aspect-square hover:shadow-lg transition-all duration-300"
   >
     <img
-      :src="gallery.thumbnail"
+      :src="thumbSrc"
       :alt="gallery.title"
       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
       loading="lazy"
@@ -19,7 +18,20 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
+
 const props = defineProps({
   gallery: Object
+})
+
+function normalizeSrc(src) {
+  if (!src) return ''
+  if (/^(https?:)?\/\//.test(src) || src.startsWith('data:') || src.startsWith('/')) return src
+  if (src.startsWith('storage/')) return `/${src}`
+  return `/${src}`
+}
+
+const thumbSrc = computed(() => {
+  return normalizeSrc(props.gallery?.thumbnail || props.gallery?.path_thumb || props.gallery?.path_web)
 })
 </script>

@@ -9,7 +9,9 @@ class Gallery extends Model
 {
     use HasFactory;
 
-    public function photos() {
-        return $this->hasMany('App\Models\Photos');
+    public function photos()
+    {
+        return $this->hasMany(Photo::class);
     }
 }
+
