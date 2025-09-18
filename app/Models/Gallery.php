@@ -9,9 +9,22 @@ class Gallery extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'description',
+        'date',
+        'public',
+        'access_code',
+        'thumbnail',
+    ];
+
+    protected $casts = [
+        'public' => 'boolean',
+        'date' => 'datetime',
+    ];
+
     public function photos()
     {
         return $this->hasMany(Photo::class);
     }
 }
-
