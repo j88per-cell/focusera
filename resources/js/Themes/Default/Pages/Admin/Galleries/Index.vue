@@ -88,7 +88,7 @@ function confirmDelete() {
             <h2 class="text-lg font-medium">Create Gallery</h2>
             <button @click="showCreate = false" class="text-gray-500 hover:text-gray-700">✕</button>
           </div>
-          <form @submit.prevent="createGallery" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form @submit.prevent="createGallery" novalidate class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700">Title</label>
               <input v-model="form.title" type="text" class="mt-1 block w-full rounded-md border-gray-300" required />
@@ -108,10 +108,10 @@ function confirmDelete() {
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700">Thumbnail URL</label>
-              <input v-model="form.thumbnail" type="text" placeholder="/images/example.jpg" class="mt-1 block w-full rounded-md border-gray-300" required />
-              <p v-if="form.errors.thumbnail" class="text-sm text-red-600 mt-1">{{ form.errors.thumbnail }}</p>
-            </div>
+            <label class="block text-sm font-medium text-gray-700">Thumbnail URL (optional)</label>
+            <input v-model="form.thumbnail" type="text" placeholder="/images/example.jpg" class="mt-1 block w-full rounded-md border-gray-300" />
+            <p v-if="form.errors.thumbnail" class="text-sm text-red-600 mt-1">{{ form.errors.thumbnail }}</p>
+          </div>
 
             <div>
               <label class="block text-sm font-medium text-gray-700">Parent Gallery</label>

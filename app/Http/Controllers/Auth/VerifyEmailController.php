@@ -10,13 +10,15 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 
 class VerifyEmailController extends Controller
 {
     /**
      * Mark the authenticated user's email address as verified.
      */
-    public function __invoke(Request $request, $id, $hash): RedirectResponse
+    public function __invoke(Request $request, $id, $hash): InertiaResponse
     {
         $user = User::findOrFail($id);
 
@@ -29,14 +31,9 @@ class VerifyEmailController extends Controller
             event(new Verified($user));
         }
 
-        // Do NOT auto-login the user after verification.
-        // If already authenticated (e.g., clicked link while logged in), avoid bouncing to /login
-        // which would redirect to /dashboard via guest middleware. Send them to home instead.
-        if (Auth::check()) {
-            return Redirect::to('/')->with('status', 'Email verified.');
-        }
-
-        // Otherwise, direct them to the login page to continue with OTP-based auth.
-        return Redirect::to('/login')->with('status', 'Email verified. Please log in.');
+        // Render a friendly confirmation page rather than redirecting.
+        return Inertia::render('Auth/Verified', [
+            'isAuthenticated' => Auth::check(),
+        ]);
     }
 }

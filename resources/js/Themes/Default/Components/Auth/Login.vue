@@ -1,5 +1,5 @@
 <script setup>
-import { useForm } from '@inertiajs/vue3'
+import { useForm, router } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
 const props = defineProps({ open: Boolean })
@@ -27,8 +27,10 @@ function requestOtp() {
 function verifyOtp() {
   verifyForm.post('/login/verify-otp', {
     onSuccess: () => {
+      router.visit('/dashboard', { replace: true })
+    },
+    onFinish: () => {
       close()
-      window.location.href = '/dashboard'
     },
     preserveScroll: true,
   })
