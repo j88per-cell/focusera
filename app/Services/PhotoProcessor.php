@@ -23,11 +23,10 @@ class PhotoProcessor
         $origFull = $dirs['originals'] . DIRECTORY_SEPARATOR . $destName;
         $this->copyIfChanged($sourceFullPath, $origFull);
 
-        // Derivatives (public). For now, copy; future: resize/strip exif/watermark.
+        // Derivatives (public): resize to configured sizes
         $webFull   = $dirs['web'] . DIRECTORY_SEPARATOR . $destName;
         $thumbFull = $dirs['thumbs'] . DIRECTORY_SEPARATOR . $destName;
-        $this->copyIfChanged($sourceFullPath, $webFull);
-        $this->copyIfChanged($sourceFullPath, $thumbFull);
+        $this->makeDerivatives($origFull, $webFull, $thumbFull, $ext);
 
         // Return DB paths that map to public URLs via storage symlink
         return [
@@ -71,6 +70,94 @@ class PhotoProcessor
         }
     }
 
+    protected function makeDerivatives(string $origFull, string $webFull, string $thumbFull, string $ext): void
+    {
+        File::ensureDirectoryExists(dirname($webFull), 0755, true);
+        File::ensureDirectoryExists(dirname($thumbFull), 0755, true);
+
+        $webMax   = (int) config('photos.web_max_px', 800);
+        $thumbMax = (int) config('photos.thumb_max_px', 400);
+
+        if (function_exists('imagecreatefromjpeg')) {
+            $img = $this->gdLoad($origFull, $ext);
+            if (!$img) throw new \RuntimeException('Unsupported image format for GD.');
+
+            $webImg = $this->gdResizeMax($img, $webMax);
+            $this->gdSave($webImg, $webFull, $ext);
+
+            $thumbImg = $this->gdResizeMax($img, $thumbMax);
+            $this->gdSave($thumbImg, $thumbFull, $ext);
+
+            if ($webImg && $webImg !== $img) imagedestroy($webImg);
+            if ($thumbImg && $thumbImg !== $img) imagedestroy($thumbImg);
+            imagedestroy($img);
+            return;
+        }
+
+        if (class_exists('Imagick')) {
+            $im = new \Imagick($origFull);
+            $webClone = clone $im;
+            $this->imagickResizeMax($webClone, $webMax);
+            $webClone->writeImage($webFull);
+            $webClone->clear();
+
+            $thumbClone = clone $im;
+            $this->imagickResizeMax($thumbClone, $thumbMax);
+            $thumbClone->writeImage($thumbFull);
+            $thumbClone->clear();
+
+            $im->clear();
+            return;
+        }
+
+        throw new \RuntimeException('No image library available (GD or Imagick required).');
+    }
+
+    protected function gdLoad(string $path, string $ext)
+    {
+        return match ($ext) {
+            'jpg', 'jpeg' => imagecreatefromjpeg($path),
+            'png' => imagecreatefrompng($path),
+            default => null,
+        };
+    }
+
+    protected function gdSave($img, string $path, string $ext): void
+    {
+        switch ($ext) {
+            case 'jpg':
+            case 'jpeg':
+                imagejpeg($img, $path, 85);
+                break;
+            case 'png':
+                imagepng($img, $path, 6);
+                break;
+            default:
+                imagejpeg($img, $path, 85);
+        }
+    }
+
+    protected function gdResizeMax($img, int $max)
+    {
+        $w = imagesx($img); $h = imagesy($img);
+        $scale = max($w, $h) > $max ? ($max / max($w, $h)) : 1.0;
+        if ($scale >= 1.0) return $img;
+        $nw = (int)round($w * $scale); $nh = (int)round($h * $scale);
+        $dst = imagecreatetruecolor($nw, $nh);
+        imagecopyresampled($dst, $img, 0, 0, 0, 0, $nw, $nh, $w, $h);
+        return $dst;
+    }
+
+    protected function imagickResizeMax(\Imagick $im, int $max): void
+    {
+        $w = $im->getImageWidth();
+        $h = $im->getImageHeight();
+        $scale = max($w, $h) > $max ? ($max / max($w, $h)) : 1.0;
+        if ($scale < 1.0) {
+            $im->resizeImage((int)round($w * $scale), (int)round($h * $scale), \Imagick::FILTER_LANCZOS, 1);
+        }
+    }
+
     protected function relativeWeb(int $galleryId, string $file): string
     {
         return 'storage/gallery/web/' . $galleryId . '/' . $file;
@@ -86,4 +173,3 @@ class PhotoProcessor
         return 'storage/app/private/' . $galleryId . '/' . $file;
     }
 }
-

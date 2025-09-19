@@ -42,24 +42,53 @@ class GalleryController extends Controller
         ]);
 
         Gallery::create($data);
-        return redirect()->route('galleries.index');
+        $target = auth()->check() && auth()->user()->can('isAdmin')
+            ? route('admin.galleries.index')
+            : route('galleries.index');
+        return redirect($target);
     }
 
     public function show(Gallery $gallery)
     {
         $gallery->load('photos');
-        return inertia('Gallery/Show', compact('gallery'));
+        // Build filtered EXIF per gallery settings for public display
+        $photos = $gallery->photos->map(function ($p) use ($gallery) {
+            return [
+                'id' => $p->id,
+                'title' => $p->title,
+                'description' => $p->description,
+                'path_web' => $p->path_web,
+                'path_thumb' => $p->path_thumb,
+                'exif' => \App\Support\ExifHelper::filterForGallery($gallery, (array) ($p->exif ?? [])),
+            ];
+        });
+        $galleryData = [
+            'id' => $gallery->id,
+            'title' => $gallery->title,
+            'description' => $gallery->description,
+            'date' => $gallery->date,
+            'public' => $gallery->public,
+            'photos' => $photos,
+        ];
+        return inertia('Gallery/Show', ['gallery' => $galleryData]);
     }
 
     public function edit(Gallery $gallery)
     {
         $parents = Gallery::where('id', '!=', $gallery->id)->orderBy('title')->get(['id','title']);
-        $photos = $gallery->photos()->latest()->paginate(40, ['id','title','description','path_thumb','path_web']);
+        $photos = $gallery->photos()->latest()->paginate(40, ['id','title','description','path_thumb','path_web','exif']);
+        // Filter EXIF for admin display as well (honor gallery settings)
+        $photos->getCollection()->transform(function ($p) use ($gallery) {
+            $p->exif = \App\Support\ExifHelper::filterForGallery($gallery, (array) ($p->exif ?? []));
+            return $p;
+        });
         return inertia('Galleries/Edit', [
             'gallery' => $gallery,
             'parents' => $parents,
             'photos'  => $photos,
             'uploadMaxMb' => (int) config('photos.max_upload_mb', 100),
+            'uploadQueueClearSeconds' => (int) config('photos.upload_queue_clear_seconds', 15),
+            'chunkBytes' => (int) config('photos.chunk_bytes', 5 * 1024 * 1024),
         ]);
     }
 
@@ -78,12 +107,18 @@ class GalleryController extends Controller
         ]);
 
         $gallery->update($data);
-        return redirect()->route('galleries.index');
+        $target = auth()->check() && auth()->user()->can('isAdmin')
+            ? route('admin.galleries.index')
+            : route('galleries.index');
+        return redirect($target);
     }
 
     public function destroy(Gallery $gallery)
     {
         $gallery->delete();
-        return redirect()->route('galleries.index');
+        $target = auth()->check() && auth()->user()->can('isAdmin')
+            ? route('admin.galleries.index')
+            : route('galleries.index');
+        return redirect($target);
     }
 }

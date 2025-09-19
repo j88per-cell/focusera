@@ -7,6 +7,8 @@ use App\Models\Gallery;
 use App\Models\Photo;
 use Inertia\Inertia;
 use App\Services\PhotoProcessor;
+use App\Services\ExifReader;
+use App\Services\PhotoTransformer;
 
 class PhotoController extends Controller
 {
@@ -83,18 +85,128 @@ class PhotoController extends Controller
         $tmpPath = $file->getRealPath();
         $originalName = $file->getClientOriginalName();
 
-        $processor = new PhotoProcessor();
-        $paths = $processor->import($gallery->id, $tmpPath, $originalName);
+        try {
+            $processor = new PhotoProcessor();
+            $paths = $processor->import($gallery->id, $tmpPath, $originalName);
+            $exif = (new ExifReader())->read($tmpPath);
+        } catch (\Throwable $e) {
+            return response()->json(['message' => $originalName . ': ' . $e->getMessage()], 422);
+        }
 
-        $photo = Photo::create([
-            'gallery_id'   => $gallery->id,
-            'title'        => pathinfo($originalName, PATHINFO_FILENAME),
-            'description'  => null,
-            'path_original'=> $paths['path_original'],
-            'path_web'     => $paths['path_web'],
-            'path_thumb'   => $paths['path_thumb'],
-            'exif'         => [],
+        try {
+            $photo = Photo::create([
+                'gallery_id'   => $gallery->id,
+                'title'        => pathinfo($originalName, PATHINFO_FILENAME),
+                'description'  => null,
+                'path_original'=> $paths['path_original'],
+                'path_web'     => $paths['path_web'],
+                'path_thumb'   => $paths['path_thumb'],
+                'exif'         => $exif,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json(['message' => $originalName . ': ' . $e->getMessage()], 422);
+        }
+
+        return response()->json(['id' => $photo->id], 201);
+    }
+
+    public function transform(Request $request, Gallery $gallery, Photo $photo)
+    {
+        $data = $request->validate([
+            'rotate' => 'nullable|integer|in:-180,-90,90,180',
+            'flip'   => 'nullable|in:h,v',
         ]);
+
+        try {
+            (new PhotoTransformer())->transform($photo, $data);
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Transform failed', 'error' => $e->getMessage()], 422);
+        }
+
+        return response()->noContent();
+    }
+
+    // Chunked upload endpoints
+    public function chunkStart(Request $request, Gallery $gallery)
+    {
+        $request->validate(['name' => 'required|string']);
+        $uploadId = bin2hex(random_bytes(16));
+        $dir = storage_path('app/chunks/' . $uploadId);
+        if (!is_dir($dir)) mkdir($dir, 0755, true);
+        file_put_contents($dir . '/name.txt', $request->string('name'));
+        return response()->json(['upload_id' => $uploadId]);
+    }
+
+    public function chunkUpload(Request $request, Gallery $gallery)
+    {
+        $request->validate([
+            'upload_id' => 'required|string|size:32',
+            'index' => 'required|integer|min:0',
+            'total' => 'required|integer|min:1',
+            'name'  => 'required|string',
+            'chunk' => 'required|file',
+        ]);
+
+        $uploadId = $request->string('upload_id');
+        $dir = storage_path('app/chunks/' . $uploadId);
+        if (!is_dir($dir)) return response()->json(['message' => 'Invalid upload'], 400);
+
+        $assembled = $dir . '/assembled.part';
+        $chunkFile = $request->file('chunk');
+        $stream = fopen($assembled, 'ab');
+        $in = fopen($chunkFile->getRealPath(), 'rb');
+        stream_copy_to_stream($in, $stream);
+        fclose($in); fclose($stream);
+
+        return response()->noContent();
+    }
+
+    public function chunkFinish(Request $request, Gallery $gallery)
+    {
+        $request->validate([
+            'upload_id' => 'required|string|size:32',
+        ]);
+        $uploadId = $request->string('upload_id');
+        $dir = storage_path('app/chunks/' . $uploadId);
+        if (!is_dir($dir)) return response()->json(['message' => 'Invalid upload'], 400);
+
+        $namePath = $dir . '/name.txt';
+        $assembled = $dir . '/assembled.part';
+        if (!file_exists($namePath) || !file_exists($assembled)) {
+            return response()->json(['message' => 'Upload incomplete'], 400);
+        }
+        $name = trim((string) file_get_contents($namePath));
+        try {
+            $exif = (new ExifReader())->read($assembled);
+        } catch (\Throwable $e) {
+            return response()->json(['message' => $name . ': ' . $e->getMessage()], 422);
+        }
+
+        $processor = new PhotoProcessor();
+        try {
+            $paths = $processor->import($gallery->id, $assembled, $name);
+        } catch (\Throwable $e) {
+            return response()->json(['message' => $name . ': ' . $e->getMessage()], 422);
+        }
+
+        try {
+            $photo = Photo::create([
+                'gallery_id'   => $gallery->id,
+                'title'        => pathinfo($name, PATHINFO_FILENAME),
+                'description'  => null,
+                'path_original'=> $paths['path_original'],
+                'path_web'     => $paths['path_web'],
+                'path_thumb'   => $paths['path_thumb'],
+                'exif'         => $exif,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json(['message' => $name . ': ' . $e->getMessage()], 422);
+        }
+
+        // Cleanup chunks
+        @unlink($assembled);
+        @unlink($namePath);
+        @rmdir($dir);
 
         return response()->json(['id' => $photo->id], 201);
     }

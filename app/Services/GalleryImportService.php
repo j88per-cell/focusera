@@ -38,8 +38,9 @@ class GalleryImportService
             $title = Str::title(str_replace(['-', '_'], ' ', $folder));
 
             $firstOriginalFull = $folderPath . DIRECTORY_SEPARATOR . $files[0];
-            $firstExif = $this->readExif($firstOriginalFull);
-            $dateCandidate = $this->chooseDateFromExif($firstExif);
+            $exifReader = new ExifReader();
+            $firstExif = $exifReader->read($firstOriginalFull);
+            $dateCandidate = $exifReader->pickDate($firstExif);
 
             $gallery = Gallery::firstOrCreate(
                 ['title' => $title],
@@ -59,7 +60,7 @@ class GalleryImportService
                 $originalFull = $folderPath . DIRECTORY_SEPARATOR . $file;
                 $paths = $processor->import($gallery->id, $originalFull, $file);
 
-                $exif = $this->readExif($originalFull);
+                $exif = $exifReader->read($originalFull);
 
                 $exists = Photo::where('gallery_id', $gallery->id)
                     ->where('path_web', $paths['path_web'])

@@ -46,4 +46,17 @@ Route::middleware(['auth', 'can:isAdmin'])
         Route::post('/galleries/{gallery}/photos/upload', [\App\Http\Controllers\PhotoController::class, 'upload'])
             ->middleware('upload.tuning')
             ->name('galleries.photos.upload');
+        // Chunked upload endpoints
+        Route::post('/galleries/{gallery}/photos/upload/chunk/start', [\App\Http\Controllers\PhotoController::class, 'chunkStart'])
+            ->middleware('upload.tuning')
+            ->name('galleries.photos.upload.chunk.start');
+        Route::post('/galleries/{gallery}/photos/upload/chunk', [\App\Http\Controllers\PhotoController::class, 'chunkUpload'])
+            ->middleware('upload.tuning')
+            ->name('galleries.photos.upload.chunk');
+        Route::post('/galleries/{gallery}/photos/upload/chunk/finish', [\App\Http\Controllers\PhotoController::class, 'chunkFinish'])
+            ->middleware('upload.tuning')
+            ->name('galleries.photos.upload.chunk.finish');
+        Route::post('/galleries/{gallery}/photos/{photo}/transform', [\App\Http\Controllers\PhotoController::class, 'transform'])
+            ->middleware('upload.tuning')
+            ->name('galleries.photos.transform');
     });
