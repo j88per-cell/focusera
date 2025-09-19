@@ -29,8 +29,8 @@ class VerifyEmailController extends Controller
             event(new Verified($user));
         }
 
-        Auth::login($user);
-
-        return Redirect::to('/');
+        // Do NOT auto-login the user after verification.
+        // Redirect to the login page to continue with OTP-based auth.
+        return Redirect::to('/login')->with('status', 'Email verified. Please log in.');
     }
 }

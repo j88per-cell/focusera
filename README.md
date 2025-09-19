@@ -21,6 +21,30 @@ Built on the popular **Laravel** framework, it can run on a wide variety of host
   Offer global, on-demand print fulfillment. Set your own markup and begin taking orders quickly.  
 
 
+## Code Style
+
+- JavaScript style: terminating semicolons are required.
+- Enforced via ESLint rule `semi: ["error", "always"]` and Prettier config `"semi": true`.
+- Commands:
+  - `npm run lint` – check for issues
+  - `npm run lint:fix` – auto-fix where possible
+  - `npm run format:write` – format using Prettier
+
+Note: this repository does not include ESLint/Prettier devDependencies by default. To enable linting/formatting locally, install them:
+
+```
+npm i -D eslint prettier eslint-config-prettier eslint-plugin-vue vue-eslint-parser @vue/eslint-config-prettier
+```
+
+## Cleanup Task (Semicolons)
+
+- Schedule a pass to run `npm run lint:fix` and `npm run format:write` to bring all files into compliance with the semicolon rule.
+- Optionally add a pre-commit hook later (Husky + lint-staged) to keep the rule enforced on new commits.
+
+## No JSX
+
+- This project does not use JSX. ESLint is configured to disallow it (`ecmaFeatures.jsx = false` and `no-restricted-syntax` for `JSXElement`/`JSXFragment`).
+
 
 ## Contributing
 
