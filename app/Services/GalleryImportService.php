@@ -36,13 +36,17 @@ class GalleryImportService
             // Create or fetch gallery
             $title = Str::title(str_replace(['-', '_'], ' ', $folder));
 
+            $firstOriginalFull = $folderPath . DIRECTORY_SEPARATOR . $files[0];
+            $firstExif = $this->readExif($firstOriginalFull);
+            $dateCandidate = $this->chooseDateFromExif($firstExif);
+
             $thumbnailPublic = $this->publicPath($folder, $files[0]);
 
             $gallery = Gallery::firstOrCreate(
                 ['title' => $title],
                 [
                     'description' => null,
-                    'date'        => now(),
+                    'date'        => $dateCandidate ?: now(),
                     'public'      => true,
                     'thumbnail'   => $thumbnailPublic,
                 ]
@@ -91,7 +95,7 @@ class GalleryImportService
             $full = $folderPath . DIRECTORY_SEPARATOR . $f;
             if (!is_file($full)) return false;
             $ext = strtolower(pathinfo($f, PATHINFO_EXTENSION));
-            return in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif']);
+            return in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'cr2']);
         }));
         natsort($files);
         return array_values($files);
@@ -100,7 +104,10 @@ class GalleryImportService
     protected function readExif(string $fullPath): array
     {
         $exif = [];
-        if (function_exists('exif_read_data')) {
+        $ext = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+
+        // Try PHP's exif for JPEG/TIFF families
+        if (function_exists('exif_read_data') && in_array($ext, ['jpg','jpeg','tif','tiff'])) {
             try {
                 $data = @exif_read_data($fullPath, null, true, false);
                 if (is_array($data)) {
@@ -110,7 +117,48 @@ class GalleryImportService
                 // ignore EXIF errors
             }
         }
+
+        // For RAW like CR2 (or when PHP exif failed), try exiftool if available
+        if (empty($exif) && $this->exiftoolAvailable()) {
+            try {
+                $json = @shell_exec('exiftool -json -fast2 ' . escapeshellarg($fullPath) . ' 2>/dev/null');
+                $decoded = json_decode($json, true);
+                if (is_array($decoded) && isset($decoded[0]) && is_array($decoded[0])) {
+                    $exif = $decoded[0];
+                }
+            } catch (\Throwable $e) {
+                // ignore
+            }
+        }
+
         return $exif;
+    }
+
+    protected function exiftoolAvailable(): bool
+    {
+        try {
+            $which = @shell_exec('command -v exiftool 2>/dev/null');
+            return is_string($which) && trim($which) !== '';
+        } catch (\Throwable $e) {
+            return false;
+        }
+    }
+
+    protected function chooseDateFromExif(array $exif): ?string
+    {
+        // Common EXIF datetime keys across exif_read_data and exiftool
+        $candidates = [
+            'DateTimeOriginal', 'CreateDate', 'DateCreated', 'DateTime',
+            'EXIF\DateTimeOriginal', 'QuickTime\CreateDate', 'Composite\SubSecDateTimeOriginal'
+        ];
+        foreach ($candidates as $key) {
+            if (isset($exif[$key]) && is_string($exif[$key]) && trim($exif[$key]) !== '') {
+                // Normalize to Y-m-d
+                $ts = strtotime($exif[$key]);
+                if ($ts) return date('Y-m-d', $ts);
+            }
+        }
+        return null;
     }
 
     protected function publicPath(string $folder, string $file): string
@@ -124,4 +172,3 @@ class GalleryImportService
         return 'storage/app/private/' . trim($folder, '/\\') . '/' . $file;
     }
 }
-

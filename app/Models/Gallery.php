@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Kalnoy\Nestedset\NodeTrait;
 
 class Gallery extends Model
 {
-    use HasFactory;
+    use HasFactory, NodeTrait;
 
     protected $fillable = [
         'title',
@@ -16,6 +17,7 @@ class Gallery extends Model
         'public',
         'access_code',
         'thumbnail',
+        'parent_id',
     ];
 
     protected $casts = [
