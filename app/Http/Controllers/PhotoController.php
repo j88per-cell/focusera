@@ -50,19 +50,21 @@ class PhotoController extends Controller
         $data = $request->validate([
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'exif' => 'nullable|json',
+            'exif' => 'nullable|array',
             'lat' => 'nullable|numeric',
             'long' => 'nullable|numeric',
-            'path' => 'required|string',
+            'path_original' => 'nullable|string',
+            'path_web' => 'nullable|string',
+            'path_thumb' => 'nullable|string',
         ]);
 
         $photo->update($data);
-        return redirect()->route('galleries.photos.index', $gallery);
+        return redirect()->back();
     }
 
     public function destroy(Gallery $gallery, Photo $photo)
     {
         $photo->delete();
-        return redirect()->route('galleries.photos.index', $gallery);
+        return redirect()->back();
     }
 }

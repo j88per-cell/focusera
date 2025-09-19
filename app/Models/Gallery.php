@@ -29,4 +29,12 @@ class Gallery extends Model
     {
         return $this->hasMany(Photo::class);
     }
+
+    protected static function booted(): void
+    {
+        // Ensure photo model events fire so files are removed on gallery deletion
+        static::deleting(function (Gallery $gallery) {
+            $gallery->photos()->get()->each->delete();
+        });
+    }
 }

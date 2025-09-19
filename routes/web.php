@@ -33,3 +33,14 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// Admin routes (OTP-authenticated and must be admin)
+Route::middleware(['auth', 'can:isAdmin'])
+    ->prefix('admin')
+    ->as('admin.')
+    ->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        // Admin view for managing galleries, uses the main GalleryController
+        Route::get('/galleries', [\App\Http\Controllers\GalleryController::class, 'adminIndex'])
+            ->name('galleries.index');
+    });

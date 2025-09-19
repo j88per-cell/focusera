@@ -8,6 +8,14 @@ use Inertia\Inertia;
 
 class GalleryController extends Controller
 {
+    // Admin: list + quick create view (theme-based UI)
+    public function adminIndex()
+    {
+        $galleries = Gallery::withCount('photos')->latest()->paginate(20);
+        $parents = Gallery::orderBy('title')->get(['id','title']);
+        return inertia('Admin/Galleries/Index', compact('galleries','parents'));
+    }
+
     public function index()
     {
         $galleries = Gallery::latest()->paginate(12);
@@ -42,7 +50,13 @@ class GalleryController extends Controller
 
     public function edit(Gallery $gallery)
     {
-        return inertia('Galleries/Edit', compact('gallery'));
+        $parents = Gallery::where('id', '!=', $gallery->id)->orderBy('title')->get(['id','title']);
+        $photos = $gallery->photos()->latest()->paginate(40, ['id','title','description','path_thumb','path_web']);
+        return inertia('Galleries/Edit', [
+            'gallery' => $gallery,
+            'parents' => $parents,
+            'photos'  => $photos,
+        ]);
     }
 
     public function update(Request $request, Gallery $gallery)
