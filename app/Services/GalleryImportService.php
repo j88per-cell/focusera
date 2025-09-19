@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Gallery;
 use App\Models\Photo;
 use Illuminate\Support\Str;
+use App\Services\PhotoProcessor;
 
 class GalleryImportService
 {
@@ -40,31 +41,28 @@ class GalleryImportService
             $firstExif = $this->readExif($firstOriginalFull);
             $dateCandidate = $this->chooseDateFromExif($firstExif);
 
-            $thumbnailPublic = $this->publicPath($folder, $files[0]);
-
             $gallery = Gallery::firstOrCreate(
                 ['title' => $title],
                 [
                     'description' => null,
                     'date'        => $dateCandidate ?: now(),
                     'public'      => true,
-                    'thumbnail'   => $thumbnailPublic,
+                    'thumbnail'   => null,
                 ]
             );
 
             $galleryCount += $gallery->wasRecentlyCreated ? 1 : 0;
 
             // Import photos
+            $processor = new PhotoProcessor();
             foreach ($files as $file) {
                 $originalFull = $folderPath . DIRECTORY_SEPARATOR . $file;
-                $pathOriginal = $this->originalPath($folder, $file); // stored for reference
-                $pathWeb      = $this->publicPath($folder, $file);
-                $pathThumb    = $this->publicPath($folder, $file);
+                $paths = $processor->import($gallery->id, $originalFull, $file);
 
                 $exif = $this->readExif($originalFull);
 
                 $exists = Photo::where('gallery_id', $gallery->id)
-                    ->where('path_web', $pathWeb)
+                    ->where('path_web', $paths['path_web'])
                     ->exists();
                 if ($exists) {
                     continue;
@@ -74,13 +72,19 @@ class GalleryImportService
                     'gallery_id'   => $gallery->id,
                     'title'        => pathinfo($file, PATHINFO_FILENAME),
                     'description'  => null,
-                    'path_original'=> $pathOriginal,
-                    'path_web'     => $pathWeb,
-                    'path_thumb'   => $pathThumb,
-                    'exif'         => json_encode($exif),
+                    'path_original'=> $paths['path_original'],
+                    'path_web'     => $paths['path_web'],
+                    'path_thumb'   => $paths['path_thumb'],
+                    'exif'         => $exif,
                 ]);
-
                 $photoCount++;
+            }
+
+            // Set a thumbnail based on first imported photo
+            if (!$gallery->thumbnail && !empty($files)) {
+                $first = $processor->import($gallery->id, $folderPath . DIRECTORY_SEPARATOR . $files[0], $files[0]);
+                $gallery->thumbnail = $first['path_thumb'];
+                $gallery->save();
             }
         }
 
@@ -95,7 +99,7 @@ class GalleryImportService
             $full = $folderPath . DIRECTORY_SEPARATOR . $f;
             if (!is_file($full)) return false;
             $ext = strtolower(pathinfo($f, PATHINFO_EXTENSION));
-            return in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'cr2']);
+            return in_array($ext, config('photos.allowed_extensions', ['jpg','jpeg','png']));
         }));
         natsort($files);
         return array_values($files);
@@ -161,14 +165,5 @@ class GalleryImportService
         return null;
     }
 
-    protected function publicPath(string $folder, string $file): string
-    {
-        return 'storage/' . trim($folder, '/\\') . '/' . $file;
-    }
-
-    protected function originalPath(string $folder, string $file): string
-    {
-        // Reference path to original stored under storage/app/private
-        return 'storage/app/private/' . trim($folder, '/\\') . '/' . $file;
-    }
+    // path helpers are moved into PhotoProcessor
 }

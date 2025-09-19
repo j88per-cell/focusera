@@ -30,7 +30,13 @@ class VerifyEmailController extends Controller
         }
 
         // Do NOT auto-login the user after verification.
-        // Redirect to the login page to continue with OTP-based auth.
+        // If already authenticated (e.g., clicked link while logged in), avoid bouncing to /login
+        // which would redirect to /dashboard via guest middleware. Send them to home instead.
+        if (Auth::check()) {
+            return Redirect::to('/')->with('status', 'Email verified.');
+        }
+
+        // Otherwise, direct them to the login page to continue with OTP-based auth.
         return Redirect::to('/login')->with('status', 'Email verified. Please log in.');
     }
 }

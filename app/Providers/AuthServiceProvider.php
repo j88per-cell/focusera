@@ -25,9 +25,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('isAdmin', function (User $user) {
-            return $user->role_id === 3;
+        // Global admin override: role_id === 3 passes all abilities
+        Gate::before(function (User $user, string $ability = null) {
+            return $user->role_id === 3 ? true : null;
         });
+
+        Gate::define('isAdmin', function (User $user) { return $user->role_id === 3; });
 
         Gate::define('isClient', function (User $user) {
             return $user->role_id === 2;

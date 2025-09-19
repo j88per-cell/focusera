@@ -1,12 +1,14 @@
 <script setup>
 import { ref } from 'vue';
 import { useForm, Link, router } from '@inertiajs/vue3';
+import axios from 'axios';
 import AdminLayout from '../../Layouts/app.layout.vue';
 
 const props = defineProps({
   gallery: Object,
   parents: { type: Array, default: () => [] },
   photos: { type: Object, default: () => ({ data: [] }) },
+  uploadMaxMb: { type: Number, default: 100 },
 });
 
 const form = useForm({
@@ -17,6 +19,8 @@ const form = useForm({
   access_code: props.gallery.access_code || '',
   thumbnail: props.gallery.thumbnail || '',
   parent_id: props.gallery.parent_id || '',
+  exif_visibility: props.gallery.exif_visibility || 'all',
+  exif_fields: Array.isArray(props.gallery.exif_fields) ? props.gallery.exif_fields : [],
 });
 
 function updateGallery() { form.put(`/galleries/${props.gallery.id}`, { preserveScroll: true }); }
@@ -67,6 +71,47 @@ function confirmDelete() {
     onFinish: () => { deleting.value = false; showDelete.value = false; toDelete.value = null; },
   });
 }
+
+// Upload logic
+const uploading = ref(false);
+const queue = ref([]); // { file, name, status: 'pending'|'uploading'|'done'|'error' }
+const fileInput = ref(null);
+function openFilePicker() { fileInput.value?.click(); }
+function onFilesSelected(e) {
+  const files = Array.from(e.target.files || []);
+  if (!files.length) return;
+  const maxBytes = props.uploadMaxMb * 1024 * 1024;
+  const items = files.map(f => {
+    if (maxBytes && f.size > maxBytes) {
+      return { file: f, name: f.name, status: 'error' };
+    }
+    return { file: f, name: f.name, status: 'pending' };
+  });
+  queue.value.push(...items);
+  uploadNext();
+  e.target.value = '';
+}
+async function uploadNext() {
+  if (uploading.value) return;
+  const next = queue.value.find(i => i.status === 'pending');
+  if (!next) return;
+  uploading.value = true;
+  next.status = 'uploading';
+  try {
+    const fd = new FormData();
+    fd.append('file', next.file);
+    await axios.post(`/admin/galleries/${props.gallery.id}/photos/upload`, fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+    next.status = 'done';
+    await router.reload({ only: ['photos'] });
+  } catch (e) {
+    next.status = 'error';
+  } finally {
+    uploading.value = false;
+    // kick off next
+    const more = queue.value.find(i => i.status === 'pending');
+    if (more) uploadNext();
+  }
+}
 </script>
 
 <template>
@@ -76,7 +121,26 @@ function confirmDelete() {
       <section class="lg:col-span-2">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-xl font-semibold">Photos</h2>
-          <div class="text-sm text-gray-600">Total: {{ photos.total || photos.data.length }}</div>
+          <div class="flex items-center gap-3">
+            <div class="text-sm text-gray-600">Total: {{ photos.total || photos.data.length }}</div>
+            <input ref="fileInput" type="file" class="hidden" multiple accept="image/jpeg,image/png" @change="onFilesSelected" />
+            <button @click="openFilePicker" class="px-3 py-1.5 text-sm rounded border border-gray-300 bg-white hover:bg-gray-50">Upload</button>
+          </div>
+        </div>
+
+        <div v-if="queue.length" class="mb-4 bg-white border rounded p-3 text-sm">
+          <div class="font-medium mb-2">Upload Queue</div>
+          <ul class="space-y-1">
+            <li v-for="(item, idx) in queue" :key="idx" class="flex items-center justify-between">
+              <span class="truncate max-w-[60%]" :title="item.name">{{ item.name }}</span>
+              <span :class="{
+                'text-gray-600': item.status === 'pending',
+                'text-indigo-600': item.status === 'uploading',
+                'text-green-600': item.status === 'done',
+                'text-red-600': item.status === 'error',
+              }">{{ item.status }}</span>
+            </li>
+          </ul>
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -176,6 +240,28 @@ function confirmDelete() {
               <label class="block text-sm font-medium text-gray-700">Access Code (optional)</label>
               <input v-model="form.access_code" type="text" class="mt-1 block w-full rounded-md border-gray-300" />
               <p v-if="form.errors.access_code" class="text-sm text-red-600 mt-1">{{ form.errors.access_code }}</p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">EXIF Visibility</label>
+              <select v-model="form.exif_visibility" class="mt-1 block w-full rounded-md border-gray-300">
+                <option value="all">All</option>
+                <option value="none">None</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
+
+            <div v-if="form.exif_visibility === 'custom'">
+              <label class="block text-sm font-medium text-gray-700 mb-1">EXIF Fields to Show</label>
+              <div class="flex flex-wrap gap-3 text-sm">
+                <label class="inline-flex items-center gap-2"><input type="checkbox" value="camera" v-model="form.exif_fields" /> Camera</label>
+                <label class="inline-flex items-center gap-2"><input type="checkbox" value="lens" v-model="form.exif_fields" /> Lens</label>
+                <label class="inline-flex items-center gap-2"><input type="checkbox" value="aperture" v-model="form.exif_fields" /> Aperture</label>
+                <label class="inline-flex items-center gap-2"><input type="checkbox" value="shutter" v-model="form.exif_fields" /> Shutter</label>
+                <label class="inline-flex items-center gap-2"><input type="checkbox" value="iso" v-model="form.exif_fields" /> ISO</label>
+                <label class="inline-flex items-center gap-2"><input type="checkbox" value="focal" v-model="form.exif_fields" /> Focal Length</label>
+              </div>
+              <p v-if="form.errors.exif_fields" class="text-sm text-red-600 mt-1">{{ form.errors.exif_fields }}</p>
             </div>
 
             <div class="flex items-center justify-end gap-3">

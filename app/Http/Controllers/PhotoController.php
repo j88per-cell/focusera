@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Gallery;
 use App\Models\Photo;
 use Inertia\Inertia;
+use App\Services\PhotoProcessor;
 
 class PhotoController extends Controller
 {
@@ -66,5 +67,35 @@ class PhotoController extends Controller
     {
         $photo->delete();
         return redirect()->back();
+    }
+
+    public function upload(Request $request, Gallery $gallery)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:jpg,jpeg,png',
+        ]);
+
+        $file = $request->file('file');
+        if (!$file || !$file->isValid()) {
+            return response()->json(['message' => 'Invalid upload'], 422);
+        }
+
+        $tmpPath = $file->getRealPath();
+        $originalName = $file->getClientOriginalName();
+
+        $processor = new PhotoProcessor();
+        $paths = $processor->import($gallery->id, $tmpPath, $originalName);
+
+        $photo = Photo::create([
+            'gallery_id'   => $gallery->id,
+            'title'        => pathinfo($originalName, PATHINFO_FILENAME),
+            'description'  => null,
+            'path_original'=> $paths['path_original'],
+            'path_web'     => $paths['path_web'],
+            'path_thumb'   => $paths['path_thumb'],
+            'exif'         => [],
+        ]);
+
+        return response()->json(['id' => $photo->id], 201);
     }
 }

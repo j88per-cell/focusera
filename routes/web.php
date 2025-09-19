@@ -43,4 +43,7 @@ Route::middleware(['auth', 'can:isAdmin'])
         // Admin view for managing galleries, uses the main GalleryController
         Route::get('/galleries', [\App\Http\Controllers\GalleryController::class, 'adminIndex'])
             ->name('galleries.index');
+        Route::post('/galleries/{gallery}/photos/upload', [\App\Http\Controllers\PhotoController::class, 'upload'])
+            ->middleware('upload.tuning')
+            ->name('galleries.photos.upload');
     });

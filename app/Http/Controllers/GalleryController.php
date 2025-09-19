@@ -36,6 +36,9 @@ class GalleryController extends Controller
             'public' => 'boolean',
             'access_code' => 'nullable|string|max:20',
             'thumbnail' => 'required|string',
+            'parent_id' => 'nullable|exists:galleries,id',
+            'exif_visibility' => 'nullable|in:all,none,custom',
+            'exif_fields' => 'nullable|array',
         ]);
 
         Gallery::create($data);
@@ -56,6 +59,7 @@ class GalleryController extends Controller
             'gallery' => $gallery,
             'parents' => $parents,
             'photos'  => $photos,
+            'uploadMaxMb' => (int) config('photos.max_upload_mb', 100),
         ]);
     }
 
@@ -68,6 +72,9 @@ class GalleryController extends Controller
             'public' => 'boolean',
             'access_code' => 'nullable|string|max:20',
             'thumbnail' => 'required|string',
+            'parent_id' => 'nullable|exists:galleries,id',
+            'exif_visibility' => 'nullable|in:all,none,custom',
+            'exif_fields' => 'nullable|array',
         ]);
 
         $gallery->update($data);

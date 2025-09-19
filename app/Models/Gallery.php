@@ -18,11 +18,14 @@ class Gallery extends Model
         'access_code',
         'thumbnail',
         'parent_id',
+        'exif_visibility',
+        'exif_fields',
     ];
 
     protected $casts = [
         'public' => 'boolean',
         'date' => 'datetime',
+        'exif_fields' => 'array',
     ];
 
     public function photos()
