@@ -5,6 +5,7 @@ import LoginModal from './Auth/Login.vue'
 
 const page = usePage()
 const user = computed(() => page.props?.auth?.user || null)
+const registrationEnabled = computed(() => Boolean(page.props?.features?.registration))
 const avatarUrl = computed(() => {
   const u = user.value || {}
   return u.avatar_url || u.avatar || null
@@ -54,9 +55,7 @@ onBeforeUnmount(() => document.removeEventListener('click', onClickOutside))
                     @click="showLogin = true">
               Log in
             </button>
-            <a href="/register" class="px-3 py-2 rounded-md text-sm border border-accent hover:bg-accent/10">
-              Sign up
-            </a>
+            <a v-if="registrationEnabled" href="/register" class="px-3 py-2 rounded-md text-sm border border-accent hover:bg-accent/10">Sign up</a>
           </template>
 
           <template v-else>
@@ -76,7 +75,6 @@ onBeforeUnmount(() => document.removeEventListener('click', onClickOutside))
               <div v-show="openMenu" class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg py-2 z-50">
                 <a href="/dashboard" class="block px-4 py-2 text-sm hover:bg-gray-100">Dashboard</a>
                 <a href="/profile" class="block px-4 py-2 text-sm hover:bg-gray-100">Profile</a>
-                <a href="/admin/dashboard" class="block px-4 py-2 text-sm hover:bg-gray-100">Admin</a>
                 <hr class="my-1" />
                 <button @click="logout" class="w-full text-left block px-4 py-2 text-sm hover:bg-gray-100">Log out</button>
               </div>

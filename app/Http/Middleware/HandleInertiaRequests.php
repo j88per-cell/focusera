@@ -34,6 +34,9 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'features' => [
+                'registration' => (bool) config('features.registration', false),
+            ],
         ];
     }
 }

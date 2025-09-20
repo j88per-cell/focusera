@@ -22,16 +22,10 @@ class GalleryController extends Controller
 
     public function index()
     {
-        // Public listing: only show public galleries with no access code
+        // Public listing: show public galleries regardless of access codes
         $query = Gallery::query();
         if (!auth()->check() || !auth()->user()->can('isAdmin')) {
-            $query->where('public', true)
-                  ->where(function ($q) {
-                      $q->whereNull('access_code')->orWhere('access_code', '');
-                  })
-                  ->whereDoesntHave('accessCodes', function ($q) {
-                      $q->whereNull('expires_at')->orWhere('expires_at', '>', now());
-                  });
+            $query->where('public', true);
         }
         $galleries = $query->latest()->paginate(12);
         return inertia('Gallery/Index', compact('galleries'));
