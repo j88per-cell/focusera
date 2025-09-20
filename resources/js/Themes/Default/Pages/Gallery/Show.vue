@@ -28,27 +28,37 @@
 
       <div v-else class="text-gray-600">No photos in this gallery yet.</div>
 
-      <Lightbox
-        v-if="selectedPhoto"
-        :photo="selectedPhoto"
-        @close="closeLightbox"
-      />
+      <Lightbox v-if="selectedPhoto" :photo="selectedPhoto" @close="closeLightbox">
+        <template #actions="{ photo }">
+          <button
+            v-if="orderingEnabled"
+            @click="openBuy(photo)"
+            class="px-3 py-1.5 rounded bg-accent text-white text-sm hover:bg-accent/90">
+            Buy
+          </button>
+        </template>
+      </Lightbox>
     </div>
   </ThemeLayout>
   
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { Link } from '@inertiajs/vue3'
 import ThemeLayout from '@/Layouts/app.layout.vue'
 import Lightbox from '@/Components/Gallery/Lightbox.vue'
+import { useCart } from '@/composables/useCart.js'
 
 const props = defineProps({
   gallery: Object,
 })
 
 const selectedPhoto = ref(null)
+const showBuy = ref(false)
+const buyPhoto = ref(null)
+const orderingEnabled = computed(() => Boolean(props.gallery?.allow_orders))
+const { addItem } = useCart()
 
 function normalizeSrc(src) {
   if (!src) return ''
@@ -72,5 +82,18 @@ function openLightbox(photo) {
 function closeLightbox() {
   selectedPhoto.value = null
   document.body.style.overflow = 'auto'
+}
+
+function openBuy(photo) {
+  buyPhoto.value = photo
+  // open a simple prompt for now; can be replaced with a side drawer later
+  // For MVP, add with a fixed base price (e.g., 10.00) and default quantity 1
+  addItem({ photo_id: photo.id, quantity: 1, unit_price_base: 10.0 })
+    .then(() => {
+      alert('Added to cart')
+    })
+    .catch(() => {
+      alert('Failed to add to cart')
+    })
 }
 </script>

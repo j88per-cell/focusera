@@ -59,6 +59,7 @@ class PhotoController extends Controller
             'path_original' => 'nullable|string',
             'path_web' => 'nullable|string',
             'path_thumb' => 'nullable|string',
+            'markup_percent' => 'nullable|numeric|min:0|max:1000',
         ]);
 
         $photo->update($data);

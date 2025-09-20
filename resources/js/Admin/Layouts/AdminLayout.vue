@@ -39,6 +39,15 @@ import SiteTopNav from '../../Themes/Default/Components/SiteTopNav.vue'
             News
           </a>
 
+          <a href="/admin/orders"
+             class="flex items-center px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 3h18M3 7h18M6 11h12l2 8H4l2-8z"/>
+            </svg>
+            Orders
+          </a>
+
           <a href="/admin/contacts"
              class="flex items-center px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

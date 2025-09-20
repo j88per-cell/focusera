@@ -37,6 +37,10 @@ class HandleInertiaRequests extends Middleware
             'features' => [
                 'registration' => (bool) config('features.registration', false),
             ],
+            'sales' => [
+                'enabled' => (bool) (config('settings.sales.enabled') ?? false),
+                'default_markup' => (float) (config('settings.sales.markup_percent') ?? 25),
+            ],
         ];
     }
 }

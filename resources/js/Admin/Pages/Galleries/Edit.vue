@@ -18,6 +18,8 @@ const form = useForm({
     description: props.gallery.description || "",
     date: props.gallery.date || "",
     public: !!props.gallery.public,
+    allow_orders: !!props.gallery.allow_orders,
+    markup_percent: props.gallery.markup_percent ?? "",
     thumbnail: props.gallery.thumbnail || "",
     parent_id: props.gallery.parent_id || "",
     exif_visibility: props.gallery.exif_visibility || "all",
@@ -52,13 +54,14 @@ function setThumbnailFromPhoto(photo) {
 // Photo edit modal
 const showPhotoEdit = ref(false);
 const editing = ref(false);
-const photoForm = useForm({ title: "", description: "" });
+const photoForm = useForm({ title: "", description: "", markup_percent: '' });
 let currentPhoto = ref(null);
 
 function openPhotoEdit(photo) {
     currentPhoto.value = photo;
     photoForm.title = photo.title || "";
     photoForm.description = photo.description || "";
+    photoForm.markup_percent = photo.markup_percent ?? '';
     showPhotoEdit.value = true;
 }
 
@@ -483,6 +486,22 @@ async function generateAndSendCode() {
                             </div>
                         </div>
 
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Enable Orders</label>
+                            <div class="mt-1 flex items-center">
+                                <input id="allow_orders" v-model="form.allow_orders" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                <label for="allow_orders" class="ml-2 text-sm text-gray-700">Allow ordering prints from this gallery</label>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Requires API key configured. Photos may have their own override.</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Markup % (optional)</label>
+                            <input v-model.number="form.markup_percent" type="number" step="0.01" min="0" class="mt-1 block w-40 rounded-md border-gray-300" />
+                            <p class="text-xs text-gray-500 mt-1">Leave blank to use site default (e.g., 25%).</p>
+                            <p v-if="form.errors.markup_percent" class="text-sm text-red-600 mt-1">{{ form.errors.markup_percent }}</p>
+                        </div>
+
                         <!-- Access codes are generated, not typed. See the Share: Access Code section below. -->
 
                         <div>
@@ -611,6 +630,11 @@ async function generateAndSendCode() {
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Description</label>
                     <textarea v-model="photoForm.description" rows="3" class="mt-1 block w-full rounded-md border-gray-300"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Markup % (optional)</label>
+                    <input v-model.number="photoForm.markup_percent" type="number" step="0.01" min="0" class="mt-1 w-40 rounded-md border-gray-300" />
+                    <p class="text-xs text-gray-500">Leave blank to inherit from gallery/site.</p>
                 </div>
                 <div v-if="currentPhoto?.exif && Object.keys(currentPhoto.exif).length" class="text-sm text-gray-600">
                     <div class="font-medium mb-1">EXIF</div>

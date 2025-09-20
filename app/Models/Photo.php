@@ -21,12 +21,14 @@ class Photo extends Model
         'path_original',
         'path_web',
         'path_thumb',
+        'markup_percent',
     ];
 
     protected $casts = [
         'exif' => 'array',
         'lat' => 'float',
         'long' => 'float',
+        'markup_percent' => 'float',
     ];
 
     public function gallery()

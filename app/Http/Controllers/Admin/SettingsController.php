@@ -15,7 +15,14 @@ class SettingsController extends Controller
             ->orderBy('group')
             ->orderBy('sub_group')
             ->orderBy('key')
-            ->get(['id','group','sub_group','key','value','description']);
+            ->get(['id','group','sub_group','key','value','description'])
+            ->map(function ($s) {
+                if (method_exists($s, 'isSecret') && $s->isSecret()) {
+                    // Mask secret values in payload
+                    $s->value = null;
+                }
+                return $s;
+            });
 
         return Inertia::render('Settings/Index', [
             'settings' => $settings,

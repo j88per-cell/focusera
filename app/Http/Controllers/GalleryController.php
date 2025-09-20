@@ -45,6 +45,8 @@ class GalleryController extends Controller
             'description' => 'nullable|string',
             'date' => 'nullable|date',
             'public' => 'boolean',
+            'allow_orders' => 'boolean',
+            'markup_percent' => 'nullable|numeric|min:0|max:1000',
             'thumbnail' => 'nullable|string',
             'parent_id' => 'nullable|exists:galleries,id',
             'exif_visibility' => 'nullable|in:all,none,custom',
@@ -128,7 +130,7 @@ class GalleryController extends Controller
     {
         $this->authorize('update', $gallery);
         $parents = Gallery::where('id', '!=', $gallery->id)->orderBy('title')->get(['id','title']);
-        $photos = $gallery->photos()->latest()->paginate(40, ['id','title','description','path_thumb','path_web','exif']);
+        $photos = $gallery->photos()->latest()->paginate(40, ['id','title','description','path_thumb','path_web','exif','markup_percent']);
         // Filter EXIF for admin display as well (honor gallery settings)
         $photos->getCollection()->transform(function ($p) use ($gallery) {
             $p->exif = \App\Support\ExifHelper::filterForGallery($gallery, (array) ($p->exif ?? []));
@@ -152,6 +154,8 @@ class GalleryController extends Controller
             'description' => 'nullable|string',
             'date' => 'nullable|date',
             'public' => 'boolean',
+            'allow_orders' => 'boolean',
+            'markup_percent' => 'nullable|numeric|min:0|max:1000',
             'thumbnail' => 'nullable|string',
             'parent_id' => 'nullable|exists:galleries,id',
             'exif_visibility' => 'nullable|in:all,none,custom',

@@ -11,6 +11,8 @@ class SettingsFromConfigSeeder extends Seeder
     {
         $this->seedFromArray('features', config('features', []));
         $this->seedPhotos(config('photos', []));
+        // Sales defaults (provider-agnostic)
+        $this->upsert('sales', null, 'markup_percent', 25);
     }
 
     protected function seedFromArray(string $group, array $data, ?string $sub = null): void

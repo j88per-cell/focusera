@@ -15,6 +15,8 @@ class Gallery extends Model
         'description',
         'date',
         'public',
+        'allow_orders',
+        'markup_percent',
         'access_code',
         'thumbnail',
         'parent_id',
@@ -24,8 +26,10 @@ class Gallery extends Model
 
     protected $casts = [
         'public' => 'boolean',
+        'allow_orders' => 'boolean',
         'date' => 'datetime',
         'exif_fields' => 'array',
+        'markup_percent' => 'float',
     ];
 
     public function photos()

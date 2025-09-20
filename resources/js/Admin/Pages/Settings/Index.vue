@@ -47,7 +47,7 @@ const saving = ref(false)
 
 function startEdit(item) {
   editingId.value = item.id
-  editValue.value = item.value ?? ''
+  editValue.value = isSecret(item) ? '' : (item.value ?? '')
 }
 function cancelEdit() {
   editingId.value = null
@@ -67,6 +67,14 @@ function saveEdit(item) {
     },
     onFinish: () => { saving.value = false },
   })
+}
+
+function isSecret(item) {
+  const g = (item.group || '').toLowerCase()
+  const sg = (item.sub_group || '').toLowerCase()
+  const k = (item.key || '').toLowerCase()
+  if (g === 'sales' && sg.includes('pwinty')) return k.includes('key') || k.includes('secret')
+  return false
 }
 </script>
 
@@ -115,13 +123,24 @@ function saveEdit(item) {
                         <td class="py-2 pr-4 font-mono text-xs">{{ item.key }}</td>
                         <td class="py-2 pr-4 align-top">
                           <div v-if="editingId === item.id" class="flex items-center gap-2">
-                            <input v-model="editValue" type="text" class="w-64 max-w-full rounded border-gray-300" @keyup.escape="cancelEdit" @keyup.enter="saveEdit(item)" />
+                            <template v-if="isSecret(item)">
+                              <input v-model="editValue" type="password" autocomplete="new-password" placeholder="Enter new key" class="w-64 max-w-full rounded border-gray-300" @keyup.escape="cancelEdit" @keyup.enter="saveEdit(item)" />
+                            </template>
+                            <template v-else>
+                              <input v-model="editValue" type="text" class="w-64 max-w-full rounded border-gray-300" @keyup.escape="cancelEdit" @keyup.enter="saveEdit(item)" />
+                            </template>
                             <button class="px-2 py-1 text-xs rounded bg-indigo-600 text-white disabled:opacity-50" :disabled="saving" @click="saveEdit(item)">Save</button>
                             <button class="px-2 py-1 text-xs rounded border" @click="cancelEdit">Cancel</button>
                           </div>
-                          <button v-else class="text-left hover:bg-gray-50 rounded px-1 py-0.5" @click="startEdit(item)">
-                            <span>{{ item.value }}</span>
-                          </button>
+                          <template v-else>
+                            <span v-if="isSecret(item)" class="inline-flex items-center gap-2">
+                              <span class="px-1 py-0.5 rounded bg-gray-100 text-gray-500">••••••</span>
+                              <button class="text-xs text-indigo-600 hover:underline" @click="startEdit(item)">Change</button>
+                            </span>
+                            <button v-else class="text-left hover:bg-gray-50 rounded px-1 py-0.5" @click="startEdit(item)">
+                              <span>{{ item.value }}</span>
+                            </button>
+                          </template>
                         </td>
                         <td class="py-2 text-gray-500">{{ item.description }}</td>
                       </tr>
