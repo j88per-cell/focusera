@@ -17,7 +17,7 @@ class GalleryController extends Controller
     {
         $galleries = Gallery::withCount('photos')->latest()->paginate(20);
         $parents = Gallery::orderBy('title')->get(['id','title']);
-        return inertia('Admin/Galleries/Index', compact('galleries','parents'));
+        return inertia('Galleries/Index', compact('galleries','parents'))->rootView('admin');
     }
 
     public function index()
@@ -140,14 +140,14 @@ class GalleryController extends Controller
             $p->exif = \App\Support\ExifHelper::filterForGallery($gallery, (array) ($p->exif ?? []));
             return $p;
         });
-        return inertia('Admin/Galleries/Edit', [
+        return inertia('Galleries/Edit', [
             'gallery' => $gallery,
             'parents' => $parents,
             'photos'  => $photos,
             'uploadMaxMb' => (int) config('photos.max_upload_mb', 100),
             'uploadQueueClearSeconds' => (int) config('photos.upload_queue_clear_seconds', 15),
             'chunkBytes' => (int) config('photos.chunk_bytes', 5 * 1024 * 1024),
-        ]);
+        ])->rootView('admin');
     }
 
     public function update(Request $request, Gallery $gallery)

@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { useForm, Link, router } from "@inertiajs/vue3";
 import axios from "axios";
-import AdminLayout from "../../../Layouts/app.layout.vue";
+import AdminLayout from '@admin/Layouts/AdminLayout.vue';
 
 const props = defineProps({
     gallery: Object,

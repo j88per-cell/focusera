@@ -1,5 +1,5 @@
 <script setup>
-import AdminLayout from '../../../Layouts/app.layout.vue';
+import AdminLayout from '@admin/Layouts/AdminLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 
 const props = defineProps({ message: Object });
@@ -41,4 +41,3 @@ function deleteMsg() { if (confirm('Delete this message?')) { const f = useForm(
     </div>
   </AdminLayout>
 </template>
-

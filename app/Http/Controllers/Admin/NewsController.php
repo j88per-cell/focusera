@@ -12,12 +12,12 @@ class NewsController extends Controller
     public function index()
     {
         $posts = NewsPost::orderByDesc('created_at')->paginate(15);
-        return inertia('Admin/News/Index', compact('posts'));
+        return inertia('News/Index', compact('posts'))->rootView('admin');
     }
 
     public function create()
     {
-        return inertia('Admin/News/Edit', ['post' => null]);
+        return inertia('News/Edit', ['post' => null])->rootView('admin');
     }
 
     public function store(Request $request)
@@ -36,7 +36,7 @@ class NewsController extends Controller
 
     public function edit(NewsPost $news)
     {
-        return inertia('Admin/News/Edit', ['post' => $news]);
+        return inertia('News/Edit', ['post' => $news])->rootView('admin');
     }
 
     public function update(Request $request, NewsPost $news)
@@ -57,4 +57,3 @@ class NewsController extends Controller
         return redirect()->route('admin.news.index');
     }
 }
-

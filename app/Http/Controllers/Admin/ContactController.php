@@ -11,7 +11,7 @@ class ContactController extends Controller
     public function index()
     {
         $messages = ContactMessage::orderByDesc('created_at')->paginate(20);
-        return inertia('Admin/Contacts/Index', compact('messages'));
+        return inertia('Contacts/Index', compact('messages'))->rootView('admin');
     }
 
     public function show(ContactMessage $contact)
@@ -19,7 +19,7 @@ class ContactController extends Controller
         if ($contact->status === 'new') {
             $contact->update(['status' => 'read', 'read_at' => now()]);
         }
-        return inertia('Admin/Contacts/Show', ['message' => $contact]);
+        return inertia('Contacts/Show', ['message' => $contact])->rootView('admin');
     }
 
     public function update(Request $request, ContactMessage $contact)
@@ -37,4 +37,3 @@ class ContactController extends Controller
         return redirect()->route('admin.contacts.index');
     }
 }
-

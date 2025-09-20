@@ -1,5 +1,5 @@
 <script setup>
-import AdminLayout from '../../../Layouts/app.layout.vue';
+import AdminLayout from '@admin/Layouts/AdminLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 
 const props = defineProps({ posts: Object });
@@ -30,4 +30,3 @@ function create() { window.location.href = `/admin/news/create`; }
     </div>
   </AdminLayout>
 </template>
-

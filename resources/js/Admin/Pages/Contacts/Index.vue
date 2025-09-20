@@ -1,5 +1,5 @@
 <script setup>
-import AdminLayout from '../../../Layouts/app.layout.vue';
+import AdminLayout from '@admin/Layouts/AdminLayout.vue';
 
 const props = defineProps({ messages: Object });
 </script>
@@ -24,4 +24,3 @@ const props = defineProps({ messages: Object });
     </div>
   </AdminLayout>
 </template>
-

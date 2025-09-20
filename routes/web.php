@@ -79,6 +79,8 @@ Route::middleware(['auth', 'can:isAdmin'])
         Route::resource('news', AdminNewsController::class);
         // Admin Contact review
         Route::resource('contacts', AdminContactController::class)->only(['index','show','update','destroy']);
+        // Admin Featured Galleries (placeholder view-only for now)
+        Route::get('/featured-galleries', function () { return Inertia::render('FeaturedGalleries/Index')->rootView('admin'); })->name('featured-galleries.index');
     });
 // Public News & Contact
 Route::get('/news', [PublicNewsController::class, 'index'])->name('news.index');

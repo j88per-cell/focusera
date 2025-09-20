@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
-import AdminLayout from '../../../Layouts/app.layout.vue';
+import AdminLayout from '@admin/Layouts/AdminLayout.vue';
 
 const props = defineProps({
   galleries: Object,

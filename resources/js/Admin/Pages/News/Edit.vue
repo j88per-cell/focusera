@@ -1,5 +1,5 @@
 <script setup>
-import AdminLayout from '../../../Layouts/app.layout.vue';
+import AdminLayout from '@admin/Layouts/AdminLayout.vue';
 import { useForm, router } from '@inertiajs/vue3';
 
 const props = defineProps({ post: { type: Object, default: null } });
@@ -67,4 +67,3 @@ function destroyPost() {
     </div>
   </AdminLayout>
 </template>
-
