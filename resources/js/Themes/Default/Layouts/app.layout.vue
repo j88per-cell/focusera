@@ -1,40 +1,15 @@
 <script setup>
-import { ref } from 'vue'
-import LoginModal from '../Components/Auth/Login.vue'
-
-const showLogin = ref(false)
+import SiteTopNav from '../Components/SiteTopNav.vue'
 </script>
 
 <template>
   <div class="min-h-screen bg-background text-foreground">
-    <header class="bg-primary text-primary-foreground shadow-sm">
-      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <div class="text-xl font-bold">PhotoStudio</div>
-          <div class="hidden md:flex items-center gap-4">
-            <a href="/" class="hover:text-accent px-3 py-2 text-sm">Home</a>
-            <a href="/galleries" class="hover:text-accent px-3 py-2 text-sm">Galleries</a>
-            <a href="/access" class="hover:text-accent px-3 py-2 text-sm">Private Access</a>
-            <a href="/news" class="hover:text-accent px-3 py-2 text-sm">News</a>
-            <a href="/contact" class="hover:text-accent px-3 py-2 text-sm">Contact</a>
-
-            <button class="px-3 py-2 rounded-md text-sm bg-accent text-white hover:bg-accent/90"
-                    @click="showLogin = true">
-              Log in
-            </button>
-            <a href="/register" class="px-3 py-2 rounded-md text-sm border border-accent hover:bg-accent/10">
-              Sign up
-            </a>
-          </div>
-        </div>
-      </nav>
-    </header>
+    <SiteTopNav />
 
     <main>
       <slot />
     </main>
 
-    <LoginModal v-model:open="showLogin" />
   </div>
 </template>
 

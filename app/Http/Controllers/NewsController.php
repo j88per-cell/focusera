@@ -22,4 +22,3 @@ class NewsController extends Controller
         return inertia('News/Show', compact('post'));
     }
 }
-

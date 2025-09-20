@@ -1,4 +1,5 @@
 <script setup>
+import SiteTopNav from '../../Themes/Default/Components/SiteTopNav.vue'
 </script>
 
 <template>
@@ -63,30 +64,8 @@
 
     <!-- Main Content -->
     <div class="flex-1 lg:ml-64">
-      <!-- Top Navigation -->
-      <header class="bg-white shadow-sm border-b border-gray-200">
-        <div class="flex items-center justify-between px-6 py-4">
-          <h2 class="text-xl font-semibold text-gray-800">Admin</h2>
-
-          <div class="flex items-center space-x-4">
-            <!-- Notifications -->
-            <button class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M15 17h5l-5 5v-5zM4 19h6v-2H4v2zM4 15h8v-2H4v2zM4 11h10V9H4v2z"/>
-              </svg>
-            </button>
-
-            <!-- User Menu -->
-            <div class="relative">
-              <button class="flex items-center p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                <img class="w-8 h-8 rounded-full" src="" alt="Profile">
-                <span class="ml-2 text-sm font-medium">John Doe</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <!-- Public Site Top Nav -->
+      <SiteTopNav />
 
       <!-- Page Content -->
       <main class="p-6">

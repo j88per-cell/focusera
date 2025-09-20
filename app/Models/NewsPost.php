@@ -38,4 +38,3 @@ class NewsPost extends Model
         });
     }
 }
-
