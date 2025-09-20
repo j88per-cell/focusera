@@ -14,6 +14,7 @@ const showLogin = ref(false)
           <div class="hidden md:flex items-center gap-4">
             <a href="/" class="hover:text-accent px-3 py-2 text-sm">Home</a>
             <a href="/galleries" class="hover:text-accent px-3 py-2 text-sm">Galleries</a>
+            <a href="/access" class="hover:text-accent px-3 py-2 text-sm">Private Access</a>
             <a href="/news" class="hover:text-accent px-3 py-2 text-sm">News</a>
             <a href="/contact" class="hover:text-accent px-3 py-2 text-sm">Contact</a>
 

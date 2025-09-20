@@ -140,7 +140,7 @@ class GalleryController extends Controller
             $p->exif = \App\Support\ExifHelper::filterForGallery($gallery, (array) ($p->exif ?? []));
             return $p;
         });
-        return inertia('Galleries/Edit', [
+        return inertia('Admin/Galleries/Edit', [
             'gallery' => $gallery,
             'parents' => $parents,
             'photos'  => $photos,
@@ -230,5 +230,51 @@ class GalleryController extends Controller
             'link' => $link,
             'expires_at' => $expiresAt?->toIso8601String(),
         ], 201);
+    }
+
+    // Public: access code entry form
+    public function accessForm(Request $request)
+    {
+        return inertia('Gallery/Access');
+    }
+
+    // Public: process access code and redirect to the matched gallery
+    public function accessSubmit(Request $request)
+    {
+        $data = $request->validate([
+            'code' => 'required|string|min:4|max:64',
+        ]);
+
+        $codeInput = trim($data['code']);
+        $now = now();
+
+        // Try generated codes (hashed) first
+        $candidates = GalleryAccessCode::query()
+            ->where(function ($q) use ($now) {
+                $q->whereNull('expires_at')->orWhere('expires_at', '>', $now);
+            })
+            ->with('gallery')
+            ->get();
+        foreach ($candidates as $cand) {
+            if (Hash::check($codeInput, $cand->code_hash)) {
+                $gallery = $cand->gallery;
+                if ($gallery) {
+                    $request->session()->put('gallery.access.' . $gallery->id, [
+                        'code_id' => $cand->id,
+                        'granted_at' => $now->toISOString(),
+                    ]);
+                    return redirect()->to(route('galleries.show', $gallery));
+                }
+            }
+        }
+
+        // Legacy fallback: plaintext code on Gallery
+        $legacy = Gallery::query()->where('access_code', $codeInput)->first();
+        if ($legacy) {
+            $request->session()->put('gallery.access.' . $legacy->id, true);
+            return redirect()->to(route('galleries.show', $legacy));
+        }
+
+        return back()->withErrors(['code' => 'Invalid or expired access code.'])->withInput();
     }
 }

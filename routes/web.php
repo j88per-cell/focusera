@@ -23,6 +23,10 @@ use App\Http\Controllers\PhotoController;
 Route::get('/', [LandingPageController::class, 'index']);
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('can:isAdmin');
 
+// Public access code entry
+Route::get('/access', [GalleryController::class, 'accessForm'])->name('galleries.access');
+Route::post('/access', [GalleryController::class, 'accessSubmit'])->name('galleries.access.submit');
+
 // Public resources: read-only
 Route::resource('galleries', GalleryController::class)->only(['index', 'show']);
 Route::resource('galleries.photos', PhotoController::class)->only(['index', 'show']);

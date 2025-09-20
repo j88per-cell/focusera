@@ -36,7 +36,7 @@ function normalizeSrc(path) {
 
 function createGallery() {
   saving.value = true;
-  form.post('/galleries', {
+  form.post('/admin/galleries', {
     onFinish: () => {
       saving.value = false;
       form.reset('title', 'description', 'date', 'thumbnail');
@@ -57,7 +57,7 @@ function confirmDelete() {
   deleting.value = true;
   const id = toDelete.value.id;
   const formDelete = useForm({});
-  formDelete.delete(`/galleries/${id}`, {
+  formDelete.delete(`/admin/galleries/${id}`, {
     preserveScroll: true,
     onFinish: () => {
       deleting.value = false;
@@ -157,7 +157,7 @@ function confirmDelete() {
             </div>
             <div class="flex items-center gap-3">
               <a :href="`/galleries/${g.id}`" class="text-sm text-accent hover:underline">View</a>
-              <a :href="`/galleries/${g.id}/edit`" class="text-sm text-gray-600 hover:underline">Edit</a>
+              <a :href="`/admin/galleries/${g.id}/edit`" class="text-sm text-gray-600 hover:underline">Edit</a>
               <button @click="askDelete(g)" class="text-sm text-red-600 hover:underline">Delete</button>
             </div>
           </div>
