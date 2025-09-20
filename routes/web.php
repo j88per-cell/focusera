@@ -8,6 +8,10 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\NewsController as PublicNewsController;
+use App\Http\Controllers\ContactController as PublicContactController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\ContactController as AdminContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,4 +74,14 @@ Route::middleware(['auth', 'can:isAdmin'])
         Route::post('/galleries/{gallery}/photos/{photo}/transform', [\App\Http\Controllers\PhotoController::class, 'transform'])
             ->middleware('upload.tuning')
             ->name('galleries.photos.transform');
+
+        // Admin News CRUD
+        Route::resource('news', AdminNewsController::class);
+        // Admin Contact review
+        Route::resource('contacts', AdminContactController::class)->only(['index','show','update','destroy']);
     });
+// Public News & Contact
+Route::get('/news', [PublicNewsController::class, 'index'])->name('news.index');
+Route::get('/news/{slug}', [PublicNewsController::class, 'show'])->name('news.show');
+Route::get('/contact', [PublicContactController::class, 'index'])->name('contact.index');
+Route::post('/contact', [PublicContactController::class, 'store'])->name('contact.store');
