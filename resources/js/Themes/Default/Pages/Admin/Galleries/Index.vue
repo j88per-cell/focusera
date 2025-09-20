@@ -16,7 +16,6 @@ const form = useForm({
   description: '',
   date: '',
   public: true,
-  access_code: '',
   thumbnail: '',
   parent_id: '',
 });
@@ -40,7 +39,7 @@ function createGallery() {
   form.post('/galleries', {
     onFinish: () => {
       saving.value = false;
-      form.reset('title', 'description', 'date', 'access_code', 'thumbnail');
+      form.reset('title', 'description', 'date', 'thumbnail');
       form.parent_id = '';
       showCreate.value = false;
     },
@@ -130,11 +129,7 @@ function confirmDelete() {
               </div>
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Access Code (optional)</label>
-              <input v-model="form.access_code" type="text" class="mt-1 block w-full rounded-md border-gray-300" />
-              <p v-if="form.errors.access_code" class="text-sm text-red-600 mt-1">{{ form.errors.access_code }}</p>
-            </div>
+            <!-- Access codes are generated from the gallery edit page, not typed here. -->
 
             <div class="md:col-span-2 flex items-center justify-end gap-3 pt-2">
               <button type="button" @click="showCreate = false" class="px-4 py-2 rounded-md border border-gray-300 text-gray-700">Cancel</button>

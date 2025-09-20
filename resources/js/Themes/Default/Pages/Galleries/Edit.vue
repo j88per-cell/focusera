@@ -18,7 +18,6 @@ const form = useForm({
   description: props.gallery.description || '',
   date: props.gallery.date || '',
   public: !!props.gallery.public,
-  access_code: props.gallery.access_code || '',
   thumbnail: props.gallery.thumbnail || '',
   parent_id: props.gallery.parent_id || '',
   exif_visibility: props.gallery.exif_visibility || 'all',
@@ -218,6 +217,30 @@ function rotateLeft(photo) { transformPhoto(photo, { rotate: -90 }); }
 function rotateRight(photo) { transformPhoto(photo, { rotate: 90 }); }
 function flipH(photo) { transformPhoto(photo, { flip: 'h' }); }
 function flipV(photo) { transformPhoto(photo, { flip: 'v' }); }
+
+// Generate access code and email it
+const codeEmail = ref('');
+const codeDuration = ref('14d'); // default duration
+const codeLabel = ref('');
+const codeBusy = ref(false);
+const codeResult = ref(null); // { link, code, expires_at }
+async function generateAndSendCode() {
+  if (!codeEmail.value) return;
+  codeBusy.value = true;
+  codeResult.value = null;
+  try {
+    const { data } = await axios.post(`/admin/galleries/${props.gallery.id}/codes`, {
+      email: codeEmail.value,
+      duration: codeDuration.value,
+      label: codeLabel.value || undefined,
+    });
+    codeResult.value = data;
+  } catch (e) {
+    alert(`Failed to generate code: ${extractError(e)}`);
+  } finally {
+    codeBusy.value = false;
+  }
+}
 </script>
 
 <template>
@@ -350,11 +373,7 @@ function flipV(photo) { transformPhoto(photo, { flip: 'v' }); }
               </div>
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Access Code (optional)</label>
-              <input v-model="form.access_code" type="text" class="mt-1 block w-full rounded-md border-gray-300" />
-              <p v-if="form.errors.access_code" class="text-sm text-red-600 mt-1">{{ form.errors.access_code }}</p>
-            </div>
+            <!-- Access codes are generated, not typed. See the Share: Access Code section below. -->
 
             <div>
               <label class="block text-sm font-medium text-gray-700">EXIF Visibility</label>
@@ -385,6 +404,47 @@ function flipV(photo) { transformPhoto(photo, { flip: 'v' }); }
               </button>
             </div>
           </form>
+        </div>
+        <!-- Access codes -->
+        <div class="bg-white rounded-md shadow p-4">
+          <h3 class="text-lg font-medium mb-3">Share: Access Code</h3>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Recipient Email</label>
+              <input v-model="codeEmail" type="email" class="mt-1 block w-full rounded-md border-gray-300" placeholder="person@example.com" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Duration</label>
+              <select v-model="codeDuration" class="mt-1 block w-full rounded-md border-gray-300">
+                <option value="infinite">No expiration</option>
+                <option value="7d">7 days</option>
+                <option value="14d">14 days</option>
+                <option value="30d">30 days</option>
+                <option value="90d">90 days</option>
+                <option value="1y">1 year</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Label (optional)</label>
+              <input v-model="codeLabel" type="text" class="mt-1 block w-full rounded-md border-gray-300" placeholder="e.g. Client: ACME Review" />
+            </div>
+            <div class="flex justify-end">
+              <button @click="generateAndSendCode" :disabled="codeBusy || !codeEmail" class="px-3 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50">
+                {{ codeBusy ? 'Sending…' : 'Generate & Email' }}
+              </button>
+            </div>
+
+            <div v-if="codeResult" class="mt-2 text-sm">
+              <div class="text-green-700">Code created{{ codeResult.expires_at ? ` (expires ${new Date(codeResult.expires_at).toLocaleString()})` : '' }}.</div>
+              <div class="mt-1">
+                <span class="font-medium">Code:</span> <code class="px-1 py-0.5 bg-gray-100 rounded">{{ codeResult.code }}</code>
+              </div>
+              <div class="mt-1 break-all">
+                <span class="font-medium">Link:</span>
+                <a :href="codeResult.link" target="_blank" class="text-indigo-700 underline">{{ codeResult.link }}</a>
+              </div>
+            </div>
+          </div>
         </div>
       </aside>
     </div>

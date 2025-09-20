@@ -33,6 +33,11 @@ class Gallery extends Model
         return $this->hasMany(Photo::class);
     }
 
+    public function accessCodes()
+    {
+        return $this->hasMany(\App\Models\GalleryAccessCode::class);
+    }
+
     protected static function booted(): void
     {
         // Ensure photo model events fire so files are removed on gallery deletion

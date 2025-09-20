@@ -23,8 +23,9 @@ use App\Http\Controllers\PhotoController;
 Route::get('/', [LandingPageController::class, 'index']);
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('can:isAdmin');
 
-Route::resource('galleries', GalleryController::class);
-Route::resource('galleries.photos', PhotoController::class);
+// Public resources: read-only
+Route::resource('galleries', GalleryController::class)->only(['index', 'show']);
+Route::resource('galleries.photos', PhotoController::class)->only(['index', 'show']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -40,12 +41,18 @@ Route::middleware(['auth', 'can:isAdmin'])
     ->as('admin.')
     ->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        // Admin CRUD for galleries and nested photos
+        Route::resource('galleries', \App\Http\Controllers\GalleryController::class)->except(['index', 'show']);
+        Route::resource('galleries.photos', \App\Http\Controllers\PhotoController::class)->except(['index', 'show']);
         // Admin view for managing galleries, uses the main GalleryController
         Route::get('/galleries', [\App\Http\Controllers\GalleryController::class, 'adminIndex'])
             ->name('galleries.index');
         Route::post('/galleries/{gallery}/photos/upload', [\App\Http\Controllers\PhotoController::class, 'upload'])
             ->middleware('upload.tuning')
             ->name('galleries.photos.upload');
+        // Generate and email access codes
+        Route::post('/galleries/{gallery}/codes', [\App\Http\Controllers\GalleryController::class, 'adminGenerateCode'])
+            ->name('galleries.codes.store');
         // Chunked upload endpoints
         Route::post('/galleries/{gallery}/photos/upload/chunk/start', [\App\Http\Controllers\PhotoController::class, 'chunkStart'])
             ->middleware('upload.tuning')
