@@ -57,6 +57,15 @@ import SiteTopNav from '../../Themes/Default/Components/SiteTopNav.vue'
             Featured Galleries
           </a>
 
+          <a href="/admin/settings"
+             class="flex items-center px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M11 12a4 4 0 100-8 4 4 0 000 8zm-9 8a9 9 0 1118 0H2z"/>
+            </svg>
+            Settings
+          </a>
+
           <!-- More links can go here -->
         </div>
       </nav>

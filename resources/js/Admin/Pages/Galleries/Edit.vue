@@ -36,6 +36,19 @@ function normalizeSrc(path) {
     return "/" + p.replace(/^\/+/, "");
 }
 
+// Thumbnail picker helpers
+const showThumbPicker = ref(false);
+function fileName(path) {
+    if (!path) return "";
+    const parts = String(path).split("/");
+    return parts[parts.length - 1] || String(path);
+}
+function setThumbnailFromPhoto(photo) {
+    if (!photo) return;
+    form.thumbnail = photo.path_thumb || photo.path_web || "";
+    showThumbPicker.value = false;
+}
+
 // Photo edit modal
 const showPhotoEdit = ref(false);
 const editing = ref(false);
@@ -429,9 +442,33 @@ async function generateAndSendCode() {
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Thumbnail URL</label>
-                            <input v-model="form.thumbnail" type="text" class="mt-1 block w-full rounded-md border-gray-300" />
+                            <label class="block text-sm font-medium text-gray-700">Thumbnail</label>
+                            <div class="mt-1 flex items-center gap-3">
+                                <input v-model="form.thumbnail" type="text" placeholder="/path/to/thumb.jpg" class="mt-0.5 block w-full rounded-md border-gray-300" />
+                                <button type="button" class="px-3 py-2 text-sm rounded-md border hover:bg-gray-50" @click="showThumbPicker = !showThumbPicker">Pick</button>
+                            </div>
+                            <div v-if="form.thumbnail" class="mt-2 flex items-center gap-3">
+                                <img :src="normalizeSrc(form.thumbnail)" alt="current thumbnail" class="w-16 h-16 object-cover rounded border" />
+                                <button type="button" class="text-xs text-gray-600 hover:underline" @click="form.thumbnail = ''">Clear</button>
+                            </div>
                             <p v-if="form.errors.thumbnail" class="text-sm text-red-600 mt-1">{{ form.errors.thumbnail }}</p>
+                            <div v-if="showThumbPicker" class="mt-2 border rounded-md p-2">
+                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-h-64 overflow-auto">
+                                    <button
+                                      v-for="p in (props.photos?.data || [])"
+                                      :key="p.id"
+                                      type="button"
+                                      class="group border rounded overflow-hidden hover:ring-2 hover:ring-indigo-500 text-left"
+                                      @click="setThumbnailFromPhoto(p)"
+                                    >
+                                      <img :src="normalizeSrc(p.path_thumb || p.path_web)" alt="thumb" class="w-full h-20 object-cover block" />
+                                      <div class="px-2 py-1 text-[11px] truncate text-gray-700">
+                                        {{ fileName(p.path_thumb || p.path_web) }}
+                                      </div>
+                                    </button>
+                                </div>
+                                <div v-if="!(props.photos?.data || []).length" class="text-xs text-gray-500 px-1 py-2">No photos in this gallery yet.</div>
+                            </div>
                         </div>
 
                         <div>

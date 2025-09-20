@@ -81,6 +81,12 @@ Route::middleware(['auth', 'can:isAdmin'])
         Route::resource('contacts', AdminContactController::class)->only(['index','show','update','destroy']);
         // Admin Featured Galleries (placeholder view-only for now)
         Route::get('/featured-galleries', function () { return Inertia::render('FeaturedGalleries/Index')->rootView('admin'); })->name('featured-galleries.index');
+
+        // Admin Settings
+        Route::get('/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])
+            ->name('settings.index');
+        Route::patch('/settings/{setting}', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])
+            ->name('settings.update');
     });
 // Public News & Contact
 Route::get('/news', [PublicNewsController::class, 'index'])->name('news.index');
