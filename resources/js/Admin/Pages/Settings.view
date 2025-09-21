@@ -39,6 +39,7 @@ function save() {
           <option value="Default">Default</option>
           <option value="Minimal">Minimal</option>
           <option value="Dark">Dark</option>
+          <option value="Twilight">Twilight</option>
         </select>
       </div>
 

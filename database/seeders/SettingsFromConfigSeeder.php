@@ -9,42 +9,12 @@ class SettingsFromConfigSeeder extends Seeder
 {
     public function run(): void
     {
-        $this->seedFromArray('features', config('features', []));
-        $this->seedPhotos(config('photos', []));
-        // Sales defaults (provider-agnostic)
-        $this->upsert('sales', null, 'markup_percent', 25);
-    }
-
-    protected function seedFromArray(string $group, array $data, ?string $sub = null): void
-    {
-        foreach ($data as $key => $val) {
-            if (is_array($val)) {
-                // Store nested arrays one level down as their own subgroup entries
-                $this->seedFromArray($group, $val, $sub ? ($sub . '.' . $key) : (string) $key);
-            } else {
-                $this->upsert($group, $sub, (string) $key, $val);
-            }
-        }
-    }
-
-    protected function seedPhotos(array $photos): void
-    {
-        foreach ($photos as $key => $val) {
-            if (is_array($val)) {
-                // If it's a list (numeric keys), store as a single JSON value under the key
-                $isList = array_values($val) === $val;
-                if ($isList) {
-                    $this->upsert('photos', null, (string) $key, $val);
-                } else {
-                    // Associative array: treat as subgroup entries
-                    foreach ($val as $k => $v) {
-                        $this->upsert('photos', (string) $key, (string) $k, $v);
-                    }
-                }
-            } else {
-                $this->upsert('photos', null, (string) $key, $val);
-            }
-        }
+        // Site/Theme defaults only (strip mock/config-derived seeds)
+        // Ensure the active app theme is set for blade root view resolution
+        $this->upsert('app', 'theme', 'active', 'Default');
+        // Feature toggles (default enabled) live under group: features
+        $this->upsert('features', null, 'featured_galleries', '1');
+        $this->upsert('features', null, 'news', '1');
     }
 
     protected function upsert(string $group, ?string $subgroup, string $key, $value, ?string $description = null): void

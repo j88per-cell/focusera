@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { usePage, router } from '@inertiajs/vue3'
-import LoginModal from './Auth/Login.vue'
+import LoginModal from '../../Default/Components/Auth/Login.vue'
 
 const page = usePage()
 const user = computed(() => page.props?.auth?.user || null)
@@ -89,8 +89,9 @@ onBeforeUnmount(() => document.removeEventListener('click', onClickOutside))
 </template>
 
 <style scoped>
-.bg-primary { background-color: #1f2937; }
-.text-primary-foreground { color: #ffffff; }
-.bg-accent { background-color: #8b5cf6; }
-.text-accent { color: #8b5cf6; }
+/* Twilight header + accent */
+.bg-primary { background-color: #0b132b; }             /* deep navy */
+.text-primary-foreground { color: #e5e7eb; }
+.bg-accent { background-color: #3b82f6; }              /* blue-500 */
+.text-accent { color: #60a5fa; }
 </style>

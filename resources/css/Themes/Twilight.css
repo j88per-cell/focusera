@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Twilight: dark blue / slate grey */
+    --background: 220 28% 14%;       /* deep slate-blue */
+    --foreground: 210 40% 96%;       /* light slate */
+
+    --card: 220 25% 16%;
+    --card-foreground: 210 40% 96%;
+
+    --popover: 220 25% 16%;
+    --popover-foreground: 210 40% 96%;
+
+    --primary: 217 91% 60%;          /* blue-500 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 215 20% 24%;         /* slate-700 */
+    --secondary-foreground: 210 40% 96%;
+
+    --muted: 215 15% 28%;
+    --muted-foreground: 215 20% 78%;
+
+    --accent: 262 83% 58%;           /* violet-500 */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 215 20% 28%;
+    --input: 215 20% 28%;
+    --ring: 217 91% 60%;
+
+    /* Arbitrary chart palette tuning for dark bg */
+    --chart-1: 217 91% 60%;
+    --chart-2: 199 89% 48%;
+    --chart-3: 262 83% 58%;
+    --chart-4: 43 96% 56%;
+    --chart-5: 145 63% 49%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground; }
+}
+

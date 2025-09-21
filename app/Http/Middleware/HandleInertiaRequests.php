@@ -34,9 +34,15 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'features' => [
-                'registration' => (bool) config('features.registration', false),
-            ],
+            // Expose all site feature flags as a single bag
+            'features' => (function () {
+                $site = (array) (config('settings.features') ?? []);
+                // Back-compat: include registration if not present in settings
+                if (!array_key_exists('registration', $site)) {
+                    $site['registration'] = (bool) config('features.registration', false);
+                }
+                return $site;
+            })(),
             'sales' => [
                 'enabled' => (bool) (config('settings.sales.enabled') ?? false),
                 'default_markup' => (float) (config('settings.sales.markup_percent') ?? 25),
