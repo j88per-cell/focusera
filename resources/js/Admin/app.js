@@ -1,4 +1,4 @@
-import "../bootstrapp";
+import "../bootstrap.js";
 import "../../css/admin.css";
 
 import { createApp, h } from "vue";

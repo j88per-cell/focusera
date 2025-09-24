@@ -28,8 +28,13 @@ class Setting extends Model
         $g = strtolower((string) $this->group);
         $sg = strtolower((string) ($this->sub_group ?? ''));
         $k = strtolower((string) $this->key);
-        if ($g === 'sales' && str_contains($sg, 'pwinty')) {
-            return str_contains($k, 'key') || str_contains($k, 'secret');
+        if ($g === 'sales') {
+            // Any provider credentials under sales are secrets
+            if (str_contains($sg, 'providers.')) {
+                return str_contains($k, 'key') || str_contains($k, 'secret') || str_contains($k, 'token');
+            }
+            // Fallback: generic secrets directly under sales
+            return str_contains($k, 'key') || str_contains($k, 'secret') || str_contains($k, 'token');
         }
         return false;
     }
@@ -37,6 +42,11 @@ class Setting extends Model
     public function setValueAttribute($value): void
     {
         $raw = is_null($value) ? null : (string) $value;
+        // Treat empty string as null for secrets to avoid encrypting blanks
+        if ($this->isSecret() && $raw === '') {
+            $this->attributes['value'] = null;
+            return;
+        }
         if ($this->isSecret() && !is_null($raw)) {
             $this->attributes['value'] = Crypt::encryptString($raw);
         } else {

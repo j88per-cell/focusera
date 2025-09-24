@@ -5,6 +5,8 @@ import AdminLayout from '@admin/Layouts/AdminLayout.vue'
 
 const props = defineProps({
   settings: { type: Array, default: () => [] },
+  provider_keys: { type: Array, default: () => [] },
+  provider_defaults: { type: Object, default: () => ({}) },
 })
 
 // Build grouped structure: groups -> subgroups -> items
@@ -69,12 +71,82 @@ function saveEdit(item) {
   })
 }
 
+function isBoolean(item) {
+  const v = item.value
+  if (v === '1' || v === '0' || v === 1 || v === 0) return true
+  // Heuristic: features group often hold booleans
+  const g = (item.group || '').toLowerCase()
+  if (g === 'features') return true
+  return false
+}
+
+function toggleBoolean(item) {
+  if (saving.value) return
+  const newVal = (item.value === '1' || item.value === 1) ? '0' : '1'
+  saving.value = true
+  router.visit(`/admin/settings/${item.id}`, {
+    method: 'patch',
+    data: { value: newVal },
+    preserveScroll: true,
+    onSuccess: () => { item.value = newVal },
+    onFinish: () => { saving.value = false },
+  })
+}
+
 function isSecret(item) {
   const g = (item.group || '').toLowerCase()
   const sg = (item.sub_group || '').toLowerCase()
   const k = (item.key || '').toLowerCase()
-  if (g === 'sales' && sg.includes('pwinty')) return k.includes('key') || k.includes('secret')
+  if (g === 'sales') {
+    if (sg.startsWith('providers.')) return k.includes('key') || k.includes('secret') || k.includes('token')
+    return k.includes('key') || k.includes('secret') || k.includes('token')
+  }
   return false
+}
+
+function isSalesProvider(item) {
+  return (item.group === 'sales' && item.key === 'provider')
+}
+
+function updateProvider(item, value) {
+  if (saving.value) return
+  saving.value = true
+  router.visit(`/admin/settings/${item.id}`, {
+    method: 'patch',
+    data: { value },
+    preserveScroll: true,
+    onSuccess: () => { item.value = value },
+    onFinish: () => { saving.value = false },
+  })
+}
+
+function parseProviderFromSubgroup(sub) {
+  // expects 'providers.NAME'
+  if (!sub) return null
+  const m = String(sub).match(/^providers\.(.+)$/)
+  return m ? m[1] : null
+}
+
+function setDefaultEndpoint(item) {
+  const prov = parseProviderFromSubgroup(item.sub_group)
+  if (!prov) return
+  const key = String(item.key || '') // e.g., 'endpoint.sandbox'
+  const suffix = key.split('.')[1] || ''
+  const def = props.provider_defaults?.[prov]?.endpoint?.[suffix]
+  if (!def) return
+  updateValue(item, def)
+}
+
+function updateValue(item, value) {
+  if (saving.value) return
+  saving.value = true
+  router.visit(`/admin/settings/${item.id}`, {
+    method: 'patch',
+    data: { value },
+    preserveScroll: true,
+    onSuccess: () => { item.value = value },
+    onFinish: () => { saving.value = false },
+  })
 }
 </script>
 
@@ -134,12 +206,39 @@ function isSecret(item) {
                           </div>
                           <template v-else>
                             <span v-if="isSecret(item)" class="inline-flex items-center gap-2">
-                              <span class="px-1 py-0.5 rounded bg-gray-100 text-gray-500">••••••</span>
-                              <button class="text-xs text-indigo-600 hover:underline" @click="startEdit(item)">Change</button>
+                              <span v-if="item.value" class="px-1 py-0.5 rounded bg-gray-100 text-gray-500">••••••</span>
+                              <span v-else class="px-1 py-0.5 rounded bg-gray-50 text-gray-400 border">Not set</span>
+                              <button class="text-xs text-indigo-600 hover:underline" @click="startEdit(item)">{{ item.value ? 'Change' : 'Set' }}</button>
                             </span>
-                            <button v-else class="text-left hover:bg-gray-50 rounded px-1 py-0.5" @click="startEdit(item)">
-                              <span>{{ item.value }}</span>
-                            </button>
+                            <div v-else class="flex items-center gap-2">
+                              <template v-if="isSalesProvider(item)">
+                                <select :value="item.value || ''" class="rounded border-gray-300 text-sm"
+                                        @change="e => updateProvider(item, e.target.value)">
+                                  <option v-for="k in provider_keys" :key="k" :value="k">{{ k }}</option>
+                                </select>
+                              </template>
+                              <template v-else-if="isBoolean(item)">
+                                <span class="inline-flex items-center gap-2">
+                                  <span :class="[ (item.value === '1' || item.value === 1) ? 'text-green-600' : 'text-gray-500']">
+                                    {{ (item.value === '1' || item.value === 1) ? 'Enabled' : 'Disabled' }}
+                                  </span>
+                                  <button class="px-2 py-1 text-xs rounded border" :disabled="saving" @click="toggleBoolean(item)">Toggle</button>
+                                </span>
+                              </template>
+                              <template v-else>
+                                <div class="flex items-center gap-2">
+                                  <button class="text-left hover:bg-gray-50 rounded px-1 py-0.5" @click="startEdit(item)">
+                                    <span>{{ item.value }}</span>
+                                  </button>
+                                  <button v-if="item.group === 'sales' && String(item.key || '').startsWith('endpoint.') && parseProviderFromSubgroup(item.sub_group) && (provider_defaults?.[parseProviderFromSubgroup(item.sub_group)]?.endpoint?.[String(item.key).split('.')[1]] )"
+                                          class="px-2 py-1 text-xs rounded border"
+                                          :disabled="saving"
+                                          @click="setDefaultEndpoint(item)">
+                                    Use default
+                                  </button>
+                                </div>
+                              </template>
+                            </div>
                           </template>
                         </td>
                         <td class="py-2 text-gray-500">{{ item.description }}</td>

@@ -24,8 +24,22 @@ class SettingsController extends Controller
                 return $s;
             });
 
+        $providerKeys = array_keys((array) config('print.providers'));
+        $providerDefaults = [];
+        $opts = (array) config('print.options');
+        foreach ($opts as $key => $cfg) {
+            $providerDefaults[$key] = [
+                'endpoint' => [
+                    'sandbox' => $cfg['endpoint']['sandbox'] ?? null,
+                    'live' => $cfg['endpoint']['live'] ?? null,
+                ],
+            ];
+        }
+
         return Inertia::render('Settings/Index', [
             'settings' => $settings,
+            'provider_keys' => $providerKeys,
+            'provider_defaults' => $providerDefaults,
         ])->rootView('admin');
     }
 

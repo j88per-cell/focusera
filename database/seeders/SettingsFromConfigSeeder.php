@@ -15,17 +15,47 @@ class SettingsFromConfigSeeder extends Seeder
         // Feature toggles (default enabled) live under group: features
         $this->upsert('features', null, 'featured_galleries', '1');
         $this->upsert('features', null, 'news', '1');
+        // Default POD provider key and sandbox flag
+        $this->upsert('sales', null, 'provider', 'null');
+        $this->upsert('sales', null, 'sandbox', '1');
+
+        // Provider placeholders (so they’re editable in Admin UI)
+        foreach (['artelo','pictorem','lumaprints','finerworks'] as $prov) {
+            $sub = 'providers.' . $prov;
+            $opts = (array) (config("print.options.$prov") ?? []);
+            $endpoints = (array) ($opts['endpoint'] ?? []);
+            $this->upsert('sales', $sub, 'endpoint.sandbox', (string) ($endpoints['sandbox'] ?? ''));
+            $this->upsert('sales', $sub, 'endpoint.live', (string) ($endpoints['live'] ?? ''));
+            $this->upsert('sales', $sub, 'api_key', null);
+            $this->upsert('sales', $sub, 'api_secret', null);
+        }
+
+        // Repair: if any secret fields were seeded as empty-string and got encrypted, reset them to null
+        $secrets = \App\Models\Setting::query()
+            ->where('group', 'sales')
+            ->where('sub_group', 'like', 'providers.%')
+            ->whereIn('key', ['api_key','api_secret','token'])
+            ->get();
+        foreach ($secrets as $s) {
+            if (($s->value ?? '') === '') { // accessor decrypts if needed
+                $s->value = null; // mutator will store as null
+                $s->save();
+            }
+        }
     }
 
     protected function upsert(string $group, ?string $subgroup, string $key, $value, ?string $description = null): void
     {
-        // Normalize value to string; JSON-encode arrays/objects; cast bool/int
-        if (is_bool($value)) {
-            $str = $value ? '1' : '0';
-        } elseif (is_array($value) || is_object($value)) {
-            $str = json_encode($value, JSON_UNESCAPED_SLASHES);
-        } else {
-            $str = (string) $value;
+        // Allow null storage; otherwise normalize scalars
+        $toStore = null;
+        if (!is_null($value)) {
+            if (is_bool($value)) {
+                $toStore = $value ? '1' : '0';
+            } elseif (is_array($value) || is_object($value)) {
+                $toStore = json_encode($value, JSON_UNESCAPED_SLASHES);
+            } else {
+                $toStore = (string) $value;
+            }
         }
 
         Setting::updateOrCreate(
@@ -35,7 +65,7 @@ class SettingsFromConfigSeeder extends Seeder
                 'key' => $key,
             ],
             [
-                'value' => $str,
+                'value' => $toStore,
                 'description' => $description,
             ]
         );
