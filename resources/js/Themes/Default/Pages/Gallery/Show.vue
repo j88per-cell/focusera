@@ -18,7 +18,7 @@
           @click="openLightbox(photo)"
         >
           <img
-            :src="normalizeSrc(photo.path_thumb || photo.path_web || photo.url)"
+            :src="thumbSrc(photo)"
             :alt="photo.title || 'Photo'"
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
@@ -55,7 +55,9 @@ const props = defineProps({
 })
 
 const page = usePage()
-const salesEnabled = computed(() => Boolean(page.props?.features?.sales))
+const siteSettings = computed(() => page.props?.site ?? {})
+const salesEnabled = computed(() => toBoolean(page.props?.features?.sales))
+const usePhotoProxy = computed(() => toBoolean(siteSettings.value?.photoproxy))
 const selectedPhoto = ref(null)
 const showBuy = ref(false)
 const buyPhoto = ref(null)
@@ -73,7 +75,7 @@ function normalizeSrc(src) {
 
 function openLightbox(photo) {
   // Adapt to Lightbox API expecting `photo.url`
-  const url = normalizeSrc(photo?.path_web || photo?.url || photo?.path_original)
+  const url = webImageUrl(photo)
   selectedPhoto.value = {
     ...photo,
     url,
@@ -84,6 +86,31 @@ function openLightbox(photo) {
 function closeLightbox() {
   selectedPhoto.value = null
   document.body.style.overflow = 'auto'
+}
+
+function webImageUrl(photo) {
+  const direct = normalizeSrc(photo?.path_web || photo?.url || photo?.path_original)
+  if (!usePhotoProxy.value) return direct
+  if (!photo?.id) return direct
+  const version = photo?.updated_at ? encodeURIComponent(photo.updated_at) : photo.id
+  return `/media/photos/${photo.id}?v=${version}`
+}
+
+function thumbSrc(photo) {
+  if (photo?.path_thumb) {
+    return normalizeSrc(photo.path_thumb)
+  }
+  return webImageUrl(photo)
+}
+
+function toBoolean(value) {
+  if (typeof value === 'string') {
+    const lower = value.toLowerCase()
+    if (['1', 'true', 'yes', 'on'].includes(lower)) return true
+    if (['0', 'false', 'no', 'off', ''].includes(lower)) return false
+  }
+  if (typeof value === 'number') return value === 1
+  return Boolean(value)
 }
 
 function openBuy(photo) {

@@ -62,6 +62,7 @@ The seeder populates:
 - To create the initial admin account, browse directly to `/register` (no menu link). Registration emails an OTP-style verification code that must be entered to complete the setup.
 - Navigate to **Admin → Settings** to manage:
   - **Site → theme → active**: theme selector auto-populates from `resources/js/Themes/*`.
+  - **Site → photoproxy**: toggle PHP-based delivery for web-resolution images (thumbnails stay as direct `<img>` tags).
   - **Features**: toggle sales/cart, news, featured galleries.
   - **Sales**: choose provider, toggle sandbox, set API endpoints/keys.
 

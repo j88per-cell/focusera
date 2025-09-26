@@ -8,6 +8,7 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\PhotoMediaController;
 use App\Http\Controllers\NewsController as PublicNewsController;
 use App\Http\Controllers\ContactController as PublicContactController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
@@ -34,6 +35,7 @@ Route::post('/access', [GalleryController::class, 'accessSubmit'])->name('galler
 // Public resources: read-only
 Route::resource('galleries', GalleryController::class)->only(['index', 'show']);
 Route::resource('galleries.photos', PhotoController::class)->only(['index', 'show']);
+Route::get('/media/photos/{photo}', [PhotoMediaController::class, 'web'])->name('photos.web');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

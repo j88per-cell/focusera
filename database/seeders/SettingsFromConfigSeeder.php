@@ -14,6 +14,7 @@ class SettingsFromConfigSeeder extends Seeder
         // Cleanup legacy keys
         \App\Models\Setting::where('group', 'app')->where('sub_group', 'theme')->where('key', 'active')->delete();
         \App\Models\Setting::where('group', 'site')->where('sub_group', 'theme')->where('key', 'theme')->delete();
+        $this->upsert('site', null, 'photoproxy', '0');
         // Feature toggles (default enabled) live under group: features
         $this->upsert('features', null, 'featured_galleries', '1');
         $this->upsert('features', null, 'news', '1');
