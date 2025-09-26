@@ -6,6 +6,7 @@ import LoginModal from '../../Default/Components/Auth/Login.vue'
 const page = usePage()
 const user = computed(() => page.props?.auth?.user || null)
 const registrationEnabled = computed(() => Boolean(page.props?.features?.registration))
+const shouldOpenLogin = computed(() => Boolean(page.props?.ui?.open_login))
 const showNews = computed(() => Boolean(page.props?.features?.news))
 const avatarUrl = computed(() => {
   const u = user.value || {}
@@ -35,8 +36,17 @@ function onClickOutside(e) {
   }
 }
 
-onMounted(() => document.addEventListener('click', onClickOutside))
-onBeforeUnmount(() => document.removeEventListener('click', onClickOutside))
+function onOpenLogin() { showLogin.value = true }
+
+onMounted(() => {
+  document.addEventListener('click', onClickOutside)
+  window.addEventListener('open-login', onOpenLogin)
+  if (shouldOpenLogin.value) showLogin.value = true
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('click', onClickOutside)
+  window.removeEventListener('open-login', onOpenLogin)
+})
 </script>
 
 <template>

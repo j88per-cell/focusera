@@ -1,4 +1,8 @@
-@php($theme = config('settings.app.theme.active', 'Default'))
+@php(
+  $theme = config('site.theme.active')
+    ?? config('settings.site.theme.active')
+    ?? 'Default'
+)
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -1,5 +1,10 @@
 <script setup>
 import SiteTopNav from '../../Themes/Default/Components/SiteTopNav.vue'
+import { usePage } from '@inertiajs/vue3'
+import { computed } from 'vue'
+
+const page = usePage()
+const salesEnabled = computed(() => Boolean(page.props?.features?.sales))
 </script>
 
 <template>
@@ -39,7 +44,7 @@ import SiteTopNav from '../../Themes/Default/Components/SiteTopNav.vue'
             News
           </a>
 
-          <a href="/admin/orders"
+          <a v-if="salesEnabled" href="/admin/orders"
              class="flex items-center px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

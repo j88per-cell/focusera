@@ -9,12 +9,16 @@ class SettingsFromConfigSeeder extends Seeder
 {
     public function run(): void
     {
-        // Site/Theme defaults only (strip mock/config-derived seeds)
-        // Ensure the active app theme is set for blade root view resolution
-        $this->upsert('app', 'theme', 'active', 'Default');
+        // Theme under site group (used by blade root view)
+        $this->upsert('site', 'theme', 'active', 'Twilight');
+        // Cleanup legacy keys
+        \App\Models\Setting::where('group', 'app')->where('sub_group', 'theme')->where('key', 'active')->delete();
+        \App\Models\Setting::where('group', 'site')->where('sub_group', 'theme')->where('key', 'theme')->delete();
         // Feature toggles (default enabled) live under group: features
         $this->upsert('features', null, 'featured_galleries', '1');
         $this->upsert('features', null, 'news', '1');
+        // Sales feature (ordering/cart). Default OFF until configured
+        $this->upsert('features', null, 'sales', '0');
         // Default POD provider key and sandbox flag
         $this->upsert('sales', null, 'provider', 'null');
         $this->upsert('sales', null, 'sandbox', '1');

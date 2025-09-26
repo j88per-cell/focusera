@@ -15,8 +15,8 @@ Route::middleware('guest')->group(function () {
         Route::post('register', [RegisteredUserController::class, 'store']);
     }
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
+    // This app uses a login modal; redirect and signal UI to open it
+    Route::get('login', function () { return redirect('/')->with('open_login', true); })->name('login');
 
     //Route::post('login', [AuthenticatedSessionController::class, 'store']);
 });

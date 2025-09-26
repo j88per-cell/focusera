@@ -39,7 +39,21 @@ class SettingsServiceProvider extends ServiceProvider
             }
 
             // Merge into Laravel's config bag under "settings"
-        config(['settings' => $config]);
+            config(['settings' => $config]);
+
+            // Pipe common groups to top-level config to avoid cache friction
+            if (!empty($config['features']) && is_array($config['features'])) {
+                $mergedFeatures = array_merge((array) config('features', []), (array) $config['features']);
+                config(['features' => $mergedFeatures]);
+            }
+            if (!empty($config['sales']) && is_array($config['sales'])) {
+                $mergedSales = array_merge((array) config('sales', []), (array) $config['sales']);
+                config(['sales' => $mergedSales]);
+            }
+            if (!empty($config['site']) && is_array($config['site'])) {
+                $mergedSite = array_merge((array) config('site', []), (array) $config['site']);
+                config(['site' => $mergedSite]);
+            }
         }
     }
 }

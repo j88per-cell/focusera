@@ -36,10 +36,23 @@ class SettingsController extends Controller
             ];
         }
 
+        // Discover available themes by scanning resources/js/Themes/*/app.js
+        $themeKeys = [];
+        $themesDir = resource_path('js/Themes');
+        if (is_dir($themesDir)) {
+            foreach (scandir($themesDir) as $d) {
+                if ($d === '.' || $d === '..') continue;
+                $path = $themesDir . DIRECTORY_SEPARATOR . $d . DIRECTORY_SEPARATOR . 'app.js';
+                if (is_file($path)) { $themeKeys[] = $d; }
+            }
+            sort($themeKeys, SORT_NATURAL);
+        }
+
         return Inertia::render('Settings/Index', [
             'settings' => $settings,
             'provider_keys' => $providerKeys,
             'provider_defaults' => $providerDefaults,
+            'theme_keys' => $themeKeys,
         ])->rootView('admin');
     }
 

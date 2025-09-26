@@ -66,6 +66,7 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'feature' => \App\Http\Middleware\EnsureFeatureEnabled::class,
         'upload.tuning' => \App\Http\Middleware\UploadTuning::class,
     ];
 }

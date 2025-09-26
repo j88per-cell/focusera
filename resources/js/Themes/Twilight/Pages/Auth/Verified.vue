@@ -11,11 +11,14 @@ const props = defineProps({ isAuthenticated: { type: Boolean, default: false } }
       <p class="text-muted-foreground mb-6">Your email address has been confirmed.</p>
 
       <div class="flex items-center justify-center gap-3">
-        <a href="/login" class="px-4 py-2 rounded-md bg-primary text-primary-foreground hover:opacity-90">Log in</a>
+        <button type="button"
+                class="px-4 py-2 rounded-md bg-primary text-primary-foreground hover:opacity-90"
+                @click="window.dispatchEvent(new CustomEvent('open-login'))">
+          Log in
+        </button>
         <a href="/" class="px-4 py-2 rounded-md border border-border hover:bg-muted">Home</a>
       </div>
     </div>
   </ThemeLayout>
   
 </template>
-

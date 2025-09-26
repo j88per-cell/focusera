@@ -34,15 +34,20 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            // Expose all site feature flags as a single bag
+            'ui' => [
+                'open_login' => (bool) ($request->session()->get('open_login') ?? false),
+            ],
+            // Expose all feature flags (top-level bag merged from settings)
             'features' => (function () {
-                $site = (array) (config('settings.features') ?? []);
-                // Back-compat: include registration if not present in settings
-                if (!array_key_exists('registration', $site)) {
-                    $site['registration'] = (bool) config('features.registration', false);
+                $all = (array) (config('features') ?? []);
+                if (!array_key_exists('registration', $all)) {
+                    $all['registration'] = (bool) config('features.registration', false);
                 }
-                return $site;
+                return $all;
             })(),
+            // Expose site settings (theme, etc.)
+            'site' => (array) (config('site') ?? config('settings.site') ?? []),
+            // Do not expose non-site settings (e.g., sales/provider secrets) to the UI
             'sales' => [
                 'enabled' => (bool) (config('settings.sales.enabled') ?? false),
                 'default_markup' => (float) (config('settings.sales.markup_percent') ?? 25),

@@ -88,17 +88,21 @@ Route::middleware(['auth', 'can:isAdmin'])
         Route::patch('/settings/{setting}', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])
             ->name('settings.update');
 
-        // Admin Orders
-        Route::get('/orders', [\App\Http\Controllers\Admin\OrdersController::class, 'index'])->name('orders.index');
-        Route::get('/orders/{order}', [\App\Http\Controllers\Admin\OrdersController::class, 'show'])->name('orders.show');
+        // Admin Orders (feature-gated at request-time)
+        Route::middleware('feature:sales')->group(function () {
+            Route::get('/orders', [\App\Http\Controllers\Admin\OrdersController::class, 'index'])->name('orders.index');
+            Route::get('/orders/{order}', [\App\Http\Controllers\Admin\OrdersController::class, 'show'])->name('orders.show');
+        });
     });
 
-// Cart API (session/user based, simple JSON)
-Route::get('/cart', [\App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/items', [\App\Http\Controllers\CartController::class, 'add'])->name('cart.items.add');
-Route::patch('/cart/items/{item}', [\App\Http\Controllers\CartController::class, 'updateItem'])->name('cart.items.update');
-Route::delete('/cart/items/{item}', [\App\Http\Controllers\CartController::class, 'removeItem'])->name('cart.items.remove');
-Route::delete('/cart', [\App\Http\Controllers\CartController::class, 'clear'])->name('cart.clear');
+// Cart API (feature-gated)
+Route::middleware('feature:sales')->group(function () {
+    Route::get('/cart', [\App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/items', [\App\Http\Controllers\CartController::class, 'add'])->name('cart.items.add');
+    Route::patch('/cart/items/{item}', [\App\Http\Controllers\CartController::class, 'updateItem'])->name('cart.items.update');
+    Route::delete('/cart/items/{item}', [\App\Http\Controllers\CartController::class, 'removeItem'])->name('cart.items.remove');
+    Route::delete('/cart', [\App\Http\Controllers\CartController::class, 'clear'])->name('cart.clear');
+});
 // Public News & Contact
 Route::get('/news', [PublicNewsController::class, 'index'])->name('news.index');
 Route::get('/news/{slug}', [PublicNewsController::class, 'show'])->name('news.show');

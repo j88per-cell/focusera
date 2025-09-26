@@ -45,7 +45,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { Link } from '@inertiajs/vue3'
+import { Link, usePage } from '@inertiajs/vue3'
 import ThemeLayout from '@/Layouts/app.layout.vue'
 import Lightbox from '@/Components/Gallery/Lightbox.vue'
 import { useCart } from '@/composables/useCart.js'
@@ -54,10 +54,12 @@ const props = defineProps({
   gallery: Object,
 })
 
+const page = usePage()
+const salesEnabled = computed(() => Boolean(page.props?.features?.sales))
 const selectedPhoto = ref(null)
 const showBuy = ref(false)
 const buyPhoto = ref(null)
-const orderingEnabled = computed(() => Boolean(props.gallery?.allow_orders))
+const orderingEnabled = computed(() => salesEnabled.value && Boolean(props.gallery?.allow_orders))
 const { addItem } = useCart()
 
 function normalizeSrc(src) {

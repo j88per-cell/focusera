@@ -7,6 +7,7 @@ const props = defineProps({
   settings: { type: Array, default: () => [] },
   provider_keys: { type: Array, default: () => [] },
   provider_defaults: { type: Object, default: () => ({}) },
+  theme_keys: { type: Array, default: () => [] },
 })
 
 // Build grouped structure: groups -> subgroups -> items
@@ -120,6 +121,22 @@ function updateProvider(item, value) {
   })
 }
 
+function isSiteTheme(item) {
+  return (item.group === 'site' && item.sub_group === 'theme' && item.key === 'active')
+}
+
+function updateTheme(item, value) {
+  if (saving.value) return
+  saving.value = true
+  router.visit(`/admin/settings/${item.id}`, {
+    method: 'patch',
+    data: { value },
+    preserveScroll: true,
+    onSuccess: () => { item.value = value },
+    onFinish: () => { saving.value = false },
+  })
+}
+
 function parseProviderFromSubgroup(sub) {
   // expects 'providers.NAME'
   if (!sub) return null
@@ -211,7 +228,13 @@ function updateValue(item, value) {
                               <button class="text-xs text-indigo-600 hover:underline" @click="startEdit(item)">{{ item.value ? 'Change' : 'Set' }}</button>
                             </span>
                             <div v-else class="flex items-center gap-2">
-                              <template v-if="isSalesProvider(item)">
+                              <template v-if="isSiteTheme(item)">
+                                <select :value="item.value || ''" class="rounded border-gray-300 text-sm"
+                                        @change="e => updateTheme(item, e.target.value)">
+                                  <option v-for="k in theme_keys" :key="k" :value="k">{{ k }}</option>
+                                </select>
+                              </template>
+                              <template v-else-if="isSalesProvider(item)">
                                 <select :value="item.value || ''" class="rounded border-gray-300 text-sm"
                                         @change="e => updateProvider(item, e.target.value)">
                                   <option v-for="k in provider_keys" :key="k" :value="k">{{ k }}</option>
