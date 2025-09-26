@@ -15,6 +15,8 @@ class SettingsFromConfigSeeder extends Seeder
         \App\Models\Setting::where('group', 'app')->where('sub_group', 'theme')->where('key', 'active')->delete();
         \App\Models\Setting::where('group', 'site')->where('sub_group', 'theme')->where('key', 'theme')->delete();
         $this->upsert('site', null, 'photoproxy', '0');
+        $this->upsert('site', 'storage', 'public_disk', 'photos_public');
+        $this->upsert('site', 'storage', 'private_disk', 'photos_private');
         // Feature toggles (default enabled) live under group: features
         $this->upsert('features', null, 'featured_galleries', '1');
         $this->upsert('features', null, 'news', '1');

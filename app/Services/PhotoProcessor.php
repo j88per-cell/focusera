@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PhotoProcessor
@@ -17,40 +18,37 @@ class PhotoProcessor
 
         $destName = $this->sanitizeFileName($fileName);
 
-        $dirs = $this->ensureDirectories($galleryId);
+        $publicDisk = config('site.storage.public_disk', 'photos_public');
+        $privateDisk = config('site.storage.private_disk', 'photos_private');
 
-        // Originals (private)
-        $origFull = $dirs['originals'] . DIRECTORY_SEPARATOR . $destName;
-        $this->copyIfChanged($sourceFullPath, $origFull);
+        $originalRelative = $this->originalRelativePath($galleryId, $destName);
+        $webRelative = $this->webRelativePath($galleryId, $destName);
+        $thumbRelative = $this->thumbRelativePath($galleryId, $destName);
 
-        // Derivatives (public): resize to configured sizes
-        $webFull   = $dirs['web'] . DIRECTORY_SEPARATOR . $destName;
-        $thumbFull = $dirs['thumbs'] . DIRECTORY_SEPARATOR . $destName;
-        $this->makeDerivatives($origFull, $webFull, $thumbFull, $ext);
+        $this->storeOriginal($privateDisk, $originalRelative, $sourceFullPath);
 
-        // Return DB paths that map to public URLs via storage symlink
+        $derivatives = $this->makeDerivatives($sourceFullPath, $destName, $ext);
+
+        $this->storeFile($publicDisk, $webRelative, $derivatives['web']);
+        $this->storeFile($publicDisk, $thumbRelative, $derivatives['thumb']);
+
+        $this->cleanupTemps($derivatives);
+
         return [
-            'path_original' => $this->relativeOriginal($galleryId, $destName),
-            'path_web'      => $this->relativeWeb($galleryId, $destName),
-            'path_thumb'    => $this->relativeThumb($galleryId, $destName),
+            'path_original' => $originalRelative,
+            'path_web'      => $webRelative,
+            'path_thumb'    => $thumbRelative,
         ];
     }
 
-    protected function ensureDirectories(int $galleryId): array
+    protected function storeOriginal(string $disk, string $relative, string $sourceFullPath): void
     {
-        $origDir  = rtrim(storage_path('app/private/' . $galleryId), DIRECTORY_SEPARATOR);
-        $webDir   = rtrim(storage_path('app/public/gallery/web/' . $galleryId), DIRECTORY_SEPARATOR);
-        $thumbDir = rtrim(storage_path('app/public/gallery/thumbnails/' . $galleryId), DIRECTORY_SEPARATOR);
-
-        File::ensureDirectoryExists($origDir, 0755, true);
-        File::ensureDirectoryExists($webDir, 0755, true);
-        File::ensureDirectoryExists($thumbDir, 0755, true);
-
-        return [
-            'originals' => $origDir,
-            'web'       => $webDir,
-            'thumbs'    => $thumbDir,
-        ];
+        $stream = fopen($sourceFullPath, 'rb');
+        if (!$stream) {
+            throw new \RuntimeException("Unable to read source file: {$sourceFullPath}");
+        }
+        Storage::disk($disk)->put($relative, $stream);
+        fclose($stream);
     }
 
     protected function sanitizeFileName(string $name): string
@@ -60,20 +58,10 @@ class PhotoProcessor
         return $n . '.' . $ext;
     }
 
-    protected function copyIfChanged(string $src, string $dest): void
+    protected function makeDerivatives(string $origFull, string $destName, string $ext): array
     {
-        if (!File::exists($src)) {
-            throw new \RuntimeException("Source file not found: {$src}");
-        }
-        if (!File::exists($dest) || File::size($src) !== File::size($dest)) {
-            File::copy($src, $dest);
-        }
-    }
-
-    protected function makeDerivatives(string $origFull, string $webFull, string $thumbFull, string $ext): void
-    {
-        File::ensureDirectoryExists(dirname($webFull), 0755, true);
-        File::ensureDirectoryExists(dirname($thumbFull), 0755, true);
+        $webTmp = $this->makeTempFile('web_', $destName);
+        $thumbTmp = $this->makeTempFile('thumb_', $destName);
 
         $webMax   = (int) config('photos.web_max_px', 800);
         $thumbMax = (int) config('photos.thumb_max_px', 400);
@@ -83,34 +71,50 @@ class PhotoProcessor
             if (!$img) throw new \RuntimeException('Unsupported image format for GD.');
 
             $webImg = $this->gdResizeMax($img, $webMax);
-            $this->gdSave($webImg, $webFull, $ext);
+            $this->gdSave($webImg, $webTmp, $ext);
 
             $thumbImg = $this->gdResizeMax($img, $thumbMax);
-            $this->gdSave($thumbImg, $thumbFull, $ext);
+            $this->gdSave($thumbImg, $thumbTmp, $ext);
 
             if ($webImg && $webImg !== $img) imagedestroy($webImg);
             if ($thumbImg && $thumbImg !== $img) imagedestroy($thumbImg);
             imagedestroy($img);
-            return;
+            return ['web' => $webTmp, 'thumb' => $thumbTmp];
         }
 
         if (class_exists('Imagick')) {
             $im = new \Imagick($origFull);
             $webClone = clone $im;
             $this->imagickResizeMax($webClone, $webMax);
-            $webClone->writeImage($webFull);
+            $webClone->writeImage($webTmp);
             $webClone->clear();
 
             $thumbClone = clone $im;
             $this->imagickResizeMax($thumbClone, $thumbMax);
-            $thumbClone->writeImage($thumbFull);
+            $thumbClone->writeImage($thumbTmp);
             $thumbClone->clear();
 
             $im->clear();
-            return;
+            return ['web' => $webTmp, 'thumb' => $thumbTmp];
         }
 
         throw new \RuntimeException('No image library available (GD or Imagick required).');
+    }
+
+    protected function makeTempFile(string $prefix, string $destName): string
+    {
+        $tmp = tempnam(sys_get_temp_dir(), $prefix);
+        if ($tmp === false) {
+            throw new \RuntimeException('Unable to create temporary file.');
+        }
+        // ensure extension
+        $ext = strtolower(pathinfo($destName, PATHINFO_EXTENSION));
+        if ($ext) {
+            $newTmp = $tmp . '.' . $ext;
+            rename($tmp, $newTmp);
+            $tmp = $newTmp;
+        }
+        return $tmp;
     }
 
     protected function gdLoad(string $path, string $ext)
@@ -158,18 +162,37 @@ class PhotoProcessor
         }
     }
 
-    protected function relativeWeb(int $galleryId, string $file): string
+    protected function webRelativePath(int $galleryId, string $file): string
     {
-        return 'storage/gallery/web/' . $galleryId . '/' . $file;
+        return 'gallery/web/' . $galleryId . '/' . $file;
     }
 
-    protected function relativeThumb(int $galleryId, string $file): string
+    protected function thumbRelativePath(int $galleryId, string $file): string
     {
-        return 'storage/gallery/thumbnails/' . $galleryId . '/' . $file;
+        return 'gallery/thumbnails/' . $galleryId . '/' . $file;
     }
 
-    protected function relativeOriginal(int $galleryId, string $file): string
+    protected function originalRelativePath(int $galleryId, string $file): string
     {
-        return 'storage/app/private/' . $galleryId . '/' . $file;
+        return 'gallery/originals/' . $galleryId . '/' . $file;
+    }
+
+    protected function storeFile(string $disk, string $relative, string $tmpPath): void
+    {
+        $stream = fopen($tmpPath, 'rb');
+        if (!$stream) {
+            throw new \RuntimeException('Unable to open derivative for storage.');
+        }
+        Storage::disk($disk)->put($relative, $stream);
+        fclose($stream);
+    }
+
+    protected function cleanupTemps(array $files): void
+    {
+        foreach ($files as $tmp) {
+            if ($tmp && file_exists($tmp)) {
+                @unlink($tmp);
+            }
+        }
     }
 }

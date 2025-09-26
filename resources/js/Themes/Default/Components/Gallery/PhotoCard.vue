@@ -19,19 +19,29 @@
 
 <script setup>
 import { computed } from 'vue'
+import { usePage } from '@inertiajs/vue3'
 
 const props = defineProps({
   gallery: Object
 })
 
+const page = usePage()
+const publicBaseUrl = computed(() => page.props?.site?.storage?.public_base_url || '/storage')
+
 function normalizeSrc(src) {
   if (!src) return ''
   if (/^(https?:)?\/\//.test(src) || src.startsWith('data:') || src.startsWith('/')) return src
   if (src.startsWith('storage/')) return `/${src}`
-  return `/${src}`
+  return joinPublicBase(src)
 }
 
 const thumbSrc = computed(() => {
-  return normalizeSrc(props.gallery?.thumbnail || props.gallery?.path_thumb || props.gallery?.path_web)
+  return normalizeSrc(props.gallery?.thumbnail || props.gallery?.path_thumb || props.gallery?.thumb_url || props.gallery?.path_web || props.gallery?.web_url)
 })
+
+function joinPublicBase(path) {
+  const base = publicBaseUrl.value || ''
+  if (!base) return '/' + path.replace(/^\/+/, '')
+  return `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
+}
 </script>

@@ -65,11 +65,12 @@ Seeding populates:
 ### Configuration & Admin Setup
 
 -   Log in using the OTP flow (enter an email for an existing user; OTP is mailed via the configured driver).
--   To create the initial admin account, browse directly to `/register` (no menu link). The very first user is automatically assigned the **Admin** role. After one additional user exists, self-registration is disabled and `/register` returns 403.
--   Ongoing user registration isn’t required—an admin can invite additional teammates (editors, photographers, etc.) via **Admin → Users** and assign roles on the fly.
+-   To create the initial admin account, browse directly to `/register` (no menu link). The very first user is automatically assigned the **Admin** role. After one user exists, self-registration is disabled and `/register` returns 403.
+-   Ongoing user registration isn’t available, an admin can invite additional teammates (editors, photographers, etc.) via **Admin → Users** and assign roles on the fly.
 -   Navigate to **Admin → Settings** to manage:
     -   **Site → theme → active**: theme selector auto-populates from `resources/js/Themes/*`.
     -   **Site → photoproxy**: toggle PHP-based delivery for web-resolution images (thumbnails stay as direct `<img>` tags).
+    -   **Site → storage → public/private disk**: choose Laravel filesystem disks (local, S3, Backblaze, etc.) for web and private assets.
     -   **Features**: toggle sales/cart, news, featured galleries.
     -   **Sales**: choose provider, toggle sandbox, set API endpoints/keys.
 -   Use **Admin → Users** to invite teammates by email and assign roles—no passwords are required, invited users authenticate through the OTP flow.
@@ -77,6 +78,11 @@ Seeding populates:
 When enabling the **Sales** feature, the Orders menu, cart API, and “Buy” buttons light up automatically via feature gating—no route cache flush needed.
 
 ---
+
+## Roadmap / TODO
+
+-   **Search**: Add database-agnostic full-text search (PostgreSQL `tsvector` / SQLite FTS / MySQL FULLTEXT fallback) for photos and galleries.
+-   **Print on Demand**: Multiple POD services to choose from.
 
 ## Contributing
 

@@ -29,6 +29,20 @@ return [
     */
 
     'disks' => [
+        'photos_public' => [
+            'driver' => env('PHOTOS_PUBLIC_DRIVER', 'local'),
+            'root' => env('PHOTOS_PUBLIC_ROOT', storage_path('app/public')),
+            'url' => env('PHOTOS_PUBLIC_URL', env('APP_URL').'/storage'),
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
+        'photos_private' => [
+            'driver' => env('PHOTOS_PRIVATE_DRIVER', 'local'),
+            'root' => env('PHOTOS_PRIVATE_ROOT', storage_path('app/private')),
+            'visibility' => 'private',
+            'throw' => false,
+        ],
 
         'local' => [
             'driver' => 'local',

@@ -1,14 +1,23 @@
 <script setup>
 import { computed } from 'vue'
+import { usePage } from '@inertiajs/vue3'
 
 const props = defineProps({ items: { type: Array, required: true } })
 const emit = defineEmits(['open'])
+const page = usePage()
+const publicBaseUrl = computed(() => page.props?.site?.storage?.public_base_url || '/storage')
 
 function normalizeSrc(src) {
   if (!src) return ''
   if (/^(https?:)?\/\//.test(src) || src.startsWith('data:') || src.startsWith('/')) return src
   if (src.startsWith('storage/')) return `/${src}`
-  return `/${src}`
+  return joinPublicBase(src)
+}
+
+function joinPublicBase(path) {
+  const base = publicBaseUrl.value || ''
+  if (!base) return '/' + path.replace(/^\/+/, '')
+  return `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
 }
 </script>
 

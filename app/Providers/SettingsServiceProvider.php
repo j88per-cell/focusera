@@ -3,9 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\Setting;
 
@@ -51,7 +50,27 @@ class SettingsServiceProvider extends ServiceProvider
                 config(['sales' => $mergedSales]);
             }
             if (!empty($config['site']) && is_array($config['site'])) {
-                $mergedSite = array_merge((array) config('site', []), (array) $config['site']);
+                $mergedSite = array_replace_recursive((array) config('site', []), (array) $config['site']);
+
+                $publicDisk = $mergedSite['storage']['public_disk'] ?? 'photos_public';
+                $privateDisk = $mergedSite['storage']['private_disk'] ?? 'photos_private';
+
+                $publicBase = null;
+                try {
+                    $baseUrl = Storage::disk($publicDisk)->url('');
+                    if (is_string($baseUrl) && $baseUrl !== '') {
+                        $publicBase = rtrim($baseUrl, '/');
+                    }
+                } catch (\Throwable $e) {
+                    $publicBase = null;
+                }
+
+                $mergedSite['storage']['public_disk'] = $publicDisk;
+                $mergedSite['storage']['private_disk'] = $privateDisk;
+                if ($publicBase) {
+                    $mergedSite['storage']['public_base_url'] = $publicBase;
+                }
+
                 config(['site' => $mergedSite]);
             }
         }

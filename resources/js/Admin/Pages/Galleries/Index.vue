@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from 'vue';
-import { useForm } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
+import { useForm, usePage } from '@inertiajs/vue3';
 import AdminLayout from '@admin/Layouts/AdminLayout.vue';
 
 const props = defineProps({
@@ -26,12 +26,16 @@ const showDelete = ref(false);
 const deleting = ref(false);
 const toDelete = ref(null);
 
+const page = usePage();
+const publicBaseUrl = computed(() => page.props?.site?.storage?.public_base_url || '/storage');
+
 function normalizeSrc(path) {
   if (!path) return '';
   const p = String(path);
   if (p.startsWith('http://') || p.startsWith('https://') || p.startsWith('data:')) return p;
   if (p.startsWith('/')) return p;
-  return '/' + p.replace(/^\/+/, '');
+  if (p.startsWith('storage/')) return '/' + p.replace(/^\/+/, '');
+  return joinPublicBase(p);
 }
 
 function createGallery() {
@@ -65,6 +69,12 @@ function confirmDelete() {
       toDelete.value = null;
     },
   });
+}
+
+function joinPublicBase(path) {
+  const base = publicBaseUrl.value || '';
+  if (!base) return '/' + path.replace(/^\/+/, '');
+  return `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
 }
 </script>
 

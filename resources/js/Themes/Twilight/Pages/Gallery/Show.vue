@@ -58,6 +58,7 @@ const page = usePage()
 const siteSettings = computed(() => page.props?.site ?? {})
 const salesEnabled = computed(() => toBoolean(page.props?.features?.sales))
 const usePhotoProxy = computed(() => toBoolean(siteSettings.value?.photoproxy))
+const publicBaseUrl = computed(() => siteSettings.value?.storage?.public_base_url || '/storage')
 const selectedPhoto = ref(null)
 const buyPhoto = ref(null)
 const orderingEnabled = computed(() => salesEnabled.value && Boolean(props.gallery?.allow_orders))
@@ -67,7 +68,7 @@ function normalizeSrc(src) {
   if (!src) return ''
   if (/^(https?:)?\/\//.test(src) || src.startsWith('data:') || src.startsWith('/')) return src
   if (src.startsWith('storage/')) return `/${src}`
-  return `/${src}`
+  return joinPublicBase(src)
 }
 
 function openLightbox(photo) {
@@ -89,9 +90,8 @@ function openBuy(photo) {
 }
 
 function thumbSrc(photo) {
-  if (photo?.path_thumb) {
-    return normalizeSrc(photo.path_thumb)
-  }
+  if (photo?.thumb_url) return photo.thumb_url
+  if (photo?.path_thumb) return normalizeSrc(photo.path_thumb)
   return webImageUrl(photo)
 }
 
@@ -111,5 +111,11 @@ function toBoolean(value) {
   }
   if (typeof value === 'number') return value === 1
   return Boolean(value)
+}
+
+function joinPublicBase(path) {
+  const base = publicBaseUrl.value || ''
+  if (!base) return `/${path}`
+  return `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
 }
 </script>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PhotoMediaController extends Controller
@@ -26,58 +27,55 @@ class PhotoMediaController extends Controller
 
         $this->authorize('view', $gallery);
 
-        $filePath = $this->resolveWebPath($photo);
-        if (!$filePath || !is_file($filePath)) {
+        $publicDisk = config('site.storage.public_disk', 'photos_public');
+        $relative = $this->relativePath($photo->path_web);
+        if (!$relative) {
             abort(404);
         }
 
-        $mime = mime_content_type($filePath) ?: 'image/jpeg';
-        $size = filesize($filePath) ?: null;
-
-        return Response::stream(function () use ($filePath) {
-            $stream = fopen($filePath, 'rb');
-            if ($stream) {
-                fpassthru($stream);
-                fclose($stream);
+        try {
+            $stream = Storage::disk($publicDisk)->readStream($relative);
+            if (!$stream) {
+                abort(404);
             }
+        } catch (\Throwable $e) {
+            abort(404);
+        }
+
+        $meta = $this->streamMeta($publicDisk, $relative);
+
+        return Response::stream(function () use ($stream) {
+            fpassthru($stream);
+            if (is_resource($stream)) fclose($stream);
         }, 200, array_filter([
-            'Content-Type' => $mime,
-            'Content-Length' => $size,
+            'Content-Type' => $meta['mime'] ?? 'image/jpeg',
+            'Content-Length' => $meta['size'] ?? null,
             'Cache-Control' => 'private, max-age=3600',
-            'Content-Disposition' => 'inline; filename="' . basename($filePath) . '"',
+            'Content-Disposition' => 'inline; filename="' . basename($relative) . '"',
         ]));
     }
 
-    protected function resolveWebPath(Photo $photo): ?string
+    protected function relativePath(?string $value): ?string
     {
-        $candidates = [];
-        $raw = $photo->path_web ?: $photo->path_original;
-        if (!$raw) {
+        if (!$value) return null;
+
+        if (Str::startsWith($value, ['http://', 'https://', '//'])) {
+            $base = config('site.storage.public_base_url');
+            if ($base && Str::startsWith($value, $base)) {
+                return ltrim(substr($value, strlen($base)), '/');
+            }
             return null;
         }
 
-        $normalized = ltrim($raw, '/');
-
-        if (Str::startsWith($normalized, 'storage/app/public/')) {
-            $candidates[] = storage_path('app/public/' . substr($normalized, strlen('storage/app/public/')));
+        if (Str::startsWith($value, '/')) {
+            $value = ltrim($value, '/');
         }
 
-        if (Str::startsWith($normalized, 'storage/')) {
-            $candidates[] = public_path($normalized);
-            $candidates[] = storage_path('app/public/' . substr($normalized, strlen('storage/')));
+        if (Str::startsWith($value, 'storage/')) {
+            return ltrim(substr($value, strlen('storage/')), '/');
         }
 
-        $candidates[] = storage_path('app/public/' . $normalized);
-        $candidates[] = public_path($normalized);
-        $candidates[] = base_path($normalized);
-
-        foreach ($candidates as $candidate) {
-            if ($candidate && is_file($candidate)) {
-                return $candidate;
-            }
-        }
-
-        return null;
+        return ltrim($value, '/');
     }
 
     protected function boolConfig(string $key): ?bool
@@ -98,5 +96,21 @@ class PhotoMediaController extends Controller
         }
         return (bool) $value;
     }
-}
 
+    protected function streamMeta(string $disk, string $path): array
+    {
+        try {
+            $mime = Storage::disk($disk)->mimeType($path);
+        } catch (\Throwable $e) {
+            $mime = null;
+        }
+
+        try {
+            $size = Storage::disk($disk)->size($path);
+        } catch (\Throwable $e) {
+            $size = null;
+        }
+
+        return ['mime' => $mime, 'size' => $size];
+    }
+}
