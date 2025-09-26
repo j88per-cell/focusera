@@ -13,6 +13,7 @@ use App\Http\Controllers\NewsController as PublicNewsController;
 use App\Http\Controllers\ContactController as PublicContactController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
+use App\Http\Controllers\Admin\UserManagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +84,10 @@ Route::middleware(['auth', 'can:isAdmin'])
         Route::resource('contacts', AdminContactController::class)->only(['index','show','update','destroy']);
         // Admin Featured Galleries (placeholder view-only for now)
         Route::get('/featured-galleries', function () { return Inertia::render('FeaturedGalleries/Index')->rootView('admin'); })->name('featured-galleries.index');
+
+        // Admin Users
+        Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
+        Route::post('/users', [UserManagementController::class, 'store'])->name('users.store');
 
         // Admin Settings
         Route::get('/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])

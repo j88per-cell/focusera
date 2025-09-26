@@ -62,6 +62,15 @@ const salesEnabled = computed(() => Boolean(page.props?.features?.sales))
             Contacts
           </a>
 
+          <a href="/admin/users"
+             class="flex items-center px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M9 20H4v-2a3 3 0 015.356-1.857M12 11a4 4 0 100-8 4 4 0 000 8z"/>
+            </svg>
+            Users
+          </a>
+
           <a href="/admin/featured-galleries"
              class="flex items-center px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100">
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

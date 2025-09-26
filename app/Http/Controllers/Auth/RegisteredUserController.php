@@ -21,6 +21,9 @@ class RegisteredUserController extends Controller
      */
     public function create(): Response
     {
+        if (User::count() > 1) {
+            abort(403, 'Registration is disabled');
+        }
         return Inertia::render('Auth/Register');
     }
 
@@ -31,14 +34,21 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $existingCount = User::count();
+        if ($existingCount > 1) {
+            abort(403, 'Registration is disabled');
+        }
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class
         ]);
 
+        $roleId = $existingCount === 0 ? 3 : 1;
+
         $user = User::create([
             'name' => $request->name,
-            'email' => $request->email
+            'email' => $request->email,
+            'role_id' => $roleId,
         ]);
 
         event(new Registered($user));

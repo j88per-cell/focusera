@@ -11,7 +11,8 @@ class Role extends Model
 
     public $timestamps = false;
 
-    public function users() {
-        return $this->hasMany('App\Models\User', 'user_id');
+    public function users()
+    {
+        return $this->hasMany(User::class, 'role_id');
     }
 }
