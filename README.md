@@ -49,14 +49,15 @@ php artisan key:generate
 # configure database credentials in .env
 
 php artisan migrate
-php artisan db:seed --class=Database\\Seeders\\SettingsFromConfigSeeder
+php artisan db:seed
 
 npm install
 npm run dev
 ```
 
-The seeder populates:
+Seeding populates:
 
+-   Core roles (Viewer, Contributor, Admin)
 -   `site.theme.active` – active frontend theme (auto-detected in the admin UI)
 -   Feature toggles (news, featured galleries, sales/cart/order flow)
 -   Sales/provider placeholders so they can be edited from the admin without touching `.env`
@@ -64,12 +65,14 @@ The seeder populates:
 ### Configuration & Admin Setup
 
 -   Log in using the OTP flow (enter an email for an existing user; OTP is mailed via the configured driver).
--   To create the initial admin account, browse directly to `/register` (no menu link). Registration emails an OTP-style verification code that must be entered to complete the setup.
+-   To create the initial admin account, browse directly to `/register` (no menu link). The very first user is automatically assigned the **Admin** role. After one additional user exists, self-registration is disabled and `/register` returns 403.
+-   Ongoing user registration isn’t required—an admin can invite additional teammates (editors, photographers, etc.) via **Admin → Users** and assign roles on the fly.
 -   Navigate to **Admin → Settings** to manage:
     -   **Site → theme → active**: theme selector auto-populates from `resources/js/Themes/*`.
     -   **Site → photoproxy**: toggle PHP-based delivery for web-resolution images (thumbnails stay as direct `<img>` tags).
     -   **Features**: toggle sales/cart, news, featured galleries.
     -   **Sales**: choose provider, toggle sandbox, set API endpoints/keys.
+-   Use **Admin → Users** to invite teammates by email and assign roles—no passwords are required, invited users authenticate through the OTP flow.
 
 When enabling the **Sales** feature, the Orders menu, cart API, and “Buy” buttons light up automatically via feature gating—no route cache flush needed.
 
