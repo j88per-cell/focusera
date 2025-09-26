@@ -21,6 +21,54 @@ Built on the popular **Laravel** framework, it can run on a wide variety of host
   Offer global, on-demand print fulfillment. Set your own markup and begin taking orders quickly.  
 
 
+## Getting Started
+
+### Prerequisites
+
+- PHP 8.2+
+- Composer
+- Node.js 18+
+- MySQL/MariaDB (or a supported database)
+- Redis (optional, used for cache/queue during development)
+
+### Installation
+
+```bash
+git clone <repo>
+cd photosite
+
+composer install
+cp .env.example .env
+php artisan key:generate
+
+# configure database credentials in .env
+
+php artisan migrate
+php artisan db:seed --class=Database\\Seeders\\SettingsFromConfigSeeder
+
+npm install
+npm run dev
+```
+
+The seeder populates:
+
+- `site.theme.active` – active frontend theme (auto-detected in the admin UI)
+- Feature toggles (news, featured galleries, sales/cart/order flow)
+- Sales/provider placeholders so they can be edited from the admin without touching `.env`
+
+### Configuration & Admin Setup
+
+- Log in using the OTP flow (enter an email for an existing user; OTP is mailed via the configured driver).
+- To create the initial admin account, browse directly to `/register` (no menu link). Registration emails an OTP-style verification code that must be entered to complete the setup.
+- Navigate to **Admin → Settings** to manage:
+  - **Site → theme → active**: theme selector auto-populates from `resources/js/Themes/*`.
+  - **Features**: toggle sales/cart, news, featured galleries.
+  - **Sales**: choose provider, toggle sandbox, set API endpoints/keys.
+
+When enabling the **Sales** feature, the Orders menu, cart API, and “Buy” buttons light up automatically via feature gating—no route cache flush needed.
+
+---
+
 ## Code Style
 
 - JavaScript style: terminating semicolons are required.
