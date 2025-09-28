@@ -15,6 +15,22 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * allows your team to easily build robust real-time web applications.
  */
 
+if (typeof window !== 'undefined') {
+  try {
+    const existingHook = window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+    if (existingHook && typeof existingHook === 'object') {
+      existingHook.enabled = true;
+    } else if (!existingHook) {
+      window.__VUE_DEVTOOLS_GLOBAL_HOOK__ = { enabled: true };
+    }
+  } catch (error) {
+    // Ignore environments that expose a getter-only devtools hook
+    if (import.meta?.env?.DEV) {
+      console.debug('Vue devtools hook unavailable:', error);
+    }
+  }
+}
+
 // import Echo from 'laravel-echo';
 
 // import Pusher from 'pusher-js';

@@ -3,7 +3,7 @@
   import HeroRotator from '../../Components/HeroRotator.vue';
   import FeaturedGalleries from '../../Components/FeaturedGalleries.vue';
   import LatestNews from '../../Components/LatestNews.vue';
-  import { computed } from 'vue';
+  import { computed, onMounted } from 'vue';
   import { usePage } from '@inertiajs/vue3';
 
   const page = usePage();
@@ -23,6 +23,7 @@
     for (const candidate of candidates) {
       if (candidate && typeof candidate === 'object') return candidate;
     }
+	//const siteName = siteSettings.general.site_name;
     return {};
   });
 

@@ -5,6 +5,16 @@ import { computed } from 'vue';
 
 const page = usePage();
 const salesEnabled = computed(() => Boolean(page.props?.features?.sales));
+const siteSettings = computed(() => page.props?.site ?? {});
+const siteName = computed(() => {
+  const config = siteSettings.value || {};
+  const candidate = config.general?.site_name ?? config.site_name;
+  if (typeof candidate === 'string') {
+    const trimmed = candidate.trim();
+    if (trimmed.length) return trimmed;
+  }
+  return 'PhotoStudio';
+});
 </script>
 
 <template>
@@ -13,7 +23,7 @@ const salesEnabled = computed(() => Boolean(page.props?.features?.sales));
     <aside class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg">
       <div class="flex items-center justify-center h-16 bg-gray-900">
         <h1 class="text-xl font-bold text-white">
-          PhotoStudio
+          {{ siteName }}
         </h1>
       </div>
 

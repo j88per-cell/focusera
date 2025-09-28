@@ -12,6 +12,16 @@ const avatarUrl = computed(() => {
   const u = user.value || {};
   return u.avatar_url || u.avatar || null;
 });
+const siteSettings = computed(() => page.props?.site ?? {});
+const siteName = computed(() => {
+  const config = siteSettings.value || {};
+  const candidate = config.general?.site_name ?? config.site_name;
+  if (typeof candidate === 'string') {
+    const trimmed = candidate.trim();
+    if (trimmed.length) return trimmed;
+  }
+  return 'PhotoStudio';
+});
 
 const showLogin = ref(false);
 const openMenu = ref(false);
@@ -54,7 +64,7 @@ onBeforeUnmount(() => {
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <div class="text-xl font-bold">
-          PhotoStudio
+          {{ siteName }}
         </div>
         <div class="hidden md:flex items-center gap-4">
           <a

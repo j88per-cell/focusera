@@ -1,9 +1,24 @@
 <script setup>
+import { computed } from 'vue';
+import { usePage } from '@inertiajs/vue3';
+
 defineProps({
   sidebarOpen: {
     type: Boolean,
     default: false
   }
+});
+
+const page = usePage();
+const siteSettings = computed(() => page.props?.site ?? {});
+const siteName = computed(() => {
+  const config = siteSettings.value || {};
+  const candidate = config.general?.site_name ?? config.site_name;
+  if (typeof candidate === 'string') {
+    const trimmed = candidate.trim();
+    if (trimmed.length) return trimmed;
+  }
+  return 'PhotoStudio';
 });
 </script>
 
@@ -14,7 +29,7 @@ defineProps({
   >
     <div class="flex items-center justify-center h-16 bg-gray-900">
       <h1 class="text-xl font-bold text-white">
-        PhotoStudio
+        {{ siteName }}
       </h1>
     </div>
 
