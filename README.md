@@ -17,7 +17,7 @@ Built on the popular **Laravel** framework, it can run on a wide variety of host
 -   🖼️ **Public & Private Galleries**  
     Share galleries via short 6-digit codes, making it easy to control who has access to specific galleries
 
--   🖨️ **Print Ordering with Print on Demand services**  
+-   🖨️ **Print Ordering with Print on Demand services** (Coming soon)
     On-demand print fulfillment. Set your own markup and begin taking orders quickly.
 
     **Nested galleries**
@@ -73,6 +73,7 @@ Seeding populates:
 -   Navigate to **Admin → Settings** to manage:
     -   **Site → theme → active**: theme selector auto-populates from `resources/js/Themes/*`.
     -   **Site → photoproxy**: toggle PHP-based delivery for web-resolution images (thumbnails stay as direct `<img>` tags).
+    -   **Site → security**: manage bot/spider access to the photoproxy (blocked agents, regexes, IPs, header requirements).
     -   **Site → storage → public/private disk**: choose Laravel filesystem disks (local, S3, Backblaze, etc.) for web and private assets.
     -   **Features**: toggle sales/cart, news, featured galleries.
     -   **Sales**: choose provider, toggle sandbox, set API endpoints/keys.

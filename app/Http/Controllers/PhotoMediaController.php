@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Photo;
+use App\Support\BotGuard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
@@ -26,6 +27,10 @@ class PhotoMediaController extends Controller
         }
 
         $this->authorize('view', $gallery);
+
+        if (BotGuard::shouldBlock($request)) {
+            abort(404);
+        }
 
         $publicDisk = config('site.storage.public_disk', 'photos_public');
         $relative = $this->relativePath($photo->path_web);

@@ -10,6 +10,7 @@ class DefaultSettingsEnsurer
     {
         $this->ensureThemeDefaults();
         $this->ensureGeneralDefaults();
+        $this->ensureSecurityDefaults();
         $this->ensureLandingDefaults();
         $this->ensureAnalyticsDefaults();
         $this->ensureFeatureDefaults();
@@ -33,6 +34,38 @@ class DefaultSettingsEnsurer
         $this->upsert('site', 'storage', 'private_disk', 'photos_private');
         $this->upsert('site', 'general', 'site_name', 'Focusera');
         $this->upsert('site', 'general', 'landing_page_text', 'Showcase your photography, share securely, and keep full control over client access.');
+    }
+
+    protected function ensureSecurityDefaults(): void
+    {
+        $blockedAgents = [
+            'googlebot',
+            'bingbot',
+            'slurp',
+            'duckduckbot',
+            'baiduspider',
+            'yandexbot',
+            'sogou',
+            'exabot',
+            'facebot',
+            'ia_archiver',
+            'semrushbot',
+            'ahrefsbot',
+            'mj12bot',
+            'rogerbot',
+            'dotbot',
+            'bytespider',
+        ];
+
+        $this->upsert('site', 'security', 'block_known_bots', '1');
+        $this->upsert('site', 'security', 'include_default_bot_list', '1');
+        $this->upsert('site', 'security', 'blocked_user_agents', $blockedAgents);
+        $this->upsert('site', 'security', 'blocked_user_agent_regex', []);
+        $this->upsert('site', 'security', 'allowed_user_agents', []);
+        $this->upsert('site', 'security', 'trusted_user_agents', []);
+        $this->upsert('site', 'security', 'allow_blank_user_agent', '0');
+        $this->upsert('site', 'security', 'require_browser_headers', '1');
+        $this->upsert('site', 'security', 'blocked_ips', []);
     }
 
     protected function ensureLandingDefaults(): void
@@ -121,4 +154,3 @@ class DefaultSettingsEnsurer
         );
     }
 }
-
