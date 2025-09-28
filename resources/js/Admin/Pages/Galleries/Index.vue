@@ -30,6 +30,7 @@ const toDelete = ref(null);
 
 const page = usePage();
 const publicBaseUrl = computed(() => page.props?.site?.storage?.public_base_url || '/storage');
+const salesEnabled = computed(() => toBoolean(page.props?.features?.sales));
 
 function normalizeSrc(path) {
   if (!path) return '';
@@ -77,6 +78,16 @@ function joinPublicBase(path) {
   const base = publicBaseUrl.value || '';
   if (!base) return '/' + path.replace(/^\/+/, '');
   return `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
+}
+
+function toBoolean(value) {
+  if (typeof value === 'string') {
+    const lower = value.toLowerCase();
+    if (['1', 'true', 'yes', 'on'].includes(lower)) return true;
+    if (['0', 'false', 'no', 'off', ''].includes(lower)) return false;
+  }
+  if (typeof value === 'number') return value === 1;
+  return Boolean(value);
 }
 </script>
 

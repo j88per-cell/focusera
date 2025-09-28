@@ -17,6 +17,10 @@ class SettingsFromConfigSeeder extends Seeder
         $this->upsert('site', null, 'photoproxy', '0');
         $this->upsert('site', 'storage', 'public_disk', 'photos_public');
         $this->upsert('site', 'storage', 'private_disk', 'photos_private');
+        $this->upsert('site', 'analytics', 'enabled', '1');
+        $this->upsert('site', 'analytics', 'capture_referrer', '1');
+        $this->upsert('site', 'analytics', 'capture_geo', '0');
+        $this->upsert('site', 'analytics', 'queue', 'analytics');
         // Feature toggles (default enabled) live under group: features
         $this->upsert('features', null, 'featured_galleries', '1');
         $this->upsert('features', null, 'news', '1');

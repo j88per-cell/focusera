@@ -678,7 +678,7 @@ async function generateAndSendCode() {
                     <textarea v-model="photoForm.notes" rows="2" class="mt-1 block w-full rounded-md border-gray-300" placeholder="Internal notes"></textarea>
                     <p v-if="photoForm.errors.notes" class="text-sm text-red-600 mt-1">{{ photoForm.errors.notes }}</p>
                 </div>
-                <div>
+                <div v-if="salesEnabled">
                     <label class="block text-sm font-medium text-gray-700">Markup % (optional)</label>
                     <input v-model.number="photoForm.markup_percent" type="number" step="0.01" min="0" class="mt-1 w-40 rounded-md border-gray-300" />
                     <p class="text-xs text-gray-500">Leave blank to inherit from gallery/site.</p>

@@ -77,6 +77,37 @@ Seeding populates:
 
 When enabling the **Sales** feature, the Orders menu, cart API, and “Buy” buttons light up automatically via feature gating—no route cache flush needed.
 
+### Built-in Privacy-Friendly Analytics
+
+Focusera ships with lightweight, privacy-first analytics:
+
+-   **Session-based tracking** using server side sessions (no cookies, no raw IPs stored).
+-   **Queued event logging** for page views, private gallery access, conversions, and custom events.
+-   **Automatic charts** on the admin dashboard (sessions, page views, device split, top galleries/photos, bounce rate, etc.).
+-   **Settings-driven** via **Site → analytics** (enable/disable, capture referrer, optional geo).
+
+#### Running the queue worker
+
+Analytics writes are dispatched to the background queue. Be sure to run a worker:
+
+```bash
+php artisan queue:work --queue=analytics
+```
+
+For production deployments, configure a Supervisor job, for example:
+
+```
+[program:focusera-analytics]
+command=/usr/bin/php /var/www/focusera/artisan queue:work --queue=analytics --sleep=3 --tries=1
+directory=/var/www/focusera
+autostart=true
+autorestart=true
+redirect_stderr=true
+stdout_logfile=/var/log/focusera/queue.log
+```
+
+Restart Supervisor after adding the config (`sudo supervisorctl reread && sudo supervisorctl update`).
+
 ---
 
 ## Roadmap / TODO

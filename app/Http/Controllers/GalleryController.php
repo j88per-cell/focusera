@@ -8,6 +8,7 @@ use App\Models\GalleryAccessCode;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Support\Analytics;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -110,6 +111,7 @@ class GalleryController extends Controller
                         'code_id' => $matched->id,
                         'granted_at' => $now->toISOString(),
                     ]);
+                    Analytics::recordPrivateGalleryView($gallery->id, $matched->id, [], $request);
                     return redirect()->to(route('galleries.show', $gallery));
                 }
             } catch (\Throwable $e) {
@@ -120,6 +122,7 @@ class GalleryController extends Controller
             $expected = (string) ($gallery->access_code ?? '');
             if ($expected !== '' && hash_equals($expected, $codeInput)) {
                 $request->session()->put($sessionKey, true);
+                Analytics::recordPrivateGalleryView($gallery->id, null, ['legacy_access_code' => true], $request);
                 return redirect()->to(route('galleries.show', $gallery));
             }
         }
