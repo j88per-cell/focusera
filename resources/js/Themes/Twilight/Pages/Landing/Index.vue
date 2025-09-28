@@ -14,6 +14,16 @@
     subtitle: 'Explore galleries and stories captured after golden hour.',
   };
 
+  const firstFilledString = (...candidates) => {
+    for (const value of candidates) {
+      if (typeof value === 'string') {
+        const trimmed = value.trim();
+        if (trimmed.length) return trimmed;
+      }
+    }
+    return undefined;
+  };
+
   const defaultHeroImages = [
     { src: '/placeholder.svg?height=600&width=1400', alt: defaultHeroCopy.title },
   ];
@@ -28,19 +38,35 @@
   });
 
   const heroTitle = computed(() => {
-    const value = landingSettings.value?.hero_title
-      ?? landingSettings.value?.landing_page_title
-      ?? siteSettings.value?.general?.landing_page_title;
-    if (typeof value === 'string' && value.trim().length) return value.trim();
-    return defaultHeroCopy.title;
+    const landing = landingSettings.value ?? {};
+    const general = siteSettings.value?.general ?? {};
+    const value = firstFilledString(
+      landing.hero_title,
+      landing.landing_page_title,
+      landing.topic,
+      landing.heading,
+      general.landing_page_title,
+      general.topic,
+      general.heading,
+      general.site_name,
+    );
+    return value ?? defaultHeroCopy.title;
   });
 
   const heroSubtitle = computed(() => {
-    const value = landingSettings.value?.hero_subtitle
-      ?? landingSettings.value?.landing_page_text
-      ?? siteSettings.value?.general?.landing_page_text;
-    if (typeof value === 'string' && value.trim().length) return value.trim();
-    return defaultHeroCopy.subtitle;
+    const landing = landingSettings.value ?? {};
+    const general = siteSettings.value?.general ?? {};
+    const value = firstFilledString(
+      landing.hero_subtitle,
+      landing.landing_page_text,
+      landing.subtopic,
+      landing.subtitle,
+      general.landing_page_text,
+      general.subtopic,
+      general.subtitle,
+      general.tagline,
+    );
+    return value ?? defaultHeroCopy.subtitle;
   });
 
   const heroImages = computed(() => {
