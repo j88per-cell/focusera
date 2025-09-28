@@ -5,8 +5,15 @@
         <div>
           <h1 class="text-2xl font-semibold">{{ gallery.title }}</h1>
           <p v-if="gallery.description" class="text-gray-600 mt-1">{{ gallery.description }}</p>
+          <p v-if="gallery.attribution" class="text-sm text-gray-500 mt-1">Attribution: {{ gallery.attribution }}</p>
+          <p v-if="gallery.notes" class="text-sm text-gray-500 whitespace-pre-line mt-1">{{ gallery.notes }}</p>
         </div>
         <Link href="/galleries" class="text-primary-600 hover:underline">← Back to galleries</Link>
+      </div>
+
+      <div v-if="childGalleries.length" class="mb-10">
+        <h2 class="text-xl font-semibold mb-3">Sub Galleries</h2>
+        <GalleryGrid :galleries="childGalleries" :columns="4" />
       </div>
 
       <div v-if="Array.isArray(gallery.photos) && gallery.photos.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -26,7 +33,7 @@
         </button>
       </div>
 
-      <div v-else class="text-gray-600">No photos in this gallery yet.</div>
+      <div v-else-if="!childGalleries.length" class="text-gray-600">No photos in this gallery yet.</div>
 
       <Lightbox v-if="selectedPhoto" :photo="selectedPhoto" @close="closeLightbox">
         <template #actions="{ photo }">
@@ -48,6 +55,7 @@ import { ref, computed } from 'vue'
 import { Link, usePage } from '@inertiajs/vue3'
 import ThemeLayout from '@/Layouts/app.layout.vue'
 import Lightbox from '@/Components/Gallery/Lightbox.vue'
+import GalleryGrid from '@/Components/Gallery/GalleryGrid.vue'
 import { useCart } from '@/composables/useCart.js'
 
 const props = defineProps({
@@ -59,6 +67,7 @@ const siteSettings = computed(() => page.props?.site ?? {})
 const salesEnabled = computed(() => toBoolean(page.props?.features?.sales))
 const usePhotoProxy = computed(() => toBoolean(siteSettings.value?.photoproxy))
 const publicBaseUrl = computed(() => siteSettings.value?.storage?.public_base_url || '/storage')
+const childGalleries = computed(() => Array.isArray(props.gallery?.child_galleries) ? props.gallery.child_galleries : [])
 const selectedPhoto = ref(null)
 const showBuy = ref(false)
 const buyPhoto = ref(null)
@@ -88,7 +97,7 @@ function closeLightbox() {
 }
 
 function webImageUrl(photo) {
-  const direct = normalizeSrc(photo?.path_web || photo?.url || photo?.path_original)
+  const direct = normalizeSrc(photo?.web_url || photo?.path_web || photo?.url || photo?.path_original)
   if (!usePhotoProxy.value) return direct
   if (!photo?.id) return direct
   const version = photo?.updated_at ? encodeURIComponent(photo.updated_at) : photo.id

@@ -14,6 +14,8 @@ const props = defineProps({
 const form = useForm({
   title: '',
   description: '',
+  attribution: '',
+  notes: '',
   date: '',
   public: true,
   thumbnail: '',
@@ -43,7 +45,7 @@ function createGallery() {
   form.post('/admin/galleries', {
     onFinish: () => {
       saving.value = false;
-      form.reset('title', 'description', 'date', 'thumbnail');
+      form.reset('title', 'description', 'attribution', 'notes', 'date', 'thumbnail');
       form.parent_id = '';
       showCreate.value = false;
     },
@@ -114,6 +116,18 @@ function joinPublicBase(path) {
               <label class="block text-sm font-medium text-gray-700">Description</label>
               <textarea v-model="form.description" rows="3" class="mt-1 block w-full rounded-md border-gray-300"></textarea>
               <p v-if="form.errors.description" class="text-sm text-red-600 mt-1">{{ form.errors.description }}</p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Attribution</label>
+              <input v-model="form.attribution" type="text" class="mt-1 block w-full rounded-md border-gray-300" placeholder="e.g. Edited by Studio" />
+              <p v-if="form.errors.attribution" class="text-sm text-red-600 mt-1">{{ form.errors.attribution }}</p>
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700">Notes</label>
+              <textarea v-model="form.notes" rows="3" class="mt-1 block w-full rounded-md border-gray-300" placeholder="Internal notes or credit details"></textarea>
+              <p v-if="form.errors.notes" class="text-sm text-red-600 mt-1">{{ form.errors.notes }}</p>
             </div>
 
             <div>

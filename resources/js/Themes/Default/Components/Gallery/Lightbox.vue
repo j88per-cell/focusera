@@ -15,6 +15,10 @@
           <div class="flex items-center justify-between gap-4">
             <div>
               <h3 class="text-lg font-semibold">{{ photo.title || 'Photo' }}</h3>
+              <div class="text-sm text-gray-200 space-y-1 mt-1">
+                <p v-if="photo.attribution" class="text-gray-200">Attribution: {{ photo.attribution }}</p>
+                <p v-if="photo.notes" class="text-gray-300 whitespace-pre-line">{{ photo.notes }}</p>
+              </div>
             </div>
             <div class="flex items-center gap-2">
               <slot name="actions" :photo="photo"></slot>

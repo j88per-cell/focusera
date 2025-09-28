@@ -53,6 +53,8 @@ class PhotoController extends Controller
         $data = $request->validate([
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
+            'attribution' => 'nullable|string|max:255',
+            'notes' => 'nullable|string',
             'exif' => 'nullable|array',
             'lat' => 'nullable|numeric',
             'long' => 'nullable|numeric',

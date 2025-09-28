@@ -1,6 +1,31 @@
 <script setup>
+import { computed } from 'vue'
+import { usePage } from '@inertiajs/vue3'
 import AdminLayout from '@admin/Layouts/AdminLayout.vue'
+
 const props = defineProps({ order: Object })
+
+const page = usePage()
+const publicBaseUrl = computed(() => page.props?.site?.storage?.public_base_url || '/storage')
+
+function photoThumbSrc(photo) {
+  if (!photo) return ''
+  if (photo.thumb_url) return photo.thumb_url
+  if (photo.path_thumb) return normalize(photo.path_thumb)
+  if (photo.path_web) return normalize(photo.path_web)
+  return ''
+}
+
+function normalize(path) {
+  if (!path) return ''
+  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:') || path.startsWith('/')) {
+    return path
+  }
+  if (path.startsWith('storage/')) return '/' + path.replace(/^\/+/, '')
+  const base = publicBaseUrl.value || ''
+  if (!base) return '/' + path.replace(/^\/+/, '')
+  return `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
+}
 </script>
 
 <template>
@@ -44,7 +69,7 @@ const props = defineProps({ order: Object })
             <tr v-for="it in order.items" :key="it.id" class="border-b last:border-b-0">
               <td class="py-2 px-3">
                 <div class="flex items-center gap-2">
-                  <img v-if="it.photo" :src="'/' + (it.photo.path_thumb || it.photo.path_web)" class="w-12 h-12 object-cover rounded"/>
+                  <img v-if="it.photo" :src="photoThumbSrc(it.photo)" class="w-12 h-12 object-cover rounded"/>
                   <div class="text-xs text-gray-600">#{{ it.photo_id || '—' }}</div>
                 </div>
               </td>
@@ -84,4 +109,3 @@ const props = defineProps({ order: Object })
     </div>
   </AdminLayout>
 </template>
-

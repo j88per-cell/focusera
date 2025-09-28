@@ -8,6 +8,7 @@ use App\Models\GalleryAccessCode;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class GalleryController extends Controller
@@ -22,13 +23,33 @@ class GalleryController extends Controller
 
     public function index()
     {
-        // Public listing: show public galleries regardless of access codes
-        $query = Gallery::query();
+        // Public listing: show only top-level galleries
+        $query = Gallery::query()->withCount(['photos', 'children']);
         if (!auth()->check() || !auth()->user()->can('isAdmin')) {
             $query->where('public', true);
         }
-        $galleries = $query->latest()->paginate(12);
-        return inertia('Gallery/Index', compact('galleries'));
+
+        $galleries = $query
+            ->whereNull('parent_id')
+            ->orderBy('title')
+            ->paginate(12);
+
+        $galleries->getCollection()->transform(function (Gallery $gallery) {
+            $thumb = $this->resolvePublicPath($gallery->thumbnail);
+            return [
+                'id' => $gallery->id,
+                'title' => $gallery->title,
+                'description' => $gallery->description,
+                'attribution' => $gallery->attribution,
+                'notes' => $gallery->notes,
+                'thumbnail' => $thumb,
+                'thumb_url' => $thumb,
+                'photos_count' => $gallery->photos_count ?? 0,
+                'children_count' => $gallery->children_count ?? 0,
+            ];
+        });
+
+        return inertia('Gallery/Index', ['galleries' => $galleries]);
     }
 
     public function create()
@@ -43,6 +64,8 @@ class GalleryController extends Controller
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'attribution' => 'nullable|string|max:255',
+            'notes' => 'nullable|string',
             'date' => 'nullable|date',
             'public' => 'boolean',
             'allow_orders' => 'boolean',
@@ -112,15 +135,43 @@ class GalleryController extends Controller
                 'description' => $p->description,
                 'path_web' => $p->path_web,
                 'path_thumb' => $p->path_thumb,
+                'web_url' => $p->web_url,
+                'thumb_url' => $p->thumb_url,
+                'attribution' => $p->attribution,
+                'notes' => $p->notes,
                 'exif' => \App\Support\ExifHelper::filterForGallery($gallery, (array) ($p->exif ?? [])),
             ];
         });
+
+        $childQuery = $gallery->children()->withCount(['photos', 'children']);
+        if (!auth()->check() || !auth()->user()->can('isAdmin')) {
+            $childQuery->where('public', true);
+        }
+
+        $childGalleries = $childQuery->orderBy('title')->get()->map(function (Gallery $child) {
+            $thumb = $this->resolvePublicPath($child->thumbnail);
+            return [
+                'id' => $child->id,
+                'title' => $child->title,
+                'description' => $child->description,
+                'attribution' => $child->attribution,
+                'notes' => $child->notes,
+                'thumbnail' => $thumb,
+                'thumb_url' => $thumb,
+                'photos_count' => $child->photos_count ?? 0,
+                'children_count' => $child->children_count ?? 0,
+            ];
+        });
+
         $galleryData = [
             'id' => $gallery->id,
             'title' => $gallery->title,
             'description' => $gallery->description,
+            'attribution' => $gallery->attribution,
+            'notes' => $gallery->notes,
             'date' => $gallery->date,
             'public' => $gallery->public,
+            'child_galleries' => $childGalleries,
             'photos' => $photos,
         ];
         return inertia('Gallery/Show', ['gallery' => $galleryData]);
@@ -130,7 +181,7 @@ class GalleryController extends Controller
     {
         $this->authorize('update', $gallery);
         $parents = Gallery::where('id', '!=', $gallery->id)->orderBy('title')->get(['id','title']);
-        $photos = $gallery->photos()->latest()->paginate(40, ['id','title','description','path_thumb','path_web','exif','markup_percent']);
+        $photos = $gallery->photos()->latest()->paginate(40, ['id','title','description','attribution','notes','path_thumb','path_web','exif','markup_percent','updated_at']);
         // Filter EXIF for admin display as well (honor gallery settings)
         $photos->getCollection()->transform(function ($p) use ($gallery) {
             $p->exif = \App\Support\ExifHelper::filterForGallery($gallery, (array) ($p->exif ?? []));
@@ -152,6 +203,8 @@ class GalleryController extends Controller
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'attribution' => 'nullable|string|max:255',
+            'notes' => 'nullable|string',
             'date' => 'nullable|date',
             'public' => 'boolean',
             'allow_orders' => 'boolean',
@@ -177,6 +230,31 @@ class GalleryController extends Controller
             ? route('admin.galleries.index')
             : route('galleries.index');
         return redirect($target);
+    }
+
+    protected function resolvePublicPath(?string $value): ?string
+    {
+        if (!$value) {
+            return null;
+        }
+
+        if (Str::startsWith($value, ['http://', 'https://', '//'])) {
+            return $value;
+        }
+
+        if (Str::startsWith($value, '/')) {
+            return $value;
+        }
+
+        if (Str::startsWith($value, 'storage/')) {
+            return '/' . ltrim($value, '/');
+        }
+
+        try {
+            return Storage::disk(config('site.storage.public_disk', 'photos_public'))->url($value);
+        } catch (\Throwable $e) {
+            return $value;
+        }
     }
 
     // Admin: generate a one-time (or time-limited) access code and email it

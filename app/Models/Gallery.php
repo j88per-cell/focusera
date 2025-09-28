@@ -13,6 +13,8 @@ class Gallery extends Model
     protected $fillable = [
         'title',
         'description',
+        'attribution',
+        'notes',
         'date',
         'public',
         'allow_orders',

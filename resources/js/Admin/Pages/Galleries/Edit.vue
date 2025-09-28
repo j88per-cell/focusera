@@ -16,6 +16,8 @@ const props = defineProps({
 const form = useForm({
     title: props.gallery.title || "",
     description: props.gallery.description || "",
+    attribution: props.gallery.attribution || "",
+    notes: props.gallery.notes || "",
     date: props.gallery.date || "",
     public: !!props.gallery.public,
     allow_orders: !!props.gallery.allow_orders,
@@ -58,13 +60,15 @@ function setThumbnailFromPhoto(photo) {
 // Photo edit modal
 const showPhotoEdit = ref(false);
 const editing = ref(false);
-const photoForm = useForm({ title: "", description: "", markup_percent: '' });
+const photoForm = useForm({ title: "", description: "", attribution: '', notes: '', markup_percent: '' });
 let currentPhoto = ref(null);
 
 function openPhotoEdit(photo) {
     currentPhoto.value = photo;
     photoForm.title = photo.title || "";
     photoForm.description = photo.description || "";
+    photoForm.attribution = photo.attribution || "";
+    photoForm.notes = photo.notes || "";
     photoForm.markup_percent = photo.markup_percent ?? '';
     showPhotoEdit.value = true;
 }
@@ -367,7 +371,7 @@ async function generateAndSendCode() {
 
                 <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
                     <div v-for="p in photos.data" :key="p.id" class="group relative bg-white rounded-md overflow-hidden shadow">
-                        <img :src="normalizeSrc(p.path_thumb || p.path_web)" class="w-full h-40 object-cover" alt="thumb" />
+                        <img :src="normalizeSrc(p.thumb_url || p.path_thumb || p.path_web)" class="w-full h-40 object-cover" alt="thumb" />
                         <div class="p-2">
                             <div class="text-sm font-medium truncate" :title="p.title">{{ p.title || "Untitled" }}</div>
                         </div>
@@ -455,6 +459,18 @@ async function generateAndSendCode() {
                         </div>
 
                         <div>
+                            <label class="block text-sm font-medium text-gray-700">Attribution</label>
+                            <input v-model="form.attribution" type="text" class="mt-1 block w-full rounded-md border-gray-300" placeholder="e.g. Edited by Studio" />
+                            <p v-if="form.errors.attribution" class="text-sm text-red-600 mt-1">{{ form.errors.attribution }}</p>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700">Notes</label>
+                            <textarea v-model="form.notes" rows="3" class="mt-1 block w-full rounded-md border-gray-300" placeholder="Internal notes, credits, etc."></textarea>
+                            <p v-if="form.errors.notes" class="text-sm text-red-600 mt-1">{{ form.errors.notes }}</p>
+                        </div>
+
+                        <div>
                             <label class="block text-sm font-medium text-gray-700">Thumbnail</label>
                             <div class="mt-1 flex items-center gap-3">
                                 <input v-model="form.thumbnail" type="text" placeholder="/path/to/thumb.jpg" class="mt-0.5 block w-full rounded-md border-gray-300" />
@@ -474,9 +490,9 @@ async function generateAndSendCode() {
                                       class="group border rounded overflow-hidden hover:ring-2 hover:ring-indigo-500 text-left"
                                       @click="setThumbnailFromPhoto(p)"
                                     >
-                                      <img :src="normalizeSrc(p.path_thumb || p.path_web)" alt="thumb" class="w-full h-20 object-cover block" />
+                                      <img :src="normalizeSrc(p.thumb_url || p.path_thumb || p.path_web)" alt="thumb" class="w-full h-20 object-cover block" />
                                       <div class="px-2 py-1 text-[11px] truncate text-gray-700">
-                                        {{ fileName(p.path_thumb || p.path_web) }}
+                                        {{ fileName(p.thumb_url || p.path_thumb || p.path_web) }}
                                       </div>
                                     </button>
                                 </div>
@@ -630,7 +646,7 @@ async function generateAndSendCode() {
             </div>
             <div class="p-6 space-y-4">
                 <img
-                    :src="normalizeSrc(currentPhoto?.path_web || currentPhoto?.path_thumb)"
+                    :src="normalizeSrc(currentPhoto?.thumb_url || currentPhoto?.path_thumb || currentPhoto?.web_url || currentPhoto?.path_web)"
                     class="w-full h-48 object-cover rounded"
                     alt="preview" />
                 <div>
@@ -640,6 +656,16 @@ async function generateAndSendCode() {
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Description</label>
                     <textarea v-model="photoForm.description" rows="3" class="mt-1 block w-full rounded-md border-gray-300"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Attribution</label>
+                    <input v-model="photoForm.attribution" type="text" class="mt-1 block w-full rounded-md border-gray-300" placeholder="e.g. Edited by Studio" />
+                    <p v-if="photoForm.errors.attribution" class="text-sm text-red-600 mt-1">{{ photoForm.errors.attribution }}</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Notes</label>
+                    <textarea v-model="photoForm.notes" rows="2" class="mt-1 block w-full rounded-md border-gray-300" placeholder="Internal notes"></textarea>
+                    <p v-if="photoForm.errors.notes" class="text-sm text-red-600 mt-1">{{ photoForm.errors.notes }}</p>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Markup % (optional)</label>
