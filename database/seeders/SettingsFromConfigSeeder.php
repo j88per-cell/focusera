@@ -17,6 +17,8 @@ class SettingsFromConfigSeeder extends Seeder
         $this->upsert('site', null, 'photoproxy', '0');
         $this->upsert('site', 'storage', 'public_disk', 'photos_public');
         $this->upsert('site', 'storage', 'private_disk', 'photos_private');
+        $this->upsert('site', 'general', 'site_name', 'Focusera');
+        $this->upsert('site', 'general', 'landing_page_text', 'Showcase your photography, share securely, and keep full control over client access.');
         $this->upsert('site', 'analytics', 'enabled', '1');
         $this->upsert('site', 'analytics', 'capture_referrer', '1');
         $this->upsert('site', 'analytics', 'capture_geo', '0');

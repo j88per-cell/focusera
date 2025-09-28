@@ -17,6 +17,9 @@
         </svg>
       </div>
     </template>
+    <div v-if="isFeatured" class="absolute top-2 left-2 bg-amber-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full shadow">
+      Featured
+    </div>
     <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-end">
       <div class="p-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <h3 class="font-semibold text-sm">{{ gallery.title }}</h3>
@@ -51,6 +54,8 @@ const thumbSrc = computed(() => {
 })
 
 const hasThumb = computed(() => Boolean(thumbSrc.value))
+
+const isFeatured = computed(() => Boolean(props.gallery?.featured))
 
 const photosLabel = computed(() => {
   const count = Number(props.gallery?.photos_count ?? 0)

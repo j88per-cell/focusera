@@ -18,6 +18,7 @@ const form = useForm({
   notes: '',
   date: '',
   public: true,
+  featured: false,
   thumbnail: '',
   parent_id: '',
 });
@@ -48,6 +49,8 @@ function createGallery() {
       saving.value = false;
       form.reset('title', 'description', 'attribution', 'notes', 'date', 'thumbnail');
       form.parent_id = '';
+      form.public = true;
+      form.featured = false;
       showCreate.value = false;
     },
     preserveScroll: true,
@@ -142,10 +145,15 @@ function toBoolean(value) {
             </div>
 
             <div>
-            <label class="block text-sm font-medium text-gray-700">Thumbnail URL (optional)</label>
-            <input v-model="form.thumbnail" type="text" placeholder="/images/example.jpg" class="mt-1 block w-full rounded-md border-gray-300" />
-            <p v-if="form.errors.thumbnail" class="text-sm text-red-600 mt-1">{{ form.errors.thumbnail }}</p>
-          </div>
+              <label class="block text-sm font-medium text-gray-700">Thumbnail URL (optional)</label>
+              <input v-model="form.thumbnail" type="text" placeholder="/images/example.jpg" class="mt-1 block w-full rounded-md border-gray-300" />
+              <p class="text-xs text-gray-500 mt-1">You can also set a thumbnail later from the gallery edit screen once photos are uploaded.</p>
+              <div v-if="form.thumbnail" class="mt-2 flex items-center gap-3">
+                <img :src="normalizeSrc(form.thumbnail)" alt="current thumbnail" class="w-16 h-16 object-cover rounded border" />
+                <button type="button" class="text-xs text-gray-600 hover:underline" @click="form.thumbnail = ''">Clear</button>
+              </div>
+              <p v-if="form.errors.thumbnail" class="text-sm text-red-600 mt-1">{{ form.errors.thumbnail }}</p>
+            </div>
 
             <div>
               <label class="block text-sm font-medium text-gray-700">Parent Gallery</label>
@@ -156,11 +164,15 @@ function toBoolean(value) {
               <p v-if="form.errors.parent_id" class="text-sm text-red-600 mt-1">{{ form.errors.parent_id }}</p>
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Public</label>
-              <div class="mt-1 flex items-center">
-                <input id="public" v-model="form.public" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
-                <label for="public" class="ml-2 text-sm text-gray-700">Visible to everyone</label>
+            <div class="md:col-span-2 border rounded-lg p-4 space-y-3 bg-gray-50">
+              <p class="text-sm font-semibold text-gray-700">Visibility</p>
+              <div class="flex items-center">
+                <input id="create-public" v-model="form.public" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                <label for="create-public" class="ml-2 text-sm text-gray-700">Public (visible to everyone)</label>
+              </div>
+              <div class="flex items-center">
+                <input id="create-featured" v-model="form.featured" type="checkbox" class="h-4 w-4 text-amber-500 border-gray-300 rounded" />
+                <label for="create-featured" class="ml-2 text-sm text-gray-700">Featured (showcase on landing page)</label>
               </div>
             </div>
 
@@ -184,10 +196,13 @@ function toBoolean(value) {
         <div class="divide-y">
           <div v-for="g in props.galleries.data" :key="g.id" class="px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-4">
-              <img v-if="g.thumbnail" :src="normalizeSrc(g.thumbnail)" alt="thumb" class="w-12 h-12 object-cover rounded" />
+              <img v-if="g.thumbnail || g.thumb_url" :src="normalizeSrc(g.thumb_url || g.thumbnail)" alt="thumb" class="w-12 h-12 object-cover rounded" />
               <div>
-                <div class="font-medium">{{ g.title }}</div>
-                <div class="text-sm text-gray-500">{{ g.public ? 'Public' : 'Private' }} • {{ g.date || 'No date' }} • {{ g.photos_count || 0 }} photos</div>
+                <div class="font-medium flex items-center gap-2">
+                  <span>{{ g.title }}</span>
+                  <span v-if="g.featured" class="px-2 py-0.5 text-xs rounded-full bg-amber-100 text-amber-700 border border-amber-200">Featured</span>
+                </div>
+                <div class="text-sm text-gray-500">{{ g.public ? 'Public' : 'Private' }} • {{ g.photos_count || 0 }} photos • {{ g.children_count || 0 }} sub</div>
               </div>
             </div>
             <div class="flex items-center gap-3">

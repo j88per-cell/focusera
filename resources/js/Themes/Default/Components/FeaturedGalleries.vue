@@ -32,8 +32,15 @@ function joinPublicBase(path) {
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div v-for="g in props.items" :key="g.id" class="group cursor-pointer" @click="$emit('open', g.id)">
           <div class="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-            <div class="relative overflow-hidden">
-              <img :src="normalizeSrc(g.thumbnail)" :alt="g.title" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
+            <div class="relative overflow-hidden h-64 flex items-center justify-center bg-muted">
+              <template v-if="normalizeSrc(g.thumbnail)">
+                <img :src="normalizeSrc(g.thumbnail)" :alt="g.title" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
+              </template>
+              <template v-else>
+                <svg class="w-16 h-16 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+                </svg>
+              </template>
               <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
                 <span class="text-white font-semibold opacity-0 group-hover:opacity-100 transition-opacity">View Gallery</span>
               </div>

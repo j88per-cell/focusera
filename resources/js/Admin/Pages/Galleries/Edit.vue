@@ -20,6 +20,7 @@ const form = useForm({
     notes: props.gallery.notes || "",
     date: props.gallery.date || "",
     public: !!props.gallery.public,
+    featured: !!props.gallery.featured,
     allow_orders: !!props.gallery.allow_orders,
     markup_percent: props.gallery.markup_percent ?? "",
     thumbnail: props.gallery.thumbnail || "",
@@ -483,25 +484,25 @@ async function generateAndSendCode() {
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Thumbnail</label>
-                            <div class="mt-1 flex items-center gap-3">
-                                <input v-model="form.thumbnail" type="text" placeholder="/path/to/thumb.jpg" class="mt-0.5 block w-full rounded-md border-gray-300" />
-                                <button type="button" class="px-3 py-2 text-sm rounded-md border hover:bg-gray-50" @click="showThumbPicker = !showThumbPicker">Pick</button>
+                            <input v-model="form.thumbnail" type="text" placeholder="/path/to/thumb.jpg" class="mt-0.5 block w-full rounded-md border-gray-300" />
+                            <div class="mt-2 flex items-center gap-3">
+                                <button type="button" class="px-3 py-2 text-sm rounded-md border hover:bg-gray-50" @click="showThumbPicker = !showThumbPicker">Choose from photos</button>
+                                <button v-if="form.thumbnail" type="button" class="text-xs text-gray-600 hover:underline" @click="form.thumbnail = ''">Clear</button>
                             </div>
-                            <div v-if="form.thumbnail" class="mt-2 flex items-center gap-3">
-                                <img :src="normalizeSrc(form.thumbnail)" alt="current thumbnail" class="w-16 h-16 object-cover rounded border" />
-                                <button type="button" class="text-xs text-gray-600 hover:underline" @click="form.thumbnail = ''">Clear</button>
+                            <div v-if="form.thumbnail" class="mt-2">
+                                <img :src="normalizeSrc(form.thumbnail)" alt="current thumbnail" class="w-24 h-24 object-cover rounded border" />
                             </div>
                             <p v-if="form.errors.thumbnail" class="text-sm text-red-600 mt-1">{{ form.errors.thumbnail }}</p>
-                            <div v-if="showThumbPicker" class="mt-2 border rounded-md p-2">
-                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 max-h-64 overflow-auto">
+                            <div v-if="showThumbPicker" class="mt-3 border rounded-md p-3 bg-gray-50">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 max-h-64 overflow-auto">
                                     <button
                                       v-for="p in (props.photos?.data || [])"
                                       :key="p.id"
                                       type="button"
-                                      class="group border rounded overflow-hidden hover:ring-2 hover:ring-indigo-500 text-left"
+                                      class="group border rounded overflow-hidden hover:ring-2 hover:ring-indigo-500 text-left bg-white"
                                       @click="setThumbnailFromPhoto(p)"
                                     >
-                                      <img :src="normalizeSrc(p.thumb_url || p.path_thumb || p.path_web)" alt="thumb" class="w-full h-20 object-cover block" />
+                                      <img :src="normalizeSrc(p.thumb_url || p.path_thumb || p.path_web)" alt="thumb" class="w-full h-24 object-cover block" />
                                       <div class="px-2 py-1 text-[11px] truncate text-gray-700">
                                         {{ fileName(p.thumb_url || p.path_thumb || p.path_web) }}
                                       </div>
@@ -511,15 +512,23 @@ async function generateAndSendCode() {
                             </div>
                         </div>
 
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Public</label>
-                            <div class="mt-1 flex items-center">
+                        <div class="md:col-span-2 border rounded-lg p-4 space-y-3 bg-gray-50">
+                            <p class="text-sm font-semibold text-gray-700">Visibility</p>
+                            <div class="flex items-center">
                                 <input
-                                    id="public"
+                                    id="edit-public"
                                     v-model="form.public"
                                     type="checkbox"
                                     class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
-                                <label for="public" class="ml-2 text-sm text-gray-700">Visible to everyone</label>
+                                <label for="edit-public" class="ml-2 text-sm text-gray-700">Public (visible to everyone)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input
+                                    id="edit-featured"
+                                    v-model="form.featured"
+                                    type="checkbox"
+                                    class="h-4 w-4 text-amber-500 border-gray-300 rounded" />
+                                <label for="edit-featured" class="ml-2 text-sm text-gray-700">Featured (showcase on landing page)</label>
                             </div>
                         </div>
 

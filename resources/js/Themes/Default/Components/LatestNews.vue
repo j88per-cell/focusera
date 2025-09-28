@@ -1,6 +1,15 @@
 <script setup>
 const props = defineProps({ items: { type: Array, required: true } })
-const emit = defineEmits(['open'])
+
+const fallbackImage = '/placeholder.svg?height=200&width=300'
+const fallbackAvatar = '/placeholder.svg?height=40&width=40'
+
+const imageFor = (item) => item.featuredImage || item.thumbnail || fallbackImage
+const categoryFor = (item) => item.category || 'News'
+const dateFor = (item) => item.publishDate || ''
+const urlFor = (item) => item.url || (item.slug ? `/news/${item.slug}` : '/news')
+const authorFor = (item) => item.author?.name || 'Studio Team'
+const avatarFor = (item) => item.author?.avatar || fallbackAvatar
 </script>
 
 <template>
@@ -14,30 +23,32 @@ const emit = defineEmits(['open'])
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <article v-for="a in props.items" :key="a.id"
-                 class="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                 @click="$emit('open', a.id)">
-          <img :src="a.featuredImage" :alt="a.title" class="w-full h-48 object-cover" />
-          <div class="p-6">
-            <div class="flex items-center text-sm text-muted-foreground mb-3">
-              <span>{{ a.category }}</span><span class="mx-2">•</span><span>{{ a.publishDate }}</span>
+        <article v-for="item in props.items" :key="item.id" class="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+          <a :href="urlFor(item)" class="block"> 
+            <img :src="imageFor(item)" :alt="item.title" class="w-full h-48 object-cover" />
+            <div class="p-6">
+              <div class="flex items-center text-sm text-muted-foreground mb-3">
+                <span>{{ categoryFor(item) }}</span>
+                <span class="mx-2" v-if="dateFor(item)">•</span>
+                <span v-if="dateFor(item)">{{ dateFor(item) }}</span>
+              </div>
+              <h4 class="text-xl font-semibold text-accent mb-3 hover:text-accent/80 transition-colors">
+                {{ item.title }}
+              </h4>
+              <p class="text-muted-foreground mb-4">{{ item.excerpt }}</p>
+              <div class="flex items-center">
+                <img :src="avatarFor(item)" :alt="authorFor(item)" class="w-8 h-8 rounded-full mr-3" />
+                <span class="text-sm text-muted-foreground">{{ authorFor(item) }}</span>
+              </div>
             </div>
-            <h4 class="text-xl font-semibold text-accent mb-3 hover:text-accent/80 transition-colors">
-              {{ a.title }}
-            </h4>
-            <p class="text-muted-foreground mb-4">{{ a.excerpt }}</p>
-            <div class="flex items-center">
-              <img :src="a.author.avatar" :alt="a.author.name" class="w-8 h-8 rounded-full mr-3" />
-              <span class="text-sm text-muted-foreground">{{ a.author.name }}</span>
-            </div>
-          </div>
+          </a>
         </article>
       </div>
 
       <div class="text-center mt-12">
-        <button class="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-lg font-semibold transition-colors">
+        <a href="/news" class="inline-block bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-lg font-semibold transition-colors">
           View All Articles
-        </button>
+        </a>
       </div>
     </div>
   </section>

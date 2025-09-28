@@ -17,7 +17,23 @@ class GalleryController extends Controller
     // Admin: list + quick create view (theme-based UI)
     public function adminIndex()
     {
-        $galleries = Gallery::withCount('photos')->latest()->paginate(20);
+        $galleries = Gallery::withCount('photos', 'children')->latest()->paginate(20);
+
+        $galleries->getCollection()->transform(function (Gallery $gallery) {
+            $thumb = $gallery->thumbnail_url;
+            return [
+                'id' => $gallery->id,
+                'title' => $gallery->title,
+                'public' => (bool) $gallery->public,
+                'featured' => (bool) $gallery->featured,
+                'photos_count' => $gallery->photos_count ?? 0,
+                'children_count' => $gallery->children_count ?? 0,
+                'thumbnail' => $thumb,
+                'thumb_url' => $thumb,
+                'updated_at' => $gallery->updated_at,
+            ];
+        });
+
         $parents = Gallery::orderBy('title')->get(['id','title']);
         return inertia('Galleries/Index', compact('galleries','parents'))->rootView('admin');
     }
@@ -36,7 +52,7 @@ class GalleryController extends Controller
             ->paginate(12);
 
         $galleries->getCollection()->transform(function (Gallery $gallery) {
-            $thumb = $this->resolvePublicPath($gallery->thumbnail);
+            $thumb = $gallery->thumbnail_url;
             return [
                 'id' => $gallery->id,
                 'title' => $gallery->title,
@@ -47,6 +63,7 @@ class GalleryController extends Controller
                 'thumb_url' => $thumb,
                 'photos_count' => $gallery->photos_count ?? 0,
                 'children_count' => $gallery->children_count ?? 0,
+                'featured' => (bool) $gallery->featured,
             ];
         });
 
@@ -69,6 +86,7 @@ class GalleryController extends Controller
             'notes' => 'nullable|string',
             'date' => 'nullable|date',
             'public' => 'boolean',
+            'featured' => 'boolean',
             'allow_orders' => 'boolean',
             'markup_percent' => 'nullable|numeric|min:0|max:1000',
             'thumbnail' => 'nullable|string',
@@ -76,6 +94,10 @@ class GalleryController extends Controller
             'exif_visibility' => 'nullable|in:all,none,custom',
             'exif_fields' => 'nullable|array',
         ]);
+
+        $data['public'] = $request->boolean('public');
+        $data['featured'] = $request->boolean('featured');
+        $data['allow_orders'] = $request->boolean('allow_orders');
 
         Gallery::create($data);
         $target = auth()->check() && auth()->user()->can('isAdmin')
@@ -152,7 +174,7 @@ class GalleryController extends Controller
         }
 
         $childGalleries = $childQuery->orderBy('title')->get()->map(function (Gallery $child) {
-            $thumb = $this->resolvePublicPath($child->thumbnail);
+            $thumb = $child->thumbnail_url;
             return [
                 'id' => $child->id,
                 'title' => $child->title,
@@ -163,6 +185,7 @@ class GalleryController extends Controller
                 'thumb_url' => $thumb,
                 'photos_count' => $child->photos_count ?? 0,
                 'children_count' => $child->children_count ?? 0,
+                'featured' => (bool) $child->featured,
             ];
         });
 
@@ -174,6 +197,7 @@ class GalleryController extends Controller
             'notes' => $gallery->notes,
             'date' => $gallery->date,
             'public' => $gallery->public,
+            'featured' => (bool) $gallery->featured,
             'child_galleries' => $childGalleries,
             'photos' => $photos,
         ];
@@ -210,6 +234,7 @@ class GalleryController extends Controller
             'notes' => 'nullable|string',
             'date' => 'nullable|date',
             'public' => 'boolean',
+            'featured' => 'boolean',
             'allow_orders' => 'boolean',
             'markup_percent' => 'nullable|numeric|min:0|max:1000',
             'thumbnail' => 'nullable|string',
@@ -217,6 +242,10 @@ class GalleryController extends Controller
             'exif_visibility' => 'nullable|in:all,none,custom',
             'exif_fields' => 'nullable|array',
         ]);
+
+        $data['public'] = $request->boolean('public');
+        $data['featured'] = $request->boolean('featured');
+        $data['allow_orders'] = $request->boolean('allow_orders');
 
         $gallery->update($data);
         $target = auth()->check() && auth()->user()->can('isAdmin')
