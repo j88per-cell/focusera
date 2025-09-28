@@ -49,11 +49,14 @@ php artisan key:generate
 # configure database credentials in .env
 
 php artisan migrate
+php artisan db:ensure
 php artisan db:seed
 
 npm install
 npm run dev
 ```
+
+-   `php artisan db:ensure` keeps required baseline records (currently default site settings) in place across environments. Pass `--only=settings` to target just the settings group or re-run it any time after config changes.
 
 Seeding populates:
 
