@@ -26,6 +26,10 @@ Built on the popular **Laravel** framework, it can run on a wide variety of host
     **Photo uploads**
     Automatically resize for thumbnail and web sizes defined in settings.
 
+## Preview
+
+[Dark mode landing page screenshot](docs/focusera%20twilight.png)
+
 ## Getting Started
 
 ### Prerequisites
