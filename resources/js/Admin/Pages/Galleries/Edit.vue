@@ -34,6 +34,7 @@ function updateGallery() {
 
 const page = usePage();
 const publicBaseUrl = computed(() => page.props?.site?.storage?.public_base_url || '/storage');
+const salesEnabled = computed(() => toBoolean(page.props?.features?.sales));
 
 function normalizeSrc(path) {
     if (!path) return "";
@@ -111,6 +112,16 @@ function confirmDelete() {
             toDelete.value = null;
         },
     });
+}
+
+function toBoolean(value) {
+    if (typeof value === 'string') {
+        const lower = value.toLowerCase();
+        if (['1', 'true', 'yes', 'on'].includes(lower)) return true;
+        if (['0', 'false', 'no', 'off', ''].includes(lower)) return false;
+    }
+    if (typeof value === 'number') return value === 1;
+    return Boolean(value);
 }
 
 function joinPublicBase(path) {
@@ -512,7 +523,7 @@ async function generateAndSendCode() {
                             </div>
                         </div>
 
-                        <div>
+                        <div v-if="salesEnabled">
                             <label class="block text-sm font-medium text-gray-700">Enable Orders</label>
                             <div class="mt-1 flex items-center">
                                 <input id="allow_orders" v-model="form.allow_orders" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
@@ -521,7 +532,7 @@ async function generateAndSendCode() {
                             <p class="text-xs text-gray-500 mt-1">Requires API key configured. Photos may have their own override.</p>
                         </div>
 
-                        <div>
+                        <div v-if="salesEnabled">
                             <label class="block text-sm font-medium text-gray-700">Markup % (optional)</label>
                             <input v-model.number="form.markup_percent" type="number" step="0.01" min="0" class="mt-1 block w-40 rounded-md border-gray-300" />
                             <p class="text-xs text-gray-500 mt-1">Leave blank to use site default (e.g., 25%).</p>
