@@ -9,8 +9,14 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
+    'plugin:vue/vue3-recommended',
   ],
+  parser: 'vue-eslint-parser',
   parserOptions: {
+    parser: {
+      js: 'espree',
+      ts: 'espree',
+    },
     ecmaVersion: 'latest',
     sourceType: 'module',
     ecmaFeatures: {

@@ -19,6 +19,13 @@ class SettingsFromConfigSeeder extends Seeder
         $this->upsert('site', 'storage', 'private_disk', 'photos_private');
         $this->upsert('site', 'general', 'site_name', 'Focusera');
         $this->upsert('site', 'general', 'landing_page_text', 'Showcase your photography, share securely, and keep full control over client access.');
+        $this->upsert('site', 'landing', 'hero_title', "Capturing Life's Beautiful Moments");
+        $this->upsert('site', 'landing', 'hero_subtitle', 'Professional photography that tells your story');
+        $this->upsert('site', 'landing', 'hero_images', [
+            ['src' => '/placeholder.svg?height=500&width=1200', 'alt' => 'Wedding Photography'],
+            ['src' => '/placeholder.svg?height=500&width=1200', 'alt' => 'Portrait Photography'],
+            ['src' => '/placeholder.svg?height=500&width=1200', 'alt' => 'Landscape Photography'],
+        ]);
         $this->upsert('site', 'analytics', 'enabled', '1');
         $this->upsert('site', 'analytics', 'capture_referrer', '1');
         $this->upsert('site', 'analytics', 'capture_geo', '0');

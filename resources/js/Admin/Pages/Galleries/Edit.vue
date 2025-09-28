@@ -320,422 +320,783 @@ async function generateAndSendCode() {
 </script>
 
 <template>
-    <AdminLayout>
-        <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Left: Photos -->
-            <section class="lg:col-span-2">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-semibold">Photos</h2>
-                    <div class="flex items-center gap-3">
-                        <div class="text-sm text-gray-600">Total: {{ photos.total || photos.data.length }}</div>
-                        <input
-                            ref="fileInput"
-                            type="file"
-                            class="hidden"
-                            multiple
-                            accept="image/jpeg,image/png"
-                            @change="onFilesSelected" />
-                        <button
-                            @click="openFilePicker"
-                            class="px-3 py-1.5 text-sm rounded border border-gray-300 bg-white hover:bg-gray-50">
-                            Upload
-                        </button>
-                    </div>
-                </div>
-
-                <div v-if="queue.length" class="mb-4 bg-white border rounded p-3 text-sm">
-                    <div class="flex items-center justify-between mb-2">
-                        <div class="font-medium">Upload Queue</div>
-                        <button type="button" class="text-xs text-gray-600 underline" @click="clearQueueManual" :disabled="uploading">
-                            Clear
-                        </button>
-                    </div>
-                    <ul class="space-y-1">
-                        <li
-                            v-for="(item, idx) in queue"
-                            :key="idx"
-                            class="flex items-center justify-between"
-                            :class="item.status === 'error' ? 'text-red-700' : ''">
-                            <span class="truncate max-w-[60%]" :title="item.name">{{ item.name }}</span>
-                            <span
-                                :title="item.error || ''"
-                                :class="{
-                                    'text-gray-600': item.status === 'pending',
-                                    'text-indigo-600': item.status === 'uploading',
-                                    'text-green-600': item.status === 'done',
-                                    'text-red-600': item.status === 'error',
-                                }"
-                                >{{ item.status }}</span
-                            >
-                            <button
-                                v-if="item.status === 'error' && item.error"
-                                type="button"
-                                class="ml-3 text-xs text-red-600 underline"
-                                @click="
-                                    $event.stopPropagation();
-                                    alert(item.error);
-                                ">
-                                Details
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-                    <div v-for="p in photos.data" :key="p.id" class="group relative bg-white rounded-md overflow-hidden shadow">
-                        <img :src="normalizeSrc(p.thumb_url || p.path_thumb || p.path_web)" class="w-full h-40 object-cover" alt="thumb" />
-                        <div class="p-2">
-                            <div class="text-sm font-medium truncate" :title="p.title">{{ p.title || "Untitled" }}</div>
-                        </div>
-                        <div
-                            class="absolute inset-x-0 bottom-0 p-2 flex flex-wrap gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button @click="rotateLeft(p)" class="px-2 py-1 text-xs bg-white/90 rounded shadow">⟲</button>
-                            <button @click="rotateRight(p)" class="px-2 py-1 text-xs bg-white/90 rounded shadow">⟳</button>
-                            <button @click="flipH(p)" class="px-2 py-1 text-xs bg-white/90 rounded shadow">⇋</button>
-                            <button @click="flipV(p)" class="px-2 py-1 text-xs bg-white/90 rounded shadow">⇵</button>
-                            <button @click="openPhotoEdit(p)" class="ml-auto px-2 py-1 text-xs bg-white/90 rounded shadow">Edit</button>
-                            <button @click="askDelete(p)" class="px-2 py-1 text-xs bg-red-600 text-white rounded shadow">Delete</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pagination controls -->
-                <div v-if="photos && photos.last_page && photos.last_page > 1" class="mt-4 flex items-center justify-between">
-                    <div class="text-sm text-gray-600">
-                        Page {{ photos.current_page }} of {{ photos.last_page }} • {{ photos.total }} items
-                    </div>
-                    <nav class="flex items-center gap-1">
-                        <button
-                            v-if="photos.prev_page_url"
-                            @click="router.visit(photos.prev_page_url, { preserveScroll: true, preserveState: true })"
-                            class="px-3 py-1 text-sm rounded border border-gray-300 bg-white hover:bg-gray-50">
-                            Prev
-                        </button>
-
-                        <template v-for="l in photos.links" :key="l.url + '-' + l.label">
-                            <button
-                                v-if="l.url && l.label.match(/^\d+$/)"
-                                @click="router.visit(l.url, { preserveScroll: true, preserveState: true })"
-                                :class="[
-                                    'px-3 py-1 text-sm rounded border',
-                                    l.active ? 'bg-indigo-600 text-white border-indigo-600' : 'border-gray-300 bg-white hover:bg-gray-50',
-                                ]">
-                                {{ l.label }}
-                            </button>
-                        </template>
-
-                        <button
-                            v-if="photos.next_page_url"
-                            @click="router.visit(photos.next_page_url, { preserveScroll: true, preserveState: true })"
-                            class="px-3 py-1 text-sm rounded border border-gray-300 bg-white hover:bg-gray-50">
-                            Next
-                        </button>
-                    </nav>
-                </div>
-            </section>
-
-            <!-- Right: Gallery details -->
-            <aside>
-                <div class="bg-white shadow rounded-lg p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-lg font-medium">Gallery Details</h2>
-                        <a href="/admin/galleries" class="text-sm text-accent hover:underline">Back</a>
-                    </div>
-
-                    <form @submit.prevent="updateGallery" class="grid grid-cols-1 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Title</label>
-                            <input v-model="form.title" type="text" class="mt-1 block w-full rounded-md border-gray-300" required />
-                            <p v-if="form.errors.title" class="text-sm text-red-600 mt-1">{{ form.errors.title }}</p>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Date</label>
-                            <input v-model="form.date" type="date" class="mt-1 block w-full rounded-md border-gray-300" />
-                            <p v-if="form.errors.date" class="text-sm text-red-600 mt-1">{{ form.errors.date }}</p>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Parent Gallery</label>
-                            <select v-model="form.parent_id" class="mt-1 block w-full rounded-md border-gray-300">
-                                <option value="">None</option>
-                                <option v-for="p in parents" :key="p.id" :value="p.id">{{ p.title }}</option>
-                            </select>
-                            <p v-if="form.errors.parent_id" class="text-sm text-red-600 mt-1">{{ form.errors.parent_id }}</p>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Description</label>
-                            <textarea v-model="form.description" rows="3" class="mt-1 block w-full rounded-md border-gray-300"></textarea>
-                            <p v-if="form.errors.description" class="text-sm text-red-600 mt-1">{{ form.errors.description }}</p>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Attribution</label>
-                            <input v-model="form.attribution" type="text" class="mt-1 block w-full rounded-md border-gray-300" placeholder="e.g. Edited by Studio" />
-                            <p v-if="form.errors.attribution" class="text-sm text-red-600 mt-1">{{ form.errors.attribution }}</p>
-                        </div>
-
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700">Notes</label>
-                            <textarea v-model="form.notes" rows="3" class="mt-1 block w-full rounded-md border-gray-300" placeholder="Internal notes, credits, etc."></textarea>
-                            <p v-if="form.errors.notes" class="text-sm text-red-600 mt-1">{{ form.errors.notes }}</p>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Thumbnail</label>
-                            <input v-model="form.thumbnail" type="text" placeholder="/path/to/thumb.jpg" class="mt-0.5 block w-full rounded-md border-gray-300" />
-                            <div class="mt-2 flex items-center gap-3">
-                                <button type="button" class="px-3 py-2 text-sm rounded-md border hover:bg-gray-50" @click="showThumbPicker = !showThumbPicker">Choose from photos</button>
-                                <button v-if="form.thumbnail" type="button" class="text-xs text-gray-600 hover:underline" @click="form.thumbnail = ''">Clear</button>
-                            </div>
-                            <div v-if="form.thumbnail" class="mt-2">
-                                <img :src="normalizeSrc(form.thumbnail)" alt="current thumbnail" class="w-24 h-24 object-cover rounded border" />
-                            </div>
-                            <p v-if="form.errors.thumbnail" class="text-sm text-red-600 mt-1">{{ form.errors.thumbnail }}</p>
-                            <div v-if="showThumbPicker" class="mt-3 border rounded-md p-3 bg-gray-50">
-                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 max-h-64 overflow-auto">
-                                    <button
-                                      v-for="p in (props.photos?.data || [])"
-                                      :key="p.id"
-                                      type="button"
-                                      class="group border rounded overflow-hidden hover:ring-2 hover:ring-indigo-500 text-left bg-white"
-                                      @click="setThumbnailFromPhoto(p)"
-                                    >
-                                      <img :src="normalizeSrc(p.thumb_url || p.path_thumb || p.path_web)" alt="thumb" class="w-full h-24 object-cover block" />
-                                      <div class="px-2 py-1 text-[11px] truncate text-gray-700">
-                                        {{ fileName(p.thumb_url || p.path_thumb || p.path_web) }}
-                                      </div>
-                                    </button>
-                                </div>
-                                <div v-if="!(props.photos?.data || []).length" class="text-xs text-gray-500 px-1 py-2">No photos in this gallery yet.</div>
-                            </div>
-                        </div>
-
-                        <div class="md:col-span-2 border rounded-lg p-4 space-y-3 bg-gray-50">
-                            <p class="text-sm font-semibold text-gray-700">Visibility</p>
-                            <div class="flex items-center">
-                                <input
-                                    id="edit-public"
-                                    v-model="form.public"
-                                    type="checkbox"
-                                    class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
-                                <label for="edit-public" class="ml-2 text-sm text-gray-700">Public (visible to everyone)</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input
-                                    id="edit-featured"
-                                    v-model="form.featured"
-                                    type="checkbox"
-                                    class="h-4 w-4 text-amber-500 border-gray-300 rounded" />
-                                <label for="edit-featured" class="ml-2 text-sm text-gray-700">Featured (showcase on landing page)</label>
-                            </div>
-                        </div>
-
-                        <div v-if="salesEnabled">
-                            <label class="block text-sm font-medium text-gray-700">Enable Orders</label>
-                            <div class="mt-1 flex items-center">
-                                <input id="allow_orders" v-model="form.allow_orders" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
-                                <label for="allow_orders" class="ml-2 text-sm text-gray-700">Allow ordering prints from this gallery</label>
-                            </div>
-                            <p class="text-xs text-gray-500 mt-1">Requires API key configured. Photos may have their own override.</p>
-                        </div>
-
-                        <div v-if="salesEnabled">
-                            <label class="block text-sm font-medium text-gray-700">Markup % (optional)</label>
-                            <input v-model.number="form.markup_percent" type="number" step="0.01" min="0" class="mt-1 block w-40 rounded-md border-gray-300" />
-                            <p class="text-xs text-gray-500 mt-1">Leave blank to use site default (e.g., 25%).</p>
-                            <p v-if="form.errors.markup_percent" class="text-sm text-red-600 mt-1">{{ form.errors.markup_percent }}</p>
-                        </div>
-
-                        <!-- Access codes are generated, not typed. See the Share: Access Code section below. -->
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">EXIF Visibility</label>
-                            <select v-model="form.exif_visibility" class="mt-1 block w-full rounded-md border-gray-300">
-                                <option value="all">All</option>
-                                <option value="none">None</option>
-                                <option value="custom">Custom</option>
-                            </select>
-                        </div>
-
-                        <div v-if="form.exif_visibility === 'custom'">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">EXIF Fields to Show</label>
-                            <div class="flex flex-wrap gap-3 text-sm">
-                                <label class="inline-flex items-center gap-2"
-                                    ><input type="checkbox" value="camera" v-model="form.exif_fields" /> Camera</label
-                                >
-                                <label class="inline-flex items-center gap-2"
-                                    ><input type="checkbox" value="lens" v-model="form.exif_fields" /> Lens</label
-                                >
-                                <label class="inline-flex items-center gap-2"
-                                    ><input type="checkbox" value="aperture" v-model="form.exif_fields" /> Aperture</label
-                                >
-                                <label class="inline-flex items-center gap-2"
-                                    ><input type="checkbox" value="shutter" v-model="form.exif_fields" /> Shutter</label
-                                >
-                                <label class="inline-flex items-center gap-2"
-                                    ><input type="checkbox" value="iso" v-model="form.exif_fields" /> ISO</label
-                                >
-                                <label class="inline-flex items-center gap-2"
-                                    ><input type="checkbox" value="focal" v-model="form.exif_fields" /> Focal Length</label
-                                >
-                            </div>
-                            <p v-if="form.errors.exif_fields" class="text-sm text-red-600 mt-1">{{ form.errors.exif_fields }}</p>
-                        </div>
-
-                        <div class="flex items-center justify-end gap-3">
-                            <a href="/admin/galleries" class="px-4 py-2 rounded-md border border-gray-300 text-gray-700">Cancel</a>
-                            <button
-                                type="submit"
-                                :disabled="form.processing"
-                                class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
-                                {{ form.processing ? "Saving…" : "Save Changes" }}
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                <!-- Access codes -->
-                <div class="bg-white rounded-md shadow p-4">
-                    <h3 class="text-lg font-medium mb-3">Share: Access Code</h3>
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Recipient Email</label>
-                            <input
-                                v-model="codeEmail"
-                                type="email"
-                                class="mt-1 block w-full rounded-md border-gray-300"
-                                placeholder="person@example.com" />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Duration</label>
-                            <select v-model="codeDuration" class="mt-1 block w-full rounded-md border-gray-300">
-                                <option value="infinite">No expiration</option>
-                                <option value="7d">7 days</option>
-                                <option value="14d">14 days</option>
-                                <option value="30d">30 days</option>
-                                <option value="90d">90 days</option>
-                                <option value="1y">1 year</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Label (optional)</label>
-                            <input
-                                v-model="codeLabel"
-                                type="text"
-                                class="mt-1 block w-full rounded-md border-gray-300"
-                                placeholder="e.g. Client: ACME Review" />
-                        </div>
-                        <div class="flex justify-end">
-                            <button
-                                @click="generateAndSendCode"
-                                :disabled="codeBusy || !codeEmail"
-                                class="px-3 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50">
-                                {{ codeBusy ? "Sending…" : "Generate & Email" }}
-                            </button>
-                        </div>
-
-                        <div v-if="codeResult" class="mt-2 text-sm">
-                            <div class="text-green-700">
-                                Code created{{
-                                    codeResult.expires_at ? ` (expires ${new Date(codeResult.expires_at).toLocaleString()})` : ""
-                                }}.
-                            </div>
-                            <div class="mt-1">
-                                <span class="font-medium">Code:</span>
-                                <code class="px-1 py-0.5 bg-gray-100 rounded">{{ codeResult.code }}</code>
-                            </div>
-                            <div class="mt-1 break-all">
-                                <span class="font-medium">Link:</span>
-                                <a :href="codeResult.link" target="_blank" class="text-indigo-700 underline">{{ codeResult.link }}</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </aside>
-        </div>
-    </AdminLayout>
-
-    <!-- Photo Edit modal -->
-    <div v-if="showPhotoEdit" class="fixed inset-0 z-50 flex items-center justify-center">
-        <div class="absolute inset-0 bg-black/40" @click="showPhotoEdit = false"></div>
-        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-lg mx-4">
-            <div class="px-6 py-4 border-b flex items-center justify-between">
-                <h2 class="text-lg font-medium">Edit Photo</h2>
-                <button @click="showPhotoEdit = false" class="text-gray-500 hover:text-gray-700">✕</button>
+  <AdminLayout>
+    <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Left: Photos -->
+      <section class="lg:col-span-2">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold">
+            Photos
+          </h2>
+          <div class="flex items-center gap-3">
+            <div class="text-sm text-gray-600">
+              Total: {{ photos.total || photos.data.length }}
             </div>
-            <div class="p-6 space-y-4">
+            <input
+              ref="fileInput"
+              type="file"
+              class="hidden"
+              multiple
+              accept="image/jpeg,image/png"
+              @change="onFilesSelected"
+            >
+            <button
+              class="px-3 py-1.5 text-sm rounded border border-gray-300 bg-white hover:bg-gray-50"
+              @click="openFilePicker"
+            >
+              Upload
+            </button>
+          </div>
+        </div>
+
+        <div
+          v-if="queue.length"
+          class="mb-4 bg-white border rounded p-3 text-sm"
+        >
+          <div class="flex items-center justify-between mb-2">
+            <div class="font-medium">
+              Upload Queue
+            </div>
+            <button
+              type="button"
+              class="text-xs text-gray-600 underline"
+              :disabled="uploading"
+              @click="clearQueueManual"
+            >
+              Clear
+            </button>
+          </div>
+          <ul class="space-y-1">
+            <li
+              v-for="(item, idx) in queue"
+              :key="idx"
+              class="flex items-center justify-between"
+              :class="item.status === 'error' ? 'text-red-700' : ''"
+            >
+              <span
+                class="truncate max-w-[60%]"
+                :title="item.name"
+              >{{ item.name }}</span>
+              <span
+                :title="item.error || ''"
+                :class="{
+                  'text-gray-600': item.status === 'pending',
+                  'text-indigo-600': item.status === 'uploading',
+                  'text-green-600': item.status === 'done',
+                  'text-red-600': item.status === 'error',
+                }"
+              >{{ item.status }}</span>
+              <button
+                v-if="item.status === 'error' && item.error"
+                type="button"
+                class="ml-3 text-xs text-red-600 underline"
+                @click="
+                  $event.stopPropagation();
+                  alert(item.error);
+                "
+              >
+                Details
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div
+            v-for="p in photos.data"
+            :key="p.id"
+            class="group relative bg-white rounded-md overflow-hidden shadow"
+          >
+            <img
+              :src="normalizeSrc(p.thumb_url || p.path_thumb || p.path_web)"
+              class="w-full h-40 object-cover"
+              alt="thumb"
+            >
+            <div class="p-2">
+              <div
+                class="text-sm font-medium truncate"
+                :title="p.title"
+              >
+                {{ p.title || "Untitled" }}
+              </div>
+            </div>
+            <div
+              class="absolute inset-x-0 bottom-0 p-2 flex flex-wrap gap-2 opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <button
+                class="px-2 py-1 text-xs bg-white/90 rounded shadow"
+                @click="rotateLeft(p)"
+              >
+                ⟲
+              </button>
+              <button
+                class="px-2 py-1 text-xs bg-white/90 rounded shadow"
+                @click="rotateRight(p)"
+              >
+                ⟳
+              </button>
+              <button
+                class="px-2 py-1 text-xs bg-white/90 rounded shadow"
+                @click="flipH(p)"
+              >
+                ⇋
+              </button>
+              <button
+                class="px-2 py-1 text-xs bg-white/90 rounded shadow"
+                @click="flipV(p)"
+              >
+                ⇵
+              </button>
+              <button
+                class="ml-auto px-2 py-1 text-xs bg-white/90 rounded shadow"
+                @click="openPhotoEdit(p)"
+              >
+                Edit
+              </button>
+              <button
+                class="px-2 py-1 text-xs bg-red-600 text-white rounded shadow"
+                @click="askDelete(p)"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination controls -->
+        <div
+          v-if="photos && photos.last_page && photos.last_page > 1"
+          class="mt-4 flex items-center justify-between"
+        >
+          <div class="text-sm text-gray-600">
+            Page {{ photos.current_page }} of {{ photos.last_page }} • {{ photos.total }} items
+          </div>
+          <nav class="flex items-center gap-1">
+            <button
+              v-if="photos.prev_page_url"
+              class="px-3 py-1 text-sm rounded border border-gray-300 bg-white hover:bg-gray-50"
+              @click="router.visit(photos.prev_page_url, { preserveScroll: true, preserveState: true })"
+            >
+              Prev
+            </button>
+
+            <template
+              v-for="l in photos.links"
+              :key="l.url + '-' + l.label"
+            >
+              <button
+                v-if="l.url && l.label.match(/^\d+$/)"
+                :class="[
+                  'px-3 py-1 text-sm rounded border',
+                  l.active ? 'bg-indigo-600 text-white border-indigo-600' : 'border-gray-300 bg-white hover:bg-gray-50',
+                ]"
+                @click="router.visit(l.url, { preserveScroll: true, preserveState: true })"
+              >
+                {{ l.label }}
+              </button>
+            </template>
+
+            <button
+              v-if="photos.next_page_url"
+              class="px-3 py-1 text-sm rounded border border-gray-300 bg-white hover:bg-gray-50"
+              @click="router.visit(photos.next_page_url, { preserveScroll: true, preserveState: true })"
+            >
+              Next
+            </button>
+          </nav>
+        </div>
+      </section>
+
+      <!-- Right: Gallery details -->
+      <aside>
+        <div class="bg-white shadow rounded-lg p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-medium">
+              Gallery Details
+            </h2>
+            <a
+              href="/admin/galleries"
+              class="text-sm text-accent hover:underline"
+            >Back</a>
+          </div>
+
+          <form
+            class="grid grid-cols-1 gap-4"
+            @submit.prevent="updateGallery"
+          >
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Title</label>
+              <input
+                v-model="form.title"
+                type="text"
+                class="mt-1 block w-full rounded-md border-gray-300"
+                required
+              >
+              <p
+                v-if="form.errors.title"
+                class="text-sm text-red-600 mt-1"
+              >
+                {{ form.errors.title }}
+              </p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Date</label>
+              <input
+                v-model="form.date"
+                type="date"
+                class="mt-1 block w-full rounded-md border-gray-300"
+              >
+              <p
+                v-if="form.errors.date"
+                class="text-sm text-red-600 mt-1"
+              >
+                {{ form.errors.date }}
+              </p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Parent Gallery</label>
+              <select
+                v-model="form.parent_id"
+                class="mt-1 block w-full rounded-md border-gray-300"
+              >
+                <option value="">
+                  None
+                </option>
+                <option
+                  v-for="p in parents"
+                  :key="p.id"
+                  :value="p.id"
+                >
+                  {{ p.title }}
+                </option>
+              </select>
+              <p
+                v-if="form.errors.parent_id"
+                class="text-sm text-red-600 mt-1"
+              >
+                {{ form.errors.parent_id }}
+              </p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Description</label>
+              <textarea
+                v-model="form.description"
+                rows="3"
+                class="mt-1 block w-full rounded-md border-gray-300"
+              />
+              <p
+                v-if="form.errors.description"
+                class="text-sm text-red-600 mt-1"
+              >
+                {{ form.errors.description }}
+              </p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Attribution</label>
+              <input
+                v-model="form.attribution"
+                type="text"
+                class="mt-1 block w-full rounded-md border-gray-300"
+                placeholder="e.g. Edited by Studio"
+              >
+              <p
+                v-if="form.errors.attribution"
+                class="text-sm text-red-600 mt-1"
+              >
+                {{ form.errors.attribution }}
+              </p>
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700">Notes</label>
+              <textarea
+                v-model="form.notes"
+                rows="3"
+                class="mt-1 block w-full rounded-md border-gray-300"
+                placeholder="Internal notes, credits, etc."
+              />
+              <p
+                v-if="form.errors.notes"
+                class="text-sm text-red-600 mt-1"
+              >
+                {{ form.errors.notes }}
+              </p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Thumbnail</label>
+              <input
+                v-model="form.thumbnail"
+                type="text"
+                placeholder="/path/to/thumb.jpg"
+                class="mt-0.5 block w-full rounded-md border-gray-300"
+              >
+              <div class="mt-2 flex items-center gap-3">
+                <button
+                  type="button"
+                  class="px-3 py-2 text-sm rounded-md border hover:bg-gray-50"
+                  @click="showThumbPicker = !showThumbPicker"
+                >
+                  Choose from photos
+                </button>
+                <button
+                  v-if="form.thumbnail"
+                  type="button"
+                  class="text-xs text-gray-600 hover:underline"
+                  @click="form.thumbnail = ''"
+                >
+                  Clear
+                </button>
+              </div>
+              <div
+                v-if="form.thumbnail"
+                class="mt-2"
+              >
                 <img
-                    :src="normalizeSrc(currentPhoto?.thumb_url || currentPhoto?.path_thumb || currentPhoto?.web_url || currentPhoto?.path_web)"
-                    class="w-full h-48 object-cover rounded"
-                    alt="preview" />
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Title</label>
-                    <input v-model="photoForm.title" type="text" class="mt-1 block w-full rounded-md border-gray-300" />
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Description</label>
-                    <textarea v-model="photoForm.description" rows="3" class="mt-1 block w-full rounded-md border-gray-300"></textarea>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Attribution</label>
-                    <input v-model="photoForm.attribution" type="text" class="mt-1 block w-full rounded-md border-gray-300" placeholder="e.g. Edited by Studio" />
-                    <p v-if="photoForm.errors.attribution" class="text-sm text-red-600 mt-1">{{ photoForm.errors.attribution }}</p>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Notes</label>
-                    <textarea v-model="photoForm.notes" rows="2" class="mt-1 block w-full rounded-md border-gray-300" placeholder="Internal notes"></textarea>
-                    <p v-if="photoForm.errors.notes" class="text-sm text-red-600 mt-1">{{ photoForm.errors.notes }}</p>
-                </div>
-                <div v-if="salesEnabled">
-                    <label class="block text-sm font-medium text-gray-700">Markup % (optional)</label>
-                    <input v-model.number="photoForm.markup_percent" type="number" step="0.01" min="0" class="mt-1 w-40 rounded-md border-gray-300" />
-                    <p class="text-xs text-gray-500">Leave blank to inherit from gallery/site.</p>
-                </div>
-                <div v-if="currentPhoto?.exif && Object.keys(currentPhoto.exif).length" class="text-sm text-gray-600">
-                    <div class="font-medium mb-1">EXIF</div>
-                    <div class="flex flex-wrap gap-x-4 gap-y-1">
-                        <span v-if="currentPhoto.exif.camera">Camera: {{ currentPhoto.exif.camera }}</span>
-                        <span v-if="currentPhoto.exif.lens">Lens: {{ currentPhoto.exif.lens }}</span>
-                        <span v-if="currentPhoto.exif.aperture">Aperture: {{ currentPhoto.exif.aperture }}</span>
-                        <span v-if="currentPhoto.exif.shutter">Shutter: {{ currentPhoto.exif.shutter }}</span>
-                        <span v-if="currentPhoto.exif.iso">ISO: {{ currentPhoto.exif.iso }}</span>
-                        <span v-if="currentPhoto.exif.focal">Focal: {{ currentPhoto.exif.focal }}</span>
-                        <span v-if="currentPhoto.exif.datetime">Date: {{ currentPhoto.exif.datetime }}</span>
-                        <span v-if="currentPhoto.exif.photographer">Photographer: {{ currentPhoto.exif.photographer }}</span>
-                        <span v-if="currentPhoto.exif.latitude && currentPhoto.exif.longitude"
-                            >Location: {{ Number(currentPhoto.exif.latitude).toFixed(6) }},
-                            {{ Number(currentPhoto.exif.longitude).toFixed(6) }}</span
-                        >
+                  :src="normalizeSrc(form.thumbnail)"
+                  alt="current thumbnail"
+                  class="w-24 h-24 object-cover rounded border"
+                >
+              </div>
+              <p
+                v-if="form.errors.thumbnail"
+                class="text-sm text-red-600 mt-1"
+              >
+                {{ form.errors.thumbnail }}
+              </p>
+              <div
+                v-if="showThumbPicker"
+                class="mt-3 border rounded-md p-3 bg-gray-50"
+              >
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 max-h-64 overflow-auto">
+                  <button
+                    v-for="p in (props.photos?.data || [])"
+                    :key="p.id"
+                    type="button"
+                    class="group border rounded overflow-hidden hover:ring-2 hover:ring-indigo-500 text-left bg-white"
+                    @click="setThumbnailFromPhoto(p)"
+                  >
+                    <img
+                      :src="normalizeSrc(p.thumb_url || p.path_thumb || p.path_web)"
+                      alt="thumb"
+                      class="w-full h-24 object-cover block"
+                    >
+                    <div class="px-2 py-1 text-[11px] truncate text-gray-700">
+                      {{ fileName(p.thumb_url || p.path_thumb || p.path_web) }}
                     </div>
+                  </button>
                 </div>
+                <div
+                  v-if="!(props.photos?.data || []).length"
+                  class="text-xs text-gray-500 px-1 py-2"
+                >
+                  No photos in this gallery yet.
+                </div>
+              </div>
             </div>
-            <div class="px-6 py-4 border-t flex items-center justify-end gap-3">
-                <button @click="showPhotoEdit = false" class="px-4 py-2 rounded-md border border-gray-300 text-gray-700">Cancel</button>
-                <button @click="savePhoto" :disabled="editing" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
-                    {{ editing ? "Saving…" : "Save" }}
-                </button>
-            </div>
-        </div>
-    </div>
 
-    <!-- Photo Delete modal -->
-    <div v-if="showDelete" class="fixed inset-0 z-50 flex items-center justify-center">
-        <div class="absolute inset-0 bg-black/40" @click="showDelete = false"></div>
-        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-lg mx-4">
-            <div class="px-6 py-4 border-b flex items-center justify-between">
-                <h2 class="text-lg font-medium">Delete Photo</h2>
-                <button @click="showDelete = false" class="text-gray-500 hover:text-gray-700">✕</button>
+            <div class="md:col-span-2 border rounded-lg p-4 space-y-3 bg-gray-50">
+              <p class="text-sm font-semibold text-gray-700">
+                Visibility
+              </p>
+              <div class="flex items-center">
+                <input
+                  id="edit-public"
+                  v-model="form.public"
+                  type="checkbox"
+                  class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                >
+                <label
+                  for="edit-public"
+                  class="ml-2 text-sm text-gray-700"
+                >Public (visible to everyone)</label>
+              </div>
+              <div class="flex items-center">
+                <input
+                  id="edit-featured"
+                  v-model="form.featured"
+                  type="checkbox"
+                  class="h-4 w-4 text-amber-500 border-gray-300 rounded"
+                >
+                <label
+                  for="edit-featured"
+                  class="ml-2 text-sm text-gray-700"
+                >Featured (showcase on landing page)</label>
+              </div>
             </div>
-            <div class="p-6 space-y-3">
-                <p>Are you sure you want to delete this photo?</p>
+
+            <div v-if="salesEnabled">
+              <label class="block text-sm font-medium text-gray-700">Enable Orders</label>
+              <div class="mt-1 flex items-center">
+                <input
+                  id="allow_orders"
+                  v-model="form.allow_orders"
+                  type="checkbox"
+                  class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                >
+                <label
+                  for="allow_orders"
+                  class="ml-2 text-sm text-gray-700"
+                >Allow ordering prints from this gallery</label>
+              </div>
+              <p class="text-xs text-gray-500 mt-1">
+                Requires API key configured. Photos may have their own override.
+              </p>
             </div>
-            <div class="px-6 py-4 border-t flex items-center justify-end gap-3">
-                <button @click="showDelete = false" class="px-4 py-2 rounded-md border border-gray-300 text-gray-700">Cancel</button>
-                <button @click="confirmDelete" :disabled="deleting" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">
-                    {{ deleting ? "Deleting…" : "Delete" }}
-                </button>
+
+            <div v-if="salesEnabled">
+              <label class="block text-sm font-medium text-gray-700">Markup % (optional)</label>
+              <input
+                v-model.number="form.markup_percent"
+                type="number"
+                step="0.01"
+                min="0"
+                class="mt-1 block w-40 rounded-md border-gray-300"
+              >
+              <p class="text-xs text-gray-500 mt-1">
+                Leave blank to use site default (e.g., 25%).
+              </p>
+              <p
+                v-if="form.errors.markup_percent"
+                class="text-sm text-red-600 mt-1"
+              >
+                {{ form.errors.markup_percent }}
+              </p>
             </div>
+
+            <!-- Access codes are generated, not typed. See the Share: Access Code section below. -->
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">EXIF Visibility</label>
+              <select
+                v-model="form.exif_visibility"
+                class="mt-1 block w-full rounded-md border-gray-300"
+              >
+                <option value="all">
+                  All
+                </option>
+                <option value="none">
+                  None
+                </option>
+                <option value="custom">
+                  Custom
+                </option>
+              </select>
+            </div>
+
+            <div v-if="form.exif_visibility === 'custom'">
+              <label class="block text-sm font-medium text-gray-700 mb-1">EXIF Fields to Show</label>
+              <div class="flex flex-wrap gap-3 text-sm">
+                <label class="inline-flex items-center gap-2"><input
+                  v-model="form.exif_fields"
+                  type="checkbox"
+                  value="camera"
+                > Camera</label>
+                <label class="inline-flex items-center gap-2"><input
+                  v-model="form.exif_fields"
+                  type="checkbox"
+                  value="lens"
+                > Lens</label>
+                <label class="inline-flex items-center gap-2"><input
+                  v-model="form.exif_fields"
+                  type="checkbox"
+                  value="aperture"
+                > Aperture</label>
+                <label class="inline-flex items-center gap-2"><input
+                  v-model="form.exif_fields"
+                  type="checkbox"
+                  value="shutter"
+                > Shutter</label>
+                <label class="inline-flex items-center gap-2"><input
+                  v-model="form.exif_fields"
+                  type="checkbox"
+                  value="iso"
+                > ISO</label>
+                <label class="inline-flex items-center gap-2"><input
+                  v-model="form.exif_fields"
+                  type="checkbox"
+                  value="focal"
+                > Focal Length</label>
+              </div>
+              <p
+                v-if="form.errors.exif_fields"
+                class="text-sm text-red-600 mt-1"
+              >
+                {{ form.errors.exif_fields }}
+              </p>
+            </div>
+
+            <div class="flex items-center justify-end gap-3">
+              <a
+                href="/admin/galleries"
+                class="px-4 py-2 rounded-md border border-gray-300 text-gray-700"
+              >Cancel</a>
+              <button
+                type="submit"
+                :disabled="form.processing"
+                class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+              >
+                {{ form.processing ? "Saving…" : "Save Changes" }}
+              </button>
+            </div>
+          </form>
         </div>
+        <!-- Access codes -->
+        <div class="bg-white rounded-md shadow p-4">
+          <h3 class="text-lg font-medium mb-3">
+            Share: Access Code
+          </h3>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Recipient Email</label>
+              <input
+                v-model="codeEmail"
+                type="email"
+                class="mt-1 block w-full rounded-md border-gray-300"
+                placeholder="person@example.com"
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Duration</label>
+              <select
+                v-model="codeDuration"
+                class="mt-1 block w-full rounded-md border-gray-300"
+              >
+                <option value="infinite">
+                  No expiration
+                </option>
+                <option value="7d">
+                  7 days
+                </option>
+                <option value="14d">
+                  14 days
+                </option>
+                <option value="30d">
+                  30 days
+                </option>
+                <option value="90d">
+                  90 days
+                </option>
+                <option value="1y">
+                  1 year
+                </option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Label (optional)</label>
+              <input
+                v-model="codeLabel"
+                type="text"
+                class="mt-1 block w-full rounded-md border-gray-300"
+                placeholder="e.g. Client: ACME Review"
+              >
+            </div>
+            <div class="flex justify-end">
+              <button
+                :disabled="codeBusy || !codeEmail"
+                class="px-3 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
+                @click="generateAndSendCode"
+              >
+                {{ codeBusy ? "Sending…" : "Generate & Email" }}
+              </button>
+            </div>
+
+            <div
+              v-if="codeResult"
+              class="mt-2 text-sm"
+            >
+              <div class="text-green-700">
+                Code created{{
+                  codeResult.expires_at ? ` (expires ${new Date(codeResult.expires_at).toLocaleString()})` : ""
+                }}.
+              </div>
+              <div class="mt-1">
+                <span class="font-medium">Code:</span>
+                <code class="px-1 py-0.5 bg-gray-100 rounded">{{ codeResult.code }}</code>
+              </div>
+              <div class="mt-1 break-all">
+                <span class="font-medium">Link:</span>
+                <a
+                  :href="codeResult.link"
+                  target="_blank"
+                  class="text-indigo-700 underline"
+                >{{ codeResult.link }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
     </div>
+  </AdminLayout>
+
+  <!-- Photo Edit modal -->
+  <div
+    v-if="showPhotoEdit"
+    class="fixed inset-0 z-50 flex items-center justify-center"
+  >
+    <div
+      class="absolute inset-0 bg-black/40"
+      @click="showPhotoEdit = false"
+    />
+    <div class="relative bg-white rounded-lg shadow-xl w-full max-w-lg mx-4">
+      <div class="px-6 py-4 border-b flex items-center justify-between">
+        <h2 class="text-lg font-medium">
+          Edit Photo
+        </h2>
+        <button
+          class="text-gray-500 hover:text-gray-700"
+          @click="showPhotoEdit = false"
+        >
+          ✕
+        </button>
+      </div>
+      <div class="p-6 space-y-4">
+        <img
+          :src="normalizeSrc(currentPhoto?.thumb_url || currentPhoto?.path_thumb || currentPhoto?.web_url || currentPhoto?.path_web)"
+          class="w-full h-48 object-cover rounded"
+          alt="preview"
+        >
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Title</label>
+          <input
+            v-model="photoForm.title"
+            type="text"
+            class="mt-1 block w-full rounded-md border-gray-300"
+          >
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Description</label>
+          <textarea
+            v-model="photoForm.description"
+            rows="3"
+            class="mt-1 block w-full rounded-md border-gray-300"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Attribution</label>
+          <input
+            v-model="photoForm.attribution"
+            type="text"
+            class="mt-1 block w-full rounded-md border-gray-300"
+            placeholder="e.g. Edited by Studio"
+          >
+          <p
+            v-if="photoForm.errors.attribution"
+            class="text-sm text-red-600 mt-1"
+          >
+            {{ photoForm.errors.attribution }}
+          </p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Notes</label>
+          <textarea
+            v-model="photoForm.notes"
+            rows="2"
+            class="mt-1 block w-full rounded-md border-gray-300"
+            placeholder="Internal notes"
+          />
+          <p
+            v-if="photoForm.errors.notes"
+            class="text-sm text-red-600 mt-1"
+          >
+            {{ photoForm.errors.notes }}
+          </p>
+        </div>
+        <div v-if="salesEnabled">
+          <label class="block text-sm font-medium text-gray-700">Markup % (optional)</label>
+          <input
+            v-model.number="photoForm.markup_percent"
+            type="number"
+            step="0.01"
+            min="0"
+            class="mt-1 w-40 rounded-md border-gray-300"
+          >
+          <p class="text-xs text-gray-500">
+            Leave blank to inherit from gallery/site.
+          </p>
+        </div>
+        <div
+          v-if="currentPhoto?.exif && Object.keys(currentPhoto.exif).length"
+          class="text-sm text-gray-600"
+        >
+          <div class="font-medium mb-1">
+            EXIF
+          </div>
+          <div class="flex flex-wrap gap-x-4 gap-y-1">
+            <span v-if="currentPhoto.exif.camera">Camera: {{ currentPhoto.exif.camera }}</span>
+            <span v-if="currentPhoto.exif.lens">Lens: {{ currentPhoto.exif.lens }}</span>
+            <span v-if="currentPhoto.exif.aperture">Aperture: {{ currentPhoto.exif.aperture }}</span>
+            <span v-if="currentPhoto.exif.shutter">Shutter: {{ currentPhoto.exif.shutter }}</span>
+            <span v-if="currentPhoto.exif.iso">ISO: {{ currentPhoto.exif.iso }}</span>
+            <span v-if="currentPhoto.exif.focal">Focal: {{ currentPhoto.exif.focal }}</span>
+            <span v-if="currentPhoto.exif.datetime">Date: {{ currentPhoto.exif.datetime }}</span>
+            <span v-if="currentPhoto.exif.photographer">Photographer: {{ currentPhoto.exif.photographer }}</span>
+            <span v-if="currentPhoto.exif.latitude && currentPhoto.exif.longitude">Location: {{ Number(currentPhoto.exif.latitude).toFixed(6) }},
+              {{ Number(currentPhoto.exif.longitude).toFixed(6) }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="px-6 py-4 border-t flex items-center justify-end gap-3">
+        <button
+          class="px-4 py-2 rounded-md border border-gray-300 text-gray-700"
+          @click="showPhotoEdit = false"
+        >
+          Cancel
+        </button>
+        <button
+          :disabled="editing"
+          class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+          @click="savePhoto"
+        >
+          {{ editing ? "Saving…" : "Save" }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo Delete modal -->
+  <div
+    v-if="showDelete"
+    class="fixed inset-0 z-50 flex items-center justify-center"
+  >
+    <div
+      class="absolute inset-0 bg-black/40"
+      @click="showDelete = false"
+    />
+    <div class="relative bg-white rounded-lg shadow-xl w-full max-w-lg mx-4">
+      <div class="px-6 py-4 border-b flex items-center justify-between">
+        <h2 class="text-lg font-medium">
+          Delete Photo
+        </h2>
+        <button
+          class="text-gray-500 hover:text-gray-700"
+          @click="showDelete = false"
+        >
+          ✕
+        </button>
+      </div>
+      <div class="p-6 space-y-3">
+        <p>Are you sure you want to delete this photo?</p>
+      </div>
+      <div class="px-6 py-4 border-t flex items-center justify-end gap-3">
+        <button
+          class="px-4 py-2 rounded-md border border-gray-300 text-gray-700"
+          @click="showDelete = false"
+        >
+          Cancel
+        </button>
+        <button
+          :disabled="deleting"
+          class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+          @click="confirmDelete"
+        >
+          {{ deleting ? "Deleting…" : "Delete" }}
+        </button>
+      </div>
+    </div>
+  </div>
 </template>

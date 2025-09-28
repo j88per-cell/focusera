@@ -1,5 +1,5 @@
 <script setup>
-import SiteTopNav from '../Components/SiteTopNav.vue'
+import SiteTopNav from '../Components/SiteTopNav.vue';
 </script>
 
 <template>
@@ -9,7 +9,6 @@ import SiteTopNav from '../Components/SiteTopNav.vue'
     <main>
       <slot />
     </main>
-
   </div>
 </template>
 

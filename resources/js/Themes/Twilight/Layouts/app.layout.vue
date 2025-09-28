@@ -1,5 +1,5 @@
 <script setup>
-import SiteTopNav from '../Components/SiteTopNav.vue'
+import SiteTopNav from '../Components/SiteTopNav.vue';
 </script>
 
 <template>

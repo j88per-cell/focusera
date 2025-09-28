@@ -98,89 +98,233 @@ function toBoolean(value) {
   <AdminLayout>
     <div class="max-w-7xl mx-auto px-4 py-6">
       <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Galleries</h1>
+        <h1 class="text-2xl font-semibold">
+          Galleries
+        </h1>
         <div class="flex items-center gap-3">
-          <a href="/galleries" class="text-sm text-accent hover:underline">View public</a>
-          <button @click="showCreate = true" class="px-3 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm">New Gallery</button>
+          <a
+            href="/galleries"
+            class="text-sm text-accent hover:underline"
+          >View public</a>
+          <button
+            class="px-3 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm"
+            @click="showCreate = true"
+          >
+            New Gallery
+          </button>
         </div>
       </div>
 
       <!-- Create modal -->
-      <div v-if="showCreate" class="fixed inset-0 z-50 flex items-center justify-center">
-        <div class="absolute inset-0 bg-black/40" @click="showCreate = false"></div>
+      <div
+        v-if="showCreate"
+        class="fixed inset-0 z-50 flex items-center justify-center"
+      >
+        <div
+          class="absolute inset-0 bg-black/40"
+          @click="showCreate = false"
+        />
         <div class="relative bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4">
           <div class="px-6 py-4 border-b flex items-center justify-between">
-            <h2 class="text-lg font-medium">Create Gallery</h2>
-            <button @click="showCreate = false" class="text-gray-500 hover:text-gray-700">✕</button>
+            <h2 class="text-lg font-medium">
+              Create Gallery
+            </h2>
+            <button
+              class="text-gray-500 hover:text-gray-700"
+              @click="showCreate = false"
+            >
+              ✕
+            </button>
           </div>
-          <form @submit.prevent="createGallery" novalidate class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form
+            novalidate
+            class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4"
+            @submit.prevent="createGallery"
+          >
             <div>
               <label class="block text-sm font-medium text-gray-700">Title</label>
-              <input v-model="form.title" type="text" class="mt-1 block w-full rounded-md border-gray-300" required />
-              <p v-if="form.errors.title" class="text-sm text-red-600 mt-1">{{ form.errors.title }}</p>
+              <input
+                v-model="form.title"
+                type="text"
+                class="mt-1 block w-full rounded-md border-gray-300"
+                required
+              >
+              <p
+                v-if="form.errors.title"
+                class="text-sm text-red-600 mt-1"
+              >
+                {{ form.errors.title }}
+              </p>
             </div>
 
             <div>
               <label class="block text-sm font-medium text-gray-700">Date</label>
-              <input v-model="form.date" type="date" class="mt-1 block w-full rounded-md border-gray-300" />
-              <p v-if="form.errors.date" class="text-sm text-red-600 mt-1">{{ form.errors.date }}</p>
+              <input
+                v-model="form.date"
+                type="date"
+                class="mt-1 block w-full rounded-md border-gray-300"
+              >
+              <p
+                v-if="form.errors.date"
+                class="text-sm text-red-600 mt-1"
+              >
+                {{ form.errors.date }}
+              </p>
             </div>
 
             <div class="md:col-span-2">
               <label class="block text-sm font-medium text-gray-700">Description</label>
-              <textarea v-model="form.description" rows="3" class="mt-1 block w-full rounded-md border-gray-300"></textarea>
-              <p v-if="form.errors.description" class="text-sm text-red-600 mt-1">{{ form.errors.description }}</p>
+              <textarea
+                v-model="form.description"
+                rows="3"
+                class="mt-1 block w-full rounded-md border-gray-300"
+              />
+              <p
+                v-if="form.errors.description"
+                class="text-sm text-red-600 mt-1"
+              >
+                {{ form.errors.description }}
+              </p>
             </div>
 
             <div>
               <label class="block text-sm font-medium text-gray-700">Attribution</label>
-              <input v-model="form.attribution" type="text" class="mt-1 block w-full rounded-md border-gray-300" placeholder="e.g. Edited by Studio" />
-              <p v-if="form.errors.attribution" class="text-sm text-red-600 mt-1">{{ form.errors.attribution }}</p>
+              <input
+                v-model="form.attribution"
+                type="text"
+                class="mt-1 block w-full rounded-md border-gray-300"
+                placeholder="e.g. Edited by Studio"
+              >
+              <p
+                v-if="form.errors.attribution"
+                class="text-sm text-red-600 mt-1"
+              >
+                {{ form.errors.attribution }}
+              </p>
             </div>
 
             <div class="md:col-span-2">
               <label class="block text-sm font-medium text-gray-700">Notes</label>
-              <textarea v-model="form.notes" rows="3" class="mt-1 block w-full rounded-md border-gray-300" placeholder="Internal notes or credit details"></textarea>
-              <p v-if="form.errors.notes" class="text-sm text-red-600 mt-1">{{ form.errors.notes }}</p>
+              <textarea
+                v-model="form.notes"
+                rows="3"
+                class="mt-1 block w-full rounded-md border-gray-300"
+                placeholder="Internal notes or credit details"
+              />
+              <p
+                v-if="form.errors.notes"
+                class="text-sm text-red-600 mt-1"
+              >
+                {{ form.errors.notes }}
+              </p>
             </div>
 
             <div>
               <label class="block text-sm font-medium text-gray-700">Thumbnail URL (optional)</label>
-              <input v-model="form.thumbnail" type="text" placeholder="/images/example.jpg" class="mt-1 block w-full rounded-md border-gray-300" />
-              <p class="text-xs text-gray-500 mt-1">You can also set a thumbnail later from the gallery edit screen once photos are uploaded.</p>
-              <div v-if="form.thumbnail" class="mt-2 flex items-center gap-3">
-                <img :src="normalizeSrc(form.thumbnail)" alt="current thumbnail" class="w-16 h-16 object-cover rounded border" />
-                <button type="button" class="text-xs text-gray-600 hover:underline" @click="form.thumbnail = ''">Clear</button>
+              <input
+                v-model="form.thumbnail"
+                type="text"
+                placeholder="/images/example.jpg"
+                class="mt-1 block w-full rounded-md border-gray-300"
+              >
+              <p class="text-xs text-gray-500 mt-1">
+                You can also set a thumbnail later from the gallery edit screen once photos are uploaded.
+              </p>
+              <div
+                v-if="form.thumbnail"
+                class="mt-2 flex items-center gap-3"
+              >
+                <img
+                  :src="normalizeSrc(form.thumbnail)"
+                  alt="current thumbnail"
+                  class="w-16 h-16 object-cover rounded border"
+                >
+                <button
+                  type="button"
+                  class="text-xs text-gray-600 hover:underline"
+                  @click="form.thumbnail = ''"
+                >
+                  Clear
+                </button>
               </div>
-              <p v-if="form.errors.thumbnail" class="text-sm text-red-600 mt-1">{{ form.errors.thumbnail }}</p>
+              <p
+                v-if="form.errors.thumbnail"
+                class="text-sm text-red-600 mt-1"
+              >
+                {{ form.errors.thumbnail }}
+              </p>
             </div>
 
             <div>
               <label class="block text-sm font-medium text-gray-700">Parent Gallery</label>
-              <select v-model="form.parent_id" class="mt-1 block w-full rounded-md border-gray-300">
-                <option value="">None</option>
-                <option v-for="p in parents" :key="p.id" :value="p.id">{{ p.title }}</option>
+              <select
+                v-model="form.parent_id"
+                class="mt-1 block w-full rounded-md border-gray-300"
+              >
+                <option value="">
+                  None
+                </option>
+                <option
+                  v-for="p in parents"
+                  :key="p.id"
+                  :value="p.id"
+                >
+                  {{ p.title }}
+                </option>
               </select>
-              <p v-if="form.errors.parent_id" class="text-sm text-red-600 mt-1">{{ form.errors.parent_id }}</p>
+              <p
+                v-if="form.errors.parent_id"
+                class="text-sm text-red-600 mt-1"
+              >
+                {{ form.errors.parent_id }}
+              </p>
             </div>
 
             <div class="md:col-span-2 border rounded-lg p-4 space-y-3 bg-gray-50">
-              <p class="text-sm font-semibold text-gray-700">Visibility</p>
+              <p class="text-sm font-semibold text-gray-700">
+                Visibility
+              </p>
               <div class="flex items-center">
-                <input id="create-public" v-model="form.public" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
-                <label for="create-public" class="ml-2 text-sm text-gray-700">Public (visible to everyone)</label>
+                <input
+                  id="create-public"
+                  v-model="form.public"
+                  type="checkbox"
+                  class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                >
+                <label
+                  for="create-public"
+                  class="ml-2 text-sm text-gray-700"
+                >Public (visible to everyone)</label>
               </div>
               <div class="flex items-center">
-                <input id="create-featured" v-model="form.featured" type="checkbox" class="h-4 w-4 text-amber-500 border-gray-300 rounded" />
-                <label for="create-featured" class="ml-2 text-sm text-gray-700">Featured (showcase on landing page)</label>
+                <input
+                  id="create-featured"
+                  v-model="form.featured"
+                  type="checkbox"
+                  class="h-4 w-4 text-amber-500 border-gray-300 rounded"
+                >
+                <label
+                  for="create-featured"
+                  class="ml-2 text-sm text-gray-700"
+                >Featured (showcase on landing page)</label>
               </div>
             </div>
 
             <!-- Access codes are generated from the gallery edit page, not typed here. -->
 
             <div class="md:col-span-2 flex items-center justify-end gap-3 pt-2">
-              <button type="button" @click="showCreate = false" class="px-4 py-2 rounded-md border border-gray-300 text-gray-700">Cancel</button>
-              <button type="submit" :disabled="saving || form.processing" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+              <button
+                type="button"
+                class="px-4 py-2 rounded-md border border-gray-300 text-gray-700"
+                @click="showCreate = false"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                :disabled="saving || form.processing"
+                class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+              >
                 {{ form.processing ? 'Creating…' : 'Create Gallery' }}
               </button>
             </div>
@@ -191,24 +335,51 @@ function toBoolean(value) {
       <!-- List -->
       <div class="bg-white shadow rounded-lg">
         <div class="px-6 py-4 border-b">
-          <h2 class="text-lg font-medium">Existing Galleries</h2>
+          <h2 class="text-lg font-medium">
+            Existing Galleries
+          </h2>
         </div>
         <div class="divide-y">
-          <div v-for="g in props.galleries.data" :key="g.id" class="px-6 py-4 flex items-center justify-between">
+          <div
+            v-for="g in props.galleries.data"
+            :key="g.id"
+            class="px-6 py-4 flex items-center justify-between"
+          >
             <div class="flex items-center gap-4">
-              <img v-if="g.thumbnail || g.thumb_url" :src="normalizeSrc(g.thumb_url || g.thumbnail)" alt="thumb" class="w-12 h-12 object-cover rounded" />
+              <img
+                v-if="g.thumbnail || g.thumb_url"
+                :src="normalizeSrc(g.thumb_url || g.thumbnail)"
+                alt="thumb"
+                class="w-12 h-12 object-cover rounded"
+              >
               <div>
                 <div class="font-medium flex items-center gap-2">
                   <span>{{ g.title }}</span>
-                  <span v-if="g.featured" class="px-2 py-0.5 text-xs rounded-full bg-amber-100 text-amber-700 border border-amber-200">Featured</span>
+                  <span
+                    v-if="g.featured"
+                    class="px-2 py-0.5 text-xs rounded-full bg-amber-100 text-amber-700 border border-amber-200"
+                  >Featured</span>
                 </div>
-                <div class="text-sm text-gray-500">{{ g.public ? 'Public' : 'Private' }} • {{ g.photos_count || 0 }} photos • {{ g.children_count || 0 }} sub</div>
+                <div class="text-sm text-gray-500">
+                  {{ g.public ? 'Public' : 'Private' }} • {{ g.photos_count || 0 }} photos • {{ g.children_count || 0 }} sub
+                </div>
               </div>
             </div>
             <div class="flex items-center gap-3">
-              <a :href="`/galleries/${g.id}`" class="text-sm text-accent hover:underline">View</a>
-              <a :href="`/admin/galleries/${g.id}/edit`" class="text-sm text-gray-600 hover:underline">Edit</a>
-              <button @click="askDelete(g)" class="text-sm text-red-600 hover:underline">Delete</button>
+              <a
+                :href="`/galleries/${g.id}`"
+                class="text-sm text-accent hover:underline"
+              >View</a>
+              <a
+                :href="`/admin/galleries/${g.id}/edit`"
+                class="text-sm text-gray-600 hover:underline"
+              >Edit</a>
+              <button
+                class="text-sm text-red-600 hover:underline"
+                @click="askDelete(g)"
+              >
+                Delete
+              </button>
             </div>
           </div>
         </div>
@@ -221,29 +392,53 @@ function toBoolean(value) {
   </AdminLayout>
 
   <!-- Delete confirm modal -->
-  <div v-if="showDelete" class="fixed inset-0 z-50 flex items-center justify-center">
-    <div class="absolute inset-0 bg-black/40" @click="showDelete = false"></div>
+  <div
+    v-if="showDelete"
+    class="fixed inset-0 z-50 flex items-center justify-center"
+  >
+    <div
+      class="absolute inset-0 bg-black/40"
+      @click="showDelete = false"
+    />
     <div class="relative bg-white rounded-lg shadow-xl w-full max-w-lg mx-4">
       <div class="px-6 py-4 border-b flex items-center justify-between">
-        <h2 class="text-lg font-medium">Delete Gallery</h2>
-        <button @click="showDelete = false" class="text-gray-500 hover:text-gray-700">✕</button>
+        <h2 class="text-lg font-medium">
+          Delete Gallery
+        </h2>
+        <button
+          class="text-gray-500 hover:text-gray-700"
+          @click="showDelete = false"
+        >
+          ✕
+        </button>
       </div>
       <div class="p-6 space-y-3">
         <p>
           Are you sure you want to delete
           <strong>{{ toDelete?.title }}</strong>?
         </p>
-        <p v-if="toDelete?.photos_count" class="text-red-600">
+        <p
+          v-if="toDelete?.photos_count"
+          class="text-red-600"
+        >
           Warning: This gallery contains {{ toDelete.photos_count }} photo(s). Deleting it will remove them.
         </p>
       </div>
       <div class="px-6 py-4 border-t flex items-center justify-end gap-3">
-        <button @click="showDelete = false" class="px-4 py-2 rounded-md border border-gray-300 text-gray-700">Cancel</button>
-        <button @click="confirmDelete" :disabled="deleting" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">
+        <button
+          class="px-4 py-2 rounded-md border border-gray-300 text-gray-700"
+          @click="showDelete = false"
+        >
+          Cancel
+        </button>
+        <button
+          :disabled="deleting"
+          class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+          @click="confirmDelete"
+        >
           {{ deleting ? 'Deleting…' : 'Delete' }}
         </button>
       </div>
     </div>
   </div>
-
 </template>

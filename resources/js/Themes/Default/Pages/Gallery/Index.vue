@@ -3,10 +3,10 @@
     <div class="w-full max-w-6xl mx-auto p-6">
       <!-- Header -->
       <GalleryHeader
-        :totalPhotos="totalGalleries"
-        :currentPage="currentPage"
-        :totalPages="totalPages"
         v-model:search="search"
+        :total-photos="totalGalleries"
+        :current-page="currentPage"
+        :total-pages="totalPages"
       />
 
       <GalleryGrid
@@ -15,11 +15,11 @@
       />
 
       <Pagination
-        :currentPage="currentPage"
-        :totalPages="totalPages"
-        :photosPerPage="perPage"
+        :current-page="currentPage"
+        :total-pages="totalPages"
+        :photos-per-page="perPage"
         @page="goToPage"
-        @perPage="updatePerPage"
+        @per-page="updatePerPage"
       />
 
       <!-- Lightbox -->
@@ -33,13 +33,13 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
-import axios from 'axios'
-import ThemeLayout from '@/Layouts/app.layout.vue'
-import GalleryHeader from '@/Components/Gallery/GalleryHeader.vue'
-import GalleryGrid from '@/Components/Gallery/GalleryGrid.vue'
-import Pagination from '@/Components/Gallery/Pagination.vue'
-import Lightbox from '@/Components/Gallery/Lightbox.vue'
+import { ref, watch } from 'vue';
+import axios from 'axios';
+import ThemeLayout from '@/Layouts/app.layout.vue';
+import GalleryHeader from '@/Components/Gallery/GalleryHeader.vue';
+import GalleryGrid from '@/Components/Gallery/GalleryGrid.vue';
+import Pagination from '@/Components/Gallery/Pagination.vue';
+import Lightbox from '@/Components/Gallery/Lightbox.vue';
 
 const props = defineProps({
   galleries: {
@@ -72,28 +72,28 @@ const fetchPhotos = async () => {
       per_page: perPage.value,
       search: search.value
     }
-  })
-  photos.value = data.data
-  totalPhotos.value = data.total
-  totalPages.value = data.last_page
-}
+  });
+  photos.value = data.data;
+  totalPhotos.value = data.total;
+  totalPages.value = data.last_page;
+};
 
-watch([currentPage, perPage, search], fetchPhotos)
+watch([currentPage, perPage, search], fetchPhotos);
 
 // Methods
 const goToPage = (page) => {
-  if (page >= 1 && page <= totalPages.value) currentPage.value = page
-}
+  if (page >= 1 && page <= totalPages.value) currentPage.value = page;
+};
 const updatePerPage = (value) => {
-  perPage.value = value
-  currentPage.value = 1
-}
+  perPage.value = value;
+  currentPage.value = 1;
+};
 const openLightbox = (photo) => {
-  selectedPhoto.value = photo
-  document.body.style.overflow = 'hidden'
-}
+  selectedPhoto.value = photo;
+  document.body.style.overflow = 'hidden';
+};
 const closeLightbox = () => {
-  selectedPhoto.value = null
-  document.body.style.overflow = 'auto'
-}
+  selectedPhoto.value = null;
+  document.body.style.overflow = 'auto';
+};
 </script>

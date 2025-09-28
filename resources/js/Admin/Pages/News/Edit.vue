@@ -96,72 +96,177 @@ function destroyPost() {
   <AdminLayout>
     <div class="max-w-3xl mx-auto px-4 py-6">
       <div class="flex items-center justify-between mb-4">
-        <h1 class="text-2xl font-semibold">{{ isNew ? 'New Post' : 'Edit Post' }}</h1>
-        <a href="/admin/news" class="text-sm text-accent hover:underline">Back</a>
+        <h1 class="text-2xl font-semibold">
+          {{ isNew ? 'New Post' : 'Edit Post' }}
+        </h1>
+        <a
+          href="/admin/news"
+          class="text-sm text-accent hover:underline"
+        >Back</a>
       </div>
 
-      <form @submit.prevent="submit" class="space-y-4 bg-white shadow rounded-lg p-6">
+      <form
+        class="space-y-4 bg-white shadow rounded-lg p-6"
+        @submit.prevent="submit"
+      >
         <div>
           <label class="block text-sm font-medium text-gray-700">Title</label>
-          <input v-model="form.title" type="text" class="mt-1 block w-full rounded-md border-gray-300" />
-          <p v-if="form.errors.title" class="text-sm text-red-600 mt-1">{{ form.errors.title }}</p>
+          <input
+            v-model="form.title"
+            type="text"
+            class="mt-1 block w-full rounded-md border-gray-300"
+          >
+          <p
+            v-if="form.errors.title"
+            class="text-sm text-red-600 mt-1"
+          >
+            {{ form.errors.title }}
+          </p>
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700">Excerpt</label>
-          <textarea v-model="form.excerpt" rows="2" class="mt-1 block w-full rounded-md border-gray-300"></textarea>
-          <p v-if="form.errors.excerpt" class="text-sm text-red-600 mt-1">{{ form.errors.excerpt }}</p>
+          <textarea
+            v-model="form.excerpt"
+            rows="2"
+            class="mt-1 block w-full rounded-md border-gray-300"
+          />
+          <p
+            v-if="form.errors.excerpt"
+            class="text-sm text-red-600 mt-1"
+          >
+            {{ form.errors.excerpt }}
+          </p>
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700">Body (HTML allowed)</label>
-          <textarea v-model="form.body" rows="10" class="mt-1 block w-full rounded-md border-gray-300"></textarea>
-          <p v-if="form.errors.body" class="text-sm text-red-600 mt-1">{{ form.errors.body }}</p>
+          <textarea
+            v-model="form.body"
+            rows="10"
+            class="mt-1 block w-full rounded-md border-gray-300"
+          />
+          <p
+            v-if="form.errors.body"
+            class="text-sm text-red-600 mt-1"
+          >
+            {{ form.errors.body }}
+          </p>
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Publish</label>
           <div class="space-y-2 mb-2">
             <div class="flex items-center gap-4">
               <label class="flex items-center gap-2 text-sm">
-                <input type="radio" name="status" value="draft" v-model="status" />
+                <input
+                  v-model="status"
+                  type="radio"
+                  name="status"
+                  value="draft"
+                >
                 <span>Draft</span>
               </label>
               <label class="flex items-center gap-2 text-sm">
-                <input type="radio" name="status" value="published" v-model="status" />
+                <input
+                  v-model="status"
+                  type="radio"
+                  name="status"
+                  value="published"
+                >
                 <span>Published</span>
               </label>
             </div>
-            <div v-if="status === 'published'" class="flex items-center gap-4">
+            <div
+              v-if="status === 'published'"
+              class="flex items-center gap-4"
+            >
               <label class="flex items-center gap-2 text-sm">
-                <input type="radio" name="publishMode" value="now" v-model="publishMode" />
+                <input
+                  v-model="publishMode"
+                  type="radio"
+                  name="publishMode"
+                  value="now"
+                >
                 <span>Now</span>
               </label>
               <label class="flex items-center gap-2 text-sm">
-                <input type="radio" name="publishMode" value="schedule" v-model="publishMode" />
+                <input
+                  v-model="publishMode"
+                  type="radio"
+                  name="publishMode"
+                  value="schedule"
+                >
                 <span>Schedule</span>
               </label>
             </div>
           </div>
-          <div v-if="status === 'published' && publishMode === 'schedule'" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div
+            v-if="status === 'published' && publishMode === 'schedule'"
+            class="grid grid-cols-1 sm:grid-cols-2 gap-3"
+          >
             <div>
               <label class="block text-xs text-gray-600">Date</label>
-              <input v-model="publishDate" type="date" class="mt-1 block w-full rounded-md border-gray-300" />
+              <input
+                v-model="publishDate"
+                type="date"
+                class="mt-1 block w-full rounded-md border-gray-300"
+              >
             </div>
             <div>
               <label class="block text-xs text-gray-600">Time</label>
-              <input v-model="publishTime" type="time" class="mt-1 block w-full rounded-md border-gray-300" />
+              <input
+                v-model="publishTime"
+                type="time"
+                class="mt-1 block w-full rounded-md border-gray-300"
+              >
             </div>
             <div class="sm:col-span-2 flex flex-wrap gap-2 mt-1">
-              <button type="button" class="px-2 py-1 text-xs rounded border" @click="setQuickSchedule('today9')">Today 9:00</button>
-              <button type="button" class="px-2 py-1 text-xs rounded border" @click="setQuickSchedule('tomorrow9')">Tomorrow 9:00</button>
-              <button type="button" class="px-2 py-1 text-xs rounded border" @click="setQuickSchedule('nextMon9')">Next Monday 9:00</button>
+              <button
+                type="button"
+                class="px-2 py-1 text-xs rounded border"
+                @click="setQuickSchedule('today9')"
+              >
+                Today 9:00
+              </button>
+              <button
+                type="button"
+                class="px-2 py-1 text-xs rounded border"
+                @click="setQuickSchedule('tomorrow9')"
+              >
+                Tomorrow 9:00
+              </button>
+              <button
+                type="button"
+                class="px-2 py-1 text-xs rounded border"
+                @click="setQuickSchedule('nextMon9')"
+              >
+                Next Monday 9:00
+              </button>
             </div>
-            <p class="sm:col-span-2 text-xs text-gray-500">Times use your browser timezone; stored in UTC.</p>
-            <p v-if="form.errors.published_at" class="sm:col-span-2 text-sm text-red-600 mt-1">{{ form.errors.published_at }}</p>
+            <p class="sm:col-span-2 text-xs text-gray-500">
+              Times use your browser timezone; stored in UTC.
+            </p>
+            <p
+              v-if="form.errors.published_at"
+              class="sm:col-span-2 text-sm text-red-600 mt-1"
+            >
+              {{ form.errors.published_at }}
+            </p>
           </div>
         </div>
 
         <div class="flex items-center justify-end gap-3">
-          <button type="button" v-if="!isNew" @click="destroyPost" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">Delete</button>
-          <button type="submit" :disabled="form.processing" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+          <button
+            v-if="!isNew"
+            type="button"
+            class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+            @click="destroyPost"
+          >
+            Delete
+          </button>
+          <button
+            type="submit"
+            :disabled="form.processing"
+            class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+          >
             {{ form.processing ? 'Saving…' : 'Save' }}
           </button>
         </div>

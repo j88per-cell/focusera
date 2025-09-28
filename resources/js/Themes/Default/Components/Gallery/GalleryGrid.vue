@@ -1,5 +1,8 @@
 <template>
-  <div :class="gridClasses" class="grid gap-4 mb-8">
+  <div
+    :class="gridClasses"
+    class="grid gap-4 mb-8"
+  >
     <Link
       v-for="gallery in galleries"
       :key="gallery.id"
@@ -12,14 +15,14 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { Link } from '@inertiajs/vue3'
-import PhotoCard from './PhotoCard.vue'
+import { computed } from 'vue';
+import { Link } from '@inertiajs/vue3';
+import PhotoCard from './PhotoCard.vue';
 
 const props = defineProps({
   galleries: Array,
   columns: { type: Number, default: 4 }
-})
+});
 
 const gridClasses = computed(() => {
   const map = {
@@ -29,7 +32,7 @@ const gridClasses = computed(() => {
     4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
     5: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5',
     6: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6'
-  }
-  return map[props.columns] || map[4]
+  };
+  return map[props.columns] || map[4];
 });
 </script>

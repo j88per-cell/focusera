@@ -1,30 +1,59 @@
 <template>
-  <div class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-6" @click="$emit('close')">
-    <div class="relative max-w-6xl max-h-full w-full flex flex-col items-center" @click.stop>
-      <button @click="$emit('close')" class="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl font-bold">×</button>
+  <div
+    class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-6"
+    @click="$emit('close')"
+  >
+    <div
+      class="relative max-w-6xl max-h-full w-full flex flex-col items-center"
+      @click.stop
+    >
+      <button
+        class="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl font-bold"
+        @click="$emit('close')"
+      >
+        ×
+      </button>
 
       <img
         :src="photo.url"
         :alt="photo.title"
         class="max-w-full max-h-[80vh] object-contain border-8 border-white rounded-lg shadow-2xl bg-white"
-      />
+      >
 
       <!-- Bottom info/action bar -->
       <div class="w-full mt-5 text-white">
         <div class="bg-black/60 rounded-md p-3">
           <div class="flex items-center justify-between gap-4">
             <div>
-              <h3 class="text-lg font-semibold">{{ photo.title || 'Photo' }}</h3>
+              <h3 class="text-lg font-semibold">
+                {{ photo.title || 'Photo' }}
+              </h3>
               <div class="text-sm text-gray-200 space-y-1 mt-1">
-                <p v-if="photo.attribution" class="text-gray-200">Attribution: {{ photo.attribution }}</p>
-                <p v-if="photo.notes" class="text-gray-300 whitespace-pre-line">{{ photo.notes }}</p>
+                <p
+                  v-if="photo.attribution"
+                  class="text-gray-200"
+                >
+                  Attribution: {{ photo.attribution }}
+                </p>
+                <p
+                  v-if="photo.notes"
+                  class="text-gray-300 whitespace-pre-line"
+                >
+                  {{ photo.notes }}
+                </p>
               </div>
             </div>
             <div class="flex items-center gap-2">
-              <slot name="actions" :photo="photo"></slot>
+              <slot
+                name="actions"
+                :photo="photo"
+              />
             </div>
           </div>
-          <div v-if="showExif && photo.exif && Object.keys(photo.exif).length" class="mt-3 text-sm text-gray-200 flex flex-wrap gap-x-6 gap-y-2">
+          <div
+            v-if="showExif && photo.exif && Object.keys(photo.exif).length"
+            class="mt-3 text-sm text-gray-200 flex flex-wrap gap-x-6 gap-y-2"
+          >
             <span v-if="photo.exif.camera">Camera: {{ photo.exif.camera }}</span>
             <span v-if="photo.exif.lens">Lens: {{ photo.exif.lens }}</span>
             <span v-if="photo.exif.aperture">Aperture: {{ photo.exif.aperture }}</span>
@@ -39,12 +68,11 @@
       </div>
     </div>
   </div>
-  
 </template>
 
 <script setup>
 const props = defineProps({
   photo: Object,
   showExif: { type: Boolean, default: true },
-})
+});
 </script>
