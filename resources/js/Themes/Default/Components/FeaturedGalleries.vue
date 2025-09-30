@@ -1,9 +1,8 @@
 <script setup>
 import { computed } from 'vue';
-import { usePage } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 
 const props = defineProps({ items: { type: Array, required: true } });
-const emit = defineEmits(['open']);
 const page = usePage();
 const publicBaseUrl = computed(() => page.props?.site?.storage?.public_base_url || '/storage');
 
@@ -18,6 +17,21 @@ function joinPublicBase(path) {
   const base = publicBaseUrl.value || '';
   if (!base) return '/' + path.replace(/^\/+/, '');
   return `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
+}
+
+function galleryHref(gallery) {
+  if (!gallery) return '/galleries';
+
+  const directUrl = typeof gallery.url === 'string' && gallery.url.trim().length ? gallery.url.trim() : null;
+  if (directUrl) return directUrl;
+
+  const slug = typeof gallery.slug === 'string' && gallery.slug.trim().length ? gallery.slug.trim() : null;
+  if (slug) return `/galleries/${slug}`;
+
+  const id = gallery.id ?? gallery.gallery_id ?? null;
+  if (id) return `/galleries/${id}`;
+
+  return '/galleries';
 }
 </script>
 
@@ -37,13 +51,13 @@ function joinPublicBase(path) {
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div
+        <Link
           v-for="g in props.items"
-          :key="g.id"
-          class="group cursor-pointer"
-          @click="$emit('open', g.id)"
+          :key="g.id ?? g.slug ?? g.title"
+          :href="galleryHref(g)"
+          class="group block focus:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset-2"
         >
-          <div class="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+          <article class="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
             <div class="relative overflow-hidden h-64 flex items-center justify-center bg-muted">
               <template v-if="normalizeSrc(g.thumbnail)">
                 <img
@@ -84,8 +98,8 @@ function joinPublicBase(path) {
                 <span>{{ g.date }}</span>
               </div>
             </div>
-          </div>
-        </div>
+          </article>
+        </Link>
       </div>
     </div>
   </section>

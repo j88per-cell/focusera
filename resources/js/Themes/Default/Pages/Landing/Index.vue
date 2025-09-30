@@ -3,7 +3,7 @@
   import HeroRotator from '../../Components/HeroRotator.vue';
   import FeaturedGalleries from '../../Components/FeaturedGalleries.vue';
   import LatestNews from '../../Components/LatestNews.vue';
-  import { computed, onMounted } from 'vue';
+  import { computed } from 'vue';
   import { usePage } from '@inertiajs/vue3';
 
   const page = usePage();
@@ -73,10 +73,6 @@
 
   const featuredGalleries = computed(() => page.props?.featuredGalleries || []);
   const latestNews = computed(() => page.props?.newsPosts || []);
-
-  const openGallery = (id) => {
-    if (id) window.location.href = `/galleries/${id}`;
-  };
 </script>
 <template>
   <ThemeLayout>
@@ -88,7 +84,6 @@
     <FeaturedGalleries
       v-if="featuredGalleries.length"
       :items="featuredGalleries"
-      @open="openGallery"
     />
     <LatestNews
       v-if="latestNews.length"

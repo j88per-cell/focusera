@@ -144,10 +144,7 @@
       v-if="showFeatured && featuredGalleries.length"
       class="mt-6"
     >
-      <FeaturedGalleries
-        :items="featuredGalleries"
-        @open="id => (window.location.href = `/galleries/${id}`)"
-      />
+      <FeaturedGalleries :items="featuredGalleries" />
     </section>
 
     <LatestNews
