@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('date')->nullable();
             $table->boolean('public')->default(true);
             $table->string('access_code')->nullable(); // n-digit or whatever scheme
-            $table->string('thumbnail');
+            $table->string('thumbnail')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

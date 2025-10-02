@@ -14,7 +14,7 @@ class LandingPageController extends Controller
             ->where('featured', true)
             ->withCount('photos')
             ->inRandomOrder()
-            ->limit(6)
+            ->limit(12)
             ->get()
             ->map(function (Gallery $gallery) {
                 return [
