@@ -34,11 +34,43 @@ Built on the popular **Laravel** framework, it can run on a wide variety of host
 
 ### Prerequisites
 
--   PHP 8.2+
--   Composer
+-   PHP 8.3+
+-   Composer 2.6+ (see dependency notes below)
 -   Node.js 18+
--   MySQL/MariaDB (or a supported database)
+-   MySQL/MariaDB, PostgreSQL, or SQLite (details below)
 -   Redis (optional, used for improving site performance with caching)
+
+#### Database compatibility
+
+-   **MySQL / MariaDB**: Laravel 10 requires MySQL 8.0.21+ or MariaDB 10.3.27+. We actively test on MySQL 8.4 LTS and MariaDB 10.11.
+-   **PostgreSQL**: Tested on PostgreSQL 16 and higher.
+-   **SQLite**: SQLite 3.26+ is required; development smoke tests are run on SQLite 3.45.
+
+#### Sample `.env` for PostgreSQL
+
+```bash
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=focusera
+DB_USERNAME=focusera
+DB_PASSWORD=secret
+
+# Optional: queue & cache connections when running Redis alongside PostgreSQL
+CACHE_STORE=redis
+QUEUE_CONNECTION=redis
+SESSION_DRIVER=database
+```
+
+#### Composer requirements
+
+The core application depends on the packages below (see `composer.json` for the full list):
+
+-   `laravel/framework` `^10.10` and related first-party packages such as `laravel/breeze`, `laravel/sanctum`, and `laravel/tinker`.
+-   Image handling stack: `spatie/image` `^3.8` and `spatie/image-optimizer` `^1.8`.
+-   Supporting utilities including `filp/whoops` `^2.18`, `guzzlehttp/guzzle` `^7.2`, `inertiajs/inertia-laravel` `^0.6.8`, and `kalnoy/nestedset` `^6.0`.
+
+Make sure your PHP version satisfies the `^8.3` platform requirement so Composer can resolve these packages.
 
 ### Installation
 
