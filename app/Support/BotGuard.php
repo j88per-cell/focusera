@@ -77,12 +77,14 @@ class BotGuard
             return true;
         }
 
-        if ($userAgentLower !== '' && static::isAllowListed($userAgentLower)) {
-            return false;
+        $isExplicitAllow = $userAgentLower !== '' && static::isAllowListed($userAgentLower, includeDefault: false);
+
+        if ($userAgentLower !== '' && static::isBlockedAgent($userAgentLower) && !$isExplicitAllow) {
+            return true;
         }
 
-        if ($userAgentLower !== '' && static::isBlockedAgent($userAgentLower)) {
-            return true;
+        if ($userAgentLower !== '' && static::isAllowListed($userAgentLower)) {
+            return false;
         }
 
         if ($userAgent !== '' && static::matchesBlockedRegex($userAgent)) {
@@ -115,9 +117,11 @@ class BotGuard
         return static::boolConfig('require_browser_headers', true);
     }
 
-    protected static function isAllowListed(string $userAgentLower): bool
+    protected static function isAllowListed(string $userAgentLower, bool $includeDefault = true): bool
     {
-        foreach (static::allowedAgents() as $needle) {
+        $needles = $includeDefault ? static::allowedAgents() : static::explicitAllowedAgents();
+
+        foreach ($needles as $needle) {
             if ($needle !== '' && str_contains($userAgentLower, $needle)) {
                 return true;
             }
@@ -224,11 +228,22 @@ class BotGuard
 
     protected static function allowedAgents(): array
     {
-        $customAllowed = static::extractTokens(static::configValue('allowed_user_agents'), true);
-        $trusted = static::extractTokens(static::configValue('trusted_user_agents'), true);
-        $pool = array_merge(static::DEFAULT_ALLOWED_AGENTS, $customAllowed, $trusted);
+        $pool = array_merge(static::defaultAllowedAgents(), static::explicitAllowedAgents());
 
         return static::uniqueTokens($pool, true);
+    }
+
+    protected static function explicitAllowedAgents(): array
+    {
+        $customAllowed = static::extractTokens(static::configValue('allowed_user_agents'), true);
+        $trusted = static::extractTokens(static::configValue('trusted_user_agents'), true);
+
+        return static::uniqueTokens(array_merge($customAllowed, $trusted), true);
+    }
+
+    protected static function defaultAllowedAgents(): array
+    {
+        return static::uniqueTokens(static::DEFAULT_ALLOWED_AGENTS, true);
     }
 
     protected static function blockedAgentPatterns(): array

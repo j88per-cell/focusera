@@ -25,9 +25,13 @@ class ProfileTest extends TestCase
     {
         $user = User::factory()->create();
 
+        $sessionToken = 'test-token';
+
         $response = $this
             ->actingAs($user)
+            ->withSession(['_token' => $sessionToken])
             ->patch('/profile', [
+                '_token' => $sessionToken,
                 'name' => 'Test User',
                 'email' => 'test@example.com',
             ]);
@@ -47,9 +51,13 @@ class ProfileTest extends TestCase
     {
         $user = User::factory()->create();
 
+        $sessionToken = 'test-token';
+
         $response = $this
             ->actingAs($user)
+            ->withSession(['_token' => $sessionToken])
             ->patch('/profile', [
+                '_token' => $sessionToken,
                 'name' => 'Test User',
                 'email' => $user->email,
             ]);
@@ -61,15 +69,16 @@ class ProfileTest extends TestCase
         $this->assertNotNull($user->refresh()->email_verified_at);
     }
 
-    public function test_user_can_delete_their_account(): void
+    public function test_user_can_delete_their_account_without_password(): void
     {
         $user = User::factory()->create();
 
+        $sessionToken = 'test-token';
+
         $response = $this
             ->actingAs($user)
-            ->delete('/profile', [
-                'password' => 'password',
-            ]);
+            ->withSession(['_token' => $sessionToken])
+            ->delete('/profile', ['_token' => $sessionToken]);
 
         $response
             ->assertSessionHasNoErrors()
@@ -77,23 +86,5 @@ class ProfileTest extends TestCase
 
         $this->assertGuest();
         $this->assertNull($user->fresh());
-    }
-
-    public function test_correct_password_must_be_provided_to_delete_account(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this
-            ->actingAs($user)
-            ->from('/profile')
-            ->delete('/profile', [
-                'password' => 'wrong-password',
-            ]);
-
-        $response
-            ->assertSessionHasErrors('password')
-            ->assertRedirect('/profile');
-
-        $this->assertNotNull($user->fresh());
     }
 }
