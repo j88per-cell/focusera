@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 use App\Models\Setting;
 
@@ -23,6 +25,10 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (! $this->databaseIsReady()) {
+            return;
+        }
+
         if (Schema::hasTable('settings')) {
             $all = Setting::get();
 
@@ -59,11 +65,11 @@ class SettingsServiceProvider extends ServiceProvider
                 try {
                     $baseUrl = Storage::disk($publicDisk)->url('');
                     if (is_string($baseUrl) && $baseUrl !== '') {
-                        $publicBase = rtrim($baseUrl, '/');
-                    }
-                } catch (\Throwable $e) {
-                    $publicBase = null;
+                    $publicBase = rtrim($baseUrl, '/');
                 }
+            } catch (\Throwable $e) {
+                $publicBase = null;
+            }
 
                 $mergedSite['storage']['public_disk'] = $publicDisk;
                 $mergedSite['storage']['private_disk'] = $privateDisk;
@@ -73,6 +79,16 @@ class SettingsServiceProvider extends ServiceProvider
 
                 config(['site' => $mergedSite]);
             }
+        }
+    }
+
+    protected function databaseIsReady(): bool
+    {
+        try {
+            DB::connection()->getPdo();
+            return true;
+        } catch (Throwable $e) {
+            return false;
         }
     }
 }

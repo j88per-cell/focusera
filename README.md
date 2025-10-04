@@ -86,6 +86,7 @@ git clone <repo>
 cd focusera
 
 composer install
+# The post-install composer hook will copy .env.example for you. If it was skipped, copy it manually:
 cp .env.example .env
 php artisan key:generate
 
