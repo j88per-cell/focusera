@@ -34,7 +34,7 @@ Built on the popular **Laravel** framework, it can run on a wide variety of host
 
 ### Prerequisites
 
--   PHP 8.3+
+-   PHP 8.2+
 -   Composer 2.6+ (see dependency notes below)
 -   Node.js 18+
 -   MySQL/MariaDB, PostgreSQL, or SQLite (details below)
@@ -70,7 +70,7 @@ The core application depends on the packages below (see `composer.json` for the 
 -   Image handling stack: `spatie/image` `^3.8` and `spatie/image-optimizer` `^1.8`.
 -   Supporting utilities including `filp/whoops` `^2.18`, `guzzlehttp/guzzle` `^7.2`, `inertiajs/inertia-laravel` `^0.6.8`, and `kalnoy/nestedset` `^6.0`.
 
-Make sure your PHP version satisfies the `^8.3` platform requirement so Composer can resolve these packages.
+Make sure your PHP version satisfies the `^8.2` platform requirement so Composer can resolve these packages.
 
 ### Installation
 

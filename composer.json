@@ -8,14 +8,14 @@
     ],
     "license": "Elastic-2.0",
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "filp/whoops": "^2.18",
         "guzzlehttp/guzzle": "^7.2",
-        "inertiajs/inertia-laravel": "^0.6.8",
+        "inertiajs/inertia-laravel": "^1.0",
         "kalnoy/nestedset": "^6.0",
-        "laravel/breeze": "^1.29",
-        "laravel/framework": "^10.10",
-        "laravel/sanctum": "^3.2",
+        "laravel/breeze": "^2.0",
+        "laravel/framework": "^11.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
         "spatie/image": "^3.8",
         "spatie/image-optimizer": "^1.8"
@@ -24,8 +24,8 @@
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^7.0",
-        "phpunit/phpunit": "^10.1"
+        "nunomaduro/collision": "^8.1",
+        "phpunit/phpunit": "^10.5"
     },
     "autoload": {
         "psr-4": {
