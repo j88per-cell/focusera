@@ -20,10 +20,10 @@ Built on the popular **Laravel** framework, it can run on a wide variety of host
 -   🖨️ **Print Ordering with Print on Demand services** (Coming soon)
     On-demand print fulfillment. Set your own markup and begin taking orders quickly.
 
-    **Nested galleries**
+-   **Nested galleries**
     You can nest galleries inside galleries as deep as you want.
 
-    **Photo uploads**
+-   **Photo uploads**
     Automatically resize for thumbnail and web sizes defined in settings.
 
 ## Preview
