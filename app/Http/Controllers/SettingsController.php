@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
-class SettingController extends Controller
+class SettingsController extends Controller
 {
     public function index()
     {
@@ -23,8 +23,8 @@ class SettingController extends Controller
         try {
             $setting->update($input);
             Config::set($setting->group.'.'.$setting->sub_group.'.'.$setting->key, $setting->value);
-        } catch(\Throwable $th) {
-            Log::error('SettingController::updateSetting(): ' . $th->getMessage());
+        } catch (\Throwable $th) {
+            Log::error('SettingsController::updateSetting(): ' . $th->getMessage());
             return redirect()->back()->withErrors(['message' => $th->getMessage()], 'updateAccount');
         }
 

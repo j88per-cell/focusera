@@ -6,10 +6,10 @@ use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
-use App\Models\User;
+use App\Support\RegistrationAvailability;
 
 Route::middleware('guest')->group(function () {
-    if (config('features.registration') || !User::query()->exists()) {
+    if (app(RegistrationAvailability::class)->shouldExposeRegistrationRoute()) {
         Route::get('register', [RegisteredUserController::class, 'create'])
             ->name('register');
 
