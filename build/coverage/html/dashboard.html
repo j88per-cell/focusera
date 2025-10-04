@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Dashboard for /var/www/photosite/app</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="_css/bootstrap.min.css?v=10.1.16" rel="stylesheet" type="text/css">
+  <link href="_css/nv.d3.min.css?v=10.1.16" rel="stylesheet" type="text/css">
+  <link href="_css/style.css?v=10.1.16" rel="stylesheet" type="text/css">
+  <link href="_css/custom.css" rel="stylesheet" type="text/css">
+ </head>
+ <body>
+  <header>
+   <div class="container-fluid">
+    <div class="row">
+     <div class="col-md-12">
+      <nav aria-label="breadcrumb">
+       <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="index.html">/var/www/photosite/app</a></li>
+         <li class="breadcrumb-item active">(Dashboard)</li>
+
+       </ol>
+      </nav>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container-fluid">
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Classes</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="classCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="classComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Console/Commands/EnsureDatabaseState.php.html#8">App\Console\Commands\EnsureDatabaseState</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Console/Commands/ImportGalleries.php.html#8">App\Console\Commands\ImportGalleries</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ContactController.php.html#9">App\Http\Controllers\Admin\ContactController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/DashboardController.php.html#16">App\Http\Controllers\Admin\DashboardController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/NewsController.php.html#10">App\Http\Controllers\Admin\NewsController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/OrdersController.php.html#9">App\Http\Controllers\Admin\OrdersController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/SettingsController.php.html#10">App\Http\Controllers\Admin\SettingsController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/UserManagementController.php.html#14">App\Http\Controllers\Admin\UserManagementController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/AuthenticatedSessionController.php.html#19">App\Http\Controllers\Auth\AuthenticatedSessionController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/EmailVerificationNotificationController.php.html#10">App\Http\Controllers\Auth\EmailVerificationNotificationController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/EmailVerificationPromptController.php.html#12">App\Http\Controllers\Auth\EmailVerificationPromptController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/RegisteredUserController.php.html#17">App\Http\Controllers\Auth\RegisteredUserController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/VerifyEmailController.php.html#16">App\Http\Controllers\Auth\VerifyEmailController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/ContactController.php.html#8">App\Http\Controllers\ContactController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/NewsController.php.html#8">App\Http\Controllers\NewsController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#13">App\Http\Controllers\PhotoController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoMediaController.php.html#12">App\Http\Controllers\PhotoMediaController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/SettingsController.php.html#12">App\Http\Controllers\SettingController</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/Authenticate.php.html#8">App\Http\Middleware\Authenticate</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/RedirectIfAuthenticated.php.html#11">App\Http\Middleware\RedirectIfAuthenticated</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/TrustHosts.php.html#7">App\Http\Middleware\TrustHosts</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/UploadTuning.php.html#8">App\Http\Middleware\UploadTuning</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#12">App\Http\Requests\Auth\LoginRequest</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Jobs/SubmitOrderJob.php.html#15">App\Jobs\SubmitOrderJob</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Mail/LoginOtpMail.php.html#11">App\Mail\LoginOtpMail</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/AnalyticsEvent.php.html#8">App\Models\AnalyticsEvent</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Invoice.php.html#8">App\Models\Invoice</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/OrderItem.php.html#8">App\Models\OrderItem</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Role.php.html#8">App\Models\Role</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/User.php.html#12">App\Models\User</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Notifications/CustomVerifyEmail.php.html#8">App\Notifications\CustomVerifyEmail</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/PrintConfig.php.html#5">App\Print\PrintConfig</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/ProviderRegistry.php.html#8">App\Print\ProviderRegistry</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/Providers/ArteloProvider.php.html#10">App\Print\Providers\ArteloProvider</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/Providers/FinerWorksProvider.php.html#10">App\Print\Providers\FinerWorksProvider</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/Providers/LumaprintsProvider.php.html#10">App\Print\Providers\LumaprintsProvider</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/Providers/NullProvider.php.html#9">App\Print\Providers\NullProvider</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/Providers/PictoremProvider.php.html#10">App\Print\Providers\PictoremProvider</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Providers/BroadcastServiceProvider.php.html#8">App\Providers\BroadcastServiceProvider</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/ExifReader.php.html#5">App\Services\ExifReader</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/GalleryImportService.php.html#10">App\Services\GalleryImportService</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#8">App\Services\PhotoProcessor</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoTransformer.php.html#9">App\Services\PhotoTransformer</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Jobs/ProcessAnalyticsEvent.php.html#13">App\Jobs\ProcessAnalyticsEvent</a></td><td class="text-right">5%</td></tr>
+       <tr><td><a href="Mail/GalleryAccessCodeMail.php.html#10">App\Mail\GalleryAccessCodeMail</a></td><td class="text-right">33%</td></tr>
+       <tr><td><a href="Models/Order.php.html#8">App\Models\Order</a></td><td class="text-right">33%</td></tr>
+       <tr><td><a href="Models/Gallery.php.html#11">App\Models\Gallery</a></td><td class="text-right">35%</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#15">App\Http\Controllers\GalleryController</a></td><td class="text-right">35%</td></tr>
+       <tr><td><a href="Models/Cart.php.html#8">App\Models\Cart</a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="Models/CartItem.php.html#8">App\Models\CartItem</a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="Providers/PrintServiceProvider.php.html#8">App\Providers\PrintServiceProvider</a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#8">App\Support\BotGuard</a></td><td class="text-right">54%</td></tr>
+       <tr><td><a href="Models/Setting.php.html#10">App\Models\Setting</a></td><td class="text-right">65%</td></tr>
+       <tr><td><a href="Console/Kernel.php.html#8">App\Console\Kernel</a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="Policies/GalleryPolicy.php.html#8">App\Policies\GalleryPolicy</a></td><td class="text-right">69%</td></tr>
+       <tr><td><a href="Models/Photo.php.html#10">App\Models\Photo</a></td><td class="text-right">72%</td></tr>
+       <tr><td><a href="Http/Middleware/EnsureFeatureEnabled.php.html#8">App\Http\Middleware\EnsureFeatureEnabled</a></td><td class="text-right">75%</td></tr>
+       <tr><td><a href="Http/Middleware/TrackAnalytics.php.html#9">App\Http\Middleware\TrackAnalytics</a></td><td class="text-right">77%</td></tr>
+       <tr><td><a href="Providers/AuthServiceProvider.php.html#10">App\Providers\AuthServiceProvider</a></td><td class="text-right">81%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Services/PhotoProcessor.php.html#8">App\Services\PhotoProcessor</a></td><td class="text-right">1406</td></tr>
+       <tr><td><a href="Services/PhotoTransformer.php.html#9">App\Services\PhotoTransformer</a></td><td class="text-right">1406</td></tr>
+       <tr><td><a href="Services/GalleryImportService.php.html#10">App\Services\GalleryImportService</a></td><td class="text-right">1260</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#8">App\Support\BotGuard</a></td><td class="text-right">1055</td></tr>
+       <tr><td><a href="Services/ExifReader.php.html#5">App\Services\ExifReader</a></td><td class="text-right">702</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#13">App\Http\Controllers\PhotoController</a></td><td class="text-right">650</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoMediaController.php.html#12">App\Http\Controllers\PhotoMediaController</a></td><td class="text-right">552</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#15">App\Http\Controllers\GalleryController</a></td><td class="text-right">446</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/DashboardController.php.html#16">App\Http\Controllers\Admin\DashboardController</a></td><td class="text-right">380</td></tr>
+       <tr><td><a href="Print/PrintConfig.php.html#5">App\Print\PrintConfig</a></td><td class="text-right">156</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/SettingsController.php.html#10">App\Http\Controllers\Admin\SettingsController</a></td><td class="text-right">110</td></tr>
+       <tr><td><a href="Console/Commands/EnsureDatabaseState.php.html#8">App\Console\Commands\EnsureDatabaseState</a></td><td class="text-right">72</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/AuthenticatedSessionController.php.html#19">App\Http\Controllers\Auth\AuthenticatedSessionController</a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#12">App\Http\Requests\Auth\LoginRequest</a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="Models/Setting.php.html#10">App\Models\Setting</a></td><td class="text-right">34</td></tr>
+       <tr><td><a href="Models/Photo.php.html#10">App\Models\Photo</a></td><td class="text-right">32</td></tr>
+       <tr><td><a href="Models/Gallery.php.html#11">App\Models\Gallery</a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ContactController.php.html#9">App\Http\Controllers\Admin\ContactController</a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/UserManagementController.php.html#14">App\Http\Controllers\Admin\UserManagementController</a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/RegisteredUserController.php.html#17">App\Http\Controllers\Auth\RegisteredUserController</a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="Print/ProviderRegistry.php.html#8">App\Print\ProviderRegistry</a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="Policies/GalleryPolicy.php.html#8">App\Policies\GalleryPolicy</a></td><td class="text-right">27</td></tr>
+       <tr><td><a href="Jobs/ProcessAnalyticsEvent.php.html#13">App\Jobs\ProcessAnalyticsEvent</a></td><td class="text-right">26</td></tr>
+       <tr><td><a href="Http/Middleware/RedirectIfAuthenticated.php.html#11">App\Http\Middleware\RedirectIfAuthenticated</a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/VerifyEmailController.php.html#16">App\Http\Controllers\Auth\VerifyEmailController</a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Controllers/SettingsController.php.html#12">App\Http\Controllers\SettingController</a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Jobs/SubmitOrderJob.php.html#15">App\Jobs\SubmitOrderJob</a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Print/Providers/ArteloProvider.php.html#10">App\Print\Providers\ArteloProvider</a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Print/Providers/FinerWorksProvider.php.html#10">App\Print\Providers\FinerWorksProvider</a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Print/Providers/LumaprintsProvider.php.html#10">App\Print\Providers\LumaprintsProvider</a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Print/Providers/PictoremProvider.php.html#10">App\Print\Providers\PictoremProvider</a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Middleware/TrackAnalytics.php.html#9">App\Http\Middleware\TrackAnalytics</a></td><td class="text-right">9</td></tr>
+       <tr><td><a href="Console/Commands/ImportGalleries.php.html#8">App\Console\Commands\ImportGalleries</a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/EmailVerificationNotificationController.php.html#10">App\Http\Controllers\Auth\EmailVerificationNotificationController</a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Middleware/Authenticate.php.html#8">App\Http\Middleware\Authenticate</a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Middleware/UploadTuning.php.html#8">App\Http\Middleware\UploadTuning</a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Middleware/EnsureFeatureEnabled.php.html#8">App\Http\Middleware\EnsureFeatureEnabled</a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="Providers/AuthServiceProvider.php.html#10">App\Providers\AuthServiceProvider</a></td><td class="text-right">2</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Methods</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="methodCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="methodComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Console/Commands/EnsureDatabaseState.php.html#14"><abbr title="App\Console\Commands\EnsureDatabaseState::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Console/Commands/EnsureDatabaseState.php.html#37"><abbr title="App\Console\Commands\EnsureDatabaseState::parseRequestedGroups">parseRequestedGroups</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Console/Commands/ImportGalleries.php.html#13"><abbr title="App\Console\Commands\ImportGalleries::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Console/Kernel.php.html#13"><abbr title="App\Console\Kernel::schedule">schedule</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ContactController.php.html#11"><abbr title="App\Http\Controllers\Admin\ContactController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ContactController.php.html#17"><abbr title="App\Http\Controllers\Admin\ContactController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ContactController.php.html#25"><abbr title="App\Http\Controllers\Admin\ContactController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ContactController.php.html#34"><abbr title="App\Http\Controllers\Admin\ContactController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/DashboardController.php.html#18"><abbr title="App\Http\Controllers\Admin\DashboardController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/DashboardController.php.html#29"><abbr title="App\Http\Controllers\Admin\DashboardController::buildAnalyticsSummary">buildAnalyticsSummary</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/DashboardController.php.html#113"><abbr title="App\Http\Controllers\Admin\DashboardController::aggregateTopEntities">aggregateTopEntities</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/NewsController.php.html#12"><abbr title="App\Http\Controllers\Admin\NewsController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/NewsController.php.html#18"><abbr title="App\Http\Controllers\Admin\NewsController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/NewsController.php.html#23"><abbr title="App\Http\Controllers\Admin\NewsController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/NewsController.php.html#37"><abbr title="App\Http\Controllers\Admin\NewsController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/NewsController.php.html#42"><abbr title="App\Http\Controllers\Admin\NewsController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/NewsController.php.html#54"><abbr title="App\Http\Controllers\Admin\NewsController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/OrdersController.php.html#11"><abbr title="App\Http\Controllers\Admin\OrdersController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/OrdersController.php.html#17"><abbr title="App\Http\Controllers\Admin\OrdersController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/SettingsController.php.html#12"><abbr title="App\Http\Controllers\Admin\SettingsController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/SettingsController.php.html#59"><abbr title="App\Http\Controllers\Admin\SettingsController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/UserManagementController.php.html#16"><abbr title="App\Http\Controllers\Admin\UserManagementController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/UserManagementController.php.html#27"><abbr title="App\Http\Controllers\Admin\UserManagementController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/AuthenticatedSessionController.php.html#24"><abbr title="App\Http\Controllers\Auth\AuthenticatedSessionController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/AuthenticatedSessionController.php.html#34"><abbr title="App\Http\Controllers\Auth\AuthenticatedSessionController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/AuthenticatedSessionController.php.html#55"><abbr title="App\Http\Controllers\Auth\AuthenticatedSessionController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/AuthenticatedSessionController.php.html#66"><abbr title="App\Http\Controllers\Auth\AuthenticatedSessionController::verify">verify</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/EmailVerificationNotificationController.php.html#15"><abbr title="App\Http\Controllers\Auth\EmailVerificationNotificationController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/EmailVerificationPromptController.php.html#17"><abbr title="App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke">__invoke</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/RegisteredUserController.php.html#22"><abbr title="App\Http\Controllers\Auth\RegisteredUserController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/RegisteredUserController.php.html#35"><abbr title="App\Http\Controllers\Auth\RegisteredUserController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/VerifyEmailController.php.html#21"><abbr title="App\Http\Controllers\Auth\VerifyEmailController::__invoke">__invoke</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/CartController.php.html#25"><abbr title="App\Http\Controllers\CartController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/ContactController.php.html#10"><abbr title="App\Http\Controllers\ContactController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/ContactController.php.html#15"><abbr title="App\Http\Controllers\ContactController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#18"><abbr title="App\Http\Controllers\GalleryController::adminIndex">adminIndex</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#41"><abbr title="App\Http\Controllers\GalleryController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#73"><abbr title="App\Http\Controllers\GalleryController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#79"><abbr title="App\Http\Controllers\GalleryController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#207"><abbr title="App\Http\Controllers\GalleryController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#227"><abbr title="App\Http\Controllers\GalleryController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#257"><abbr title="App\Http\Controllers\GalleryController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#267"><abbr title="App\Http\Controllers\GalleryController::resolvePublicPath">resolvePublicPath</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#344"><abbr title="App\Http\Controllers\GalleryController::accessForm">accessForm</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/NewsController.php.html#10"><abbr title="App\Http\Controllers\NewsController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/NewsController.php.html#19"><abbr title="App\Http\Controllers\NewsController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#15"><abbr title="App\Http\Controllers\PhotoController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#21"><abbr title="App\Http\Controllers\PhotoController::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#26"><abbr title="App\Http\Controllers\PhotoController::store">store</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#41"><abbr title="App\Http\Controllers\PhotoController::show">show</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#46"><abbr title="App\Http\Controllers\PhotoController::edit">edit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#51"><abbr title="App\Http\Controllers\PhotoController::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#71"><abbr title="App\Http\Controllers\PhotoController::destroy">destroy</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#77"><abbr title="App\Http\Controllers\PhotoController::upload">upload</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#116"><abbr title="App\Http\Controllers\PhotoController::transform">transform</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#133"><abbr title="App\Http\Controllers\PhotoController::chunkStart">chunkStart</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#143"><abbr title="App\Http\Controllers\PhotoController::chunkUpload">chunkUpload</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#167"><abbr title="App\Http\Controllers\PhotoController::chunkFinish">chunkFinish</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoMediaController.php.html#14"><abbr title="App\Http\Controllers\PhotoMediaController::web">web</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoMediaController.php.html#63"><abbr title="App\Http\Controllers\PhotoMediaController::relativePath">relativePath</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoMediaController.php.html#86"><abbr title="App\Http\Controllers\PhotoMediaController::boolConfig">boolConfig</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoMediaController.php.html#105"><abbr title="App\Http\Controllers\PhotoMediaController::streamMeta">streamMeta</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/SettingsController.php.html#14"><abbr title="App\Http\Controllers\SettingController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Controllers/SettingsController.php.html#20"><abbr title="App\Http\Controllers\SettingController::updateSetting">updateSetting</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/Authenticate.php.html#13"><abbr title="App\Http\Middleware\Authenticate::redirectTo">redirectTo</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/RedirectIfAuthenticated.php.html#18"><abbr title="App\Http\Middleware\RedirectIfAuthenticated::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/TrustHosts.php.html#14"><abbr title="App\Http\Middleware\TrustHosts::hosts">hosts</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Middleware/UploadTuning.php.html#10"><abbr title="App\Http\Middleware\UploadTuning::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#17"><abbr title="App\Http\Requests\Auth\LoginRequest::authorize">authorize</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#27"><abbr title="App\Http\Requests\Auth\LoginRequest::rules">rules</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#39"><abbr title="App\Http\Requests\Auth\LoginRequest::authenticate">authenticate</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#59"><abbr title="App\Http\Requests\Auth\LoginRequest::ensureIsNotRateLimited">ensureIsNotRateLimited</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#80"><abbr title="App\Http\Requests\Auth\LoginRequest::throttleKey">throttleKey</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Jobs/ProcessAnalyticsEvent.php.html#24"><abbr title="App\Jobs\ProcessAnalyticsEvent::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Jobs/SubmitOrderJob.php.html#19"><abbr title="App\Jobs\SubmitOrderJob::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Jobs/SubmitOrderJob.php.html#21"><abbr title="App\Jobs\SubmitOrderJob::handle">handle</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Mail/GalleryAccessCodeMail.php.html#21"><abbr title="App\Mail\GalleryAccessCodeMail::build">build</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Mail/LoginOtpMail.php.html#20"><abbr title="App\Mail\LoginOtpMail::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Mail/LoginOtpMail.php.html#25"><abbr title="App\Mail\LoginOtpMail::envelope">envelope</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Mail/LoginOtpMail.php.html#32"><abbr title="App\Mail\LoginOtpMail::content">content</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Mail/LoginOtpMail.php.html#42"><abbr title="App\Mail\LoginOtpMail::attachments">attachments</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/AnalyticsEvent.php.html#24"><abbr title="App\Models\AnalyticsEvent::session">session</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Cart.php.html#17"><abbr title="App\Models\Cart::user">user</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/CartItem.php.html#24"><abbr title="App\Models\CartItem::cart">cart</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Gallery.php.html#48"><abbr title="App\Models\Gallery::accessCodes">accessCodes</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Invoice.php.html#23"><abbr title="App\Models\Invoice::order">order</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Order.php.html#28"><abbr title="App\Models\Order::invoices">invoices</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Order.php.html#29"><abbr title="App\Models\Order::user">user</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/OrderItem.php.html#24"><abbr title="App\Models\OrderItem::order">order</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/OrderItem.php.html#25"><abbr title="App\Models\OrderItem::photo">photo</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Role.php.html#14"><abbr title="App\Models\Role::users">users</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Setting.php.html#18"><abbr title="App\Models\Setting::scopeGroup">scopeGroup</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Setting.php.html#22"><abbr title="App\Models\Setting::scopeSubGroup">scopeSubGroup</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/User.php.html#45"><abbr title="App\Models\User::role">role</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/User.php.html#49"><abbr title="App\Models\User::sendEmailVerificationNotification">sendEmailVerificationNotification</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Notifications/CustomVerifyEmail.php.html#10"><abbr title="App\Notifications\CustomVerifyEmail::toMail">toMail</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/GalleryPolicy.php.html#13"><abbr title="App\Policies\GalleryPolicy::viewAny">viewAny</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/GalleryPolicy.php.html#69"><abbr title="App\Policies\GalleryPolicy::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/GalleryPolicy.php.html#77"><abbr title="App\Policies\GalleryPolicy::update">update</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Policies/GalleryPolicy.php.html#85"><abbr title="App\Policies\GalleryPolicy::delete">delete</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/PrintConfig.php.html#7"><abbr title="App\Print\PrintConfig::providerKey">providerKey</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/PrintConfig.php.html#12"><abbr title="App\Print\PrintConfig::sandbox">sandbox</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/PrintConfig.php.html#21"><abbr title="App\Print\PrintConfig::options">options</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/PrintConfig.php.html#52"><abbr title="App\Print\PrintConfig::endpoint">endpoint</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/ProviderRegistry.php.html#13"><abbr title="App\Print\ProviderRegistry::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/ProviderRegistry.php.html#18"><abbr title="App\Print\ProviderRegistry::has">has</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/ProviderRegistry.php.html#23"><abbr title="App\Print\ProviderRegistry::keys">keys</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/ProviderRegistry.php.html#28"><abbr title="App\Print\ProviderRegistry::make">make</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/Providers/ArteloProvider.php.html#12"><abbr title="App\Print\Providers\ArteloProvider::supports">supports</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/Providers/ArteloProvider.php.html#18"><abbr title="App\Print\Providers\ArteloProvider::submit">submit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/Providers/FinerWorksProvider.php.html#12"><abbr title="App\Print\Providers\FinerWorksProvider::supports">supports</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/Providers/FinerWorksProvider.php.html#18"><abbr title="App\Print\Providers\FinerWorksProvider::submit">submit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/Providers/LumaprintsProvider.php.html#12"><abbr title="App\Print\Providers\LumaprintsProvider::supports">supports</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/Providers/LumaprintsProvider.php.html#18"><abbr title="App\Print\Providers\LumaprintsProvider::submit">submit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/Providers/NullProvider.php.html#11"><abbr title="App\Print\Providers\NullProvider::submit">submit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/Providers/NullProvider.php.html#31"><abbr title="App\Print\Providers\NullProvider::supports">supports</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/Providers/PictoremProvider.php.html#12"><abbr title="App\Print\Providers\PictoremProvider::supports">supports</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Print/Providers/PictoremProvider.php.html#18"><abbr title="App\Print\Providers\PictoremProvider::submit">submit</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Providers/BroadcastServiceProvider.php.html#13"><abbr title="App\Providers\BroadcastServiceProvider::boot">boot</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/ExifReader.php.html#7"><abbr title="App\Services\ExifReader::read">read</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/ExifReader.php.html#32"><abbr title="App\Services\ExifReader::pickDate">pickDate</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/ExifReader.php.html#47"><abbr title="App\Services\ExifReader::exiftoolAvailable">exiftoolAvailable</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/ExifReader.php.html#57"><abbr title="App\Services\ExifReader::flatten">flatten</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/GalleryImportService.php.html#16"><abbr title="App\Services\GalleryImportService::import">import</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/GalleryImportService.php.html#95"><abbr title="App\Services\GalleryImportService::imageFiles">imageFiles</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/GalleryImportService.php.html#109"><abbr title="App\Services\GalleryImportService::readExif">readExif</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/GalleryImportService.php.html#142"><abbr title="App\Services\GalleryImportService::exiftoolAvailable">exiftoolAvailable</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/GalleryImportService.php.html#152"><abbr title="App\Services\GalleryImportService::chooseDateFromExif">chooseDateFromExif</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#10"><abbr title="App\Services\PhotoProcessor::import">import</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#43"><abbr title="App\Services\PhotoProcessor::storeOriginal">storeOriginal</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#53"><abbr title="App\Services\PhotoProcessor::sanitizeFileName">sanitizeFileName</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#60"><abbr title="App\Services\PhotoProcessor::makeDerivatives">makeDerivatives</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#103"><abbr title="App\Services\PhotoProcessor::makeTempFile">makeTempFile</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#119"><abbr title="App\Services\PhotoProcessor::gdLoad">gdLoad</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#128"><abbr title="App\Services\PhotoProcessor::gdSave">gdSave</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#143"><abbr title="App\Services\PhotoProcessor::gdResizeMax">gdResizeMax</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#154"><abbr title="App\Services\PhotoProcessor::imagickResizeMax">imagickResizeMax</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#164"><abbr title="App\Services\PhotoProcessor::webRelativePath">webRelativePath</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#169"><abbr title="App\Services\PhotoProcessor::thumbRelativePath">thumbRelativePath</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#174"><abbr title="App\Services\PhotoProcessor::originalRelativePath">originalRelativePath</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#179"><abbr title="App\Services\PhotoProcessor::storeFile">storeFile</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#189"><abbr title="App\Services\PhotoProcessor::cleanupTemps">cleanupTemps</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoTransformer.php.html#11"><abbr title="App\Services\PhotoTransformer::transform">transform</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoTransformer.php.html#32"><abbr title="App\Services\PhotoTransformer::transformWithGdOrImagick">transformWithGdOrImagick</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoTransformer.php.html#89"><abbr title="App\Services\PhotoTransformer::gdLoad">gdLoad</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoTransformer.php.html#98"><abbr title="App\Services\PhotoTransformer::gdSave">gdSave</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoTransformer.php.html#113"><abbr title="App\Services\PhotoTransformer::gdResizeMax">gdResizeMax</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoTransformer.php.html#124"><abbr title="App\Services\PhotoTransformer::gdManualFlip">gdManualFlip</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoTransformer.php.html#140"><abbr title="App\Services\PhotoTransformer::imagickResizeMax">imagickResizeMax</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Services/PhotoTransformer.php.html#150"><abbr title="App\Services\PhotoTransformer::toFilesystemPath">toFilesystemPath</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Support/Analytics.php.html#72"><abbr title="App\Support\Analytics::recordConversion">recordConversion</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#115"><abbr title="App\Support\BotGuard::requiresBrowserHeaders">requiresBrowserHeaders</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#192"><abbr title="App\Support\BotGuard::looksLikeBrowserRequest">looksLikeBrowserRequest</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Models/Gallery.php.html#61"><abbr title="App\Models\Gallery::getThumbnailUrlAttribute">getThumbnailUrlAttribute</abbr></a></td><td class="text-right">25%</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#259"><abbr title="App\Support\BotGuard::boolConfig">boolConfig</abbr></a></td><td class="text-right">30%</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#144"><abbr title="App\Support\BotGuard::matchesBlockedRegex">matchesBlockedRegex</abbr></a></td><td class="text-right">33%</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#369"><abbr title="App\Support\BotGuard::ipMatchesCidr">ipMatchesCidr</abbr></a></td><td class="text-right">36%</td></tr>
+       <tr><td><a href="Models/Setting.php.html#57"><abbr title="App\Models\Setting::getValueAttribute">getValueAttribute</abbr></a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="Providers/PrintServiceProvider.php.html#10"><abbr title="App\Providers\PrintServiceProvider::register">register</abbr></a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#159"><abbr title="App\Support\BotGuard::isBlockedIp">isBlockedIp</abbr></a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="Models/Setting.php.html#42"><abbr title="App\Models\Setting::setValueAttribute">setValueAttribute</abbr></a></td><td class="text-right">57%</td></tr>
+       <tr><td><a href="Models/Photo.php.html#105"><abbr title="App\Models\Photo::toRelativePath">toRelativePath</abbr></a></td><td class="text-right">58%</td></tr>
+       <tr><td><a href="Models/Photo.php.html#86"><abbr title="App\Models\Photo::resolvePublicUrl">resolvePublicUrl</abbr></a></td><td class="text-right">60%</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#302"><abbr title="App\Support\BotGuard::extractTokens">extractTokens</abbr></a></td><td class="text-right">60%</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#109"><abbr title="App\Http\Controllers\GalleryController::show">show</abbr></a></td><td class="text-right">64%</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#293"><abbr title="App\Http\Controllers\GalleryController::adminGenerateCode">adminGenerateCode</abbr></a></td><td class="text-right">64%</td></tr>
+       <tr><td><a href="Models/Gallery.php.html#53"><abbr title="App\Models\Gallery::booted">booted</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="Models/Photo.php.html#43"><abbr title="App\Models\Photo::booted">booted</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="Http/Middleware/TrackAnalytics.php.html#22"><abbr title="App\Http\Middleware\TrackAnalytics::shouldTrack">shouldTrack</abbr></a></td><td class="text-right">71%</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#67"><abbr title="App\Support\BotGuard::shouldBlock">shouldBlock</abbr></a></td><td class="text-right">72%</td></tr>
+       <tr><td><a href="Http/Middleware/EnsureFeatureEnabled.php.html#10"><abbr title="App\Http\Middleware\EnsureFeatureEnabled::handle">handle</abbr></a></td><td class="text-right">75%</td></tr>
+       <tr><td><a href="Http/Controllers/CartController.php.html#76"><abbr title="App\Http\Controllers\CartController::removeItem">removeItem</abbr></a></td><td class="text-right">80%</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#350"><abbr title="App\Http\Controllers\GalleryController::accessSubmit">accessSubmit</abbr></a></td><td class="text-right">80%</td></tr>
+       <tr><td><a href="Models/Photo.php.html#63"><abbr title="App\Models\Photo::deleteFilePath">deleteFilePath</abbr></a></td><td class="text-right">80%</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#348"><abbr title="App\Support\BotGuard::uniqueTokens">uniqueTokens</abbr></a></td><td class="text-right">80%</td></tr>
+       <tr><td><a href="Support/ExifHelper.php.html#86"><abbr title="App\Support\ExifHelper::rationalToFloat">rationalToFloat</abbr></a></td><td class="text-right">80%</td></tr>
+       <tr><td><a href="Policies/GalleryPolicy.php.html#21"><abbr title="App\Policies\GalleryPolicy::view">view</abbr></a></td><td class="text-right">81%</td></tr>
+       <tr><td><a href="Providers/AuthServiceProvider.php.html#24"><abbr title="App\Providers\AuthServiceProvider::boot">boot</abbr></a></td><td class="text-right">81%</td></tr>
+       <tr><td><a href="Support/Analytics.php.html#134"><abbr title="App\Support\Analytics::detectDevice">detectDevice</abbr></a></td><td class="text-right">83%</td></tr>
+       <tr><td><a href="Support/ExifHelper.php.html#65"><abbr title="App\Support\ExifHelper::readGpsCoord">readGpsCoord</abbr></a></td><td class="text-right">85%</td></tr>
+       <tr><td><a href="Support/Analytics.php.html#18"><abbr title="App\Support\Analytics::record">record</abbr></a></td><td class="text-right">88%</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#286"><abbr title="App\Support\BotGuard::configValue">configValue</abbr></a></td><td class="text-right">88%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Services/PhotoTransformer.php.html#32"><abbr title="App\Services\PhotoTransformer::transformWithGdOrImagick">transformWithGdOrImagick</abbr></a></td><td class="text-right">182</td></tr>
+       <tr><td><a href="Services/ExifReader.php.html#7"><abbr title="App\Services\ExifReader::read">read</abbr></a></td><td class="text-right">156</td></tr>
+       <tr><td><a href="Services/GalleryImportService.php.html#16"><abbr title="App\Services\GalleryImportService::import">import</abbr></a></td><td class="text-right">156</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#369"><abbr title="App\Support\BotGuard::ipMatchesCidr">ipMatchesCidr</abbr></a></td><td class="text-right">132</td></tr>
+       <tr><td><a href="Services/GalleryImportService.php.html#109"><abbr title="App\Services\GalleryImportService::readExif">readExif</abbr></a></td><td class="text-right">132</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/DashboardController.php.html#29"><abbr title="App\Http\Controllers\Admin\DashboardController::buildAnalyticsSummary">buildAnalyticsSummary</abbr></a></td><td class="text-right">110</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/SettingsController.php.html#12"><abbr title="App\Http\Controllers\Admin\SettingsController::index">index</abbr></a></td><td class="text-right">90</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoMediaController.php.html#14"><abbr title="App\Http\Controllers\PhotoMediaController::web">web</abbr></a></td><td class="text-right">72</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#60"><abbr title="App\Services\PhotoProcessor::makeDerivatives">makeDerivatives</abbr></a></td><td class="text-right">72</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#192"><abbr title="App\Support\BotGuard::looksLikeBrowserRequest">looksLikeBrowserRequest</abbr></a></td><td class="text-right">72</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/DashboardController.php.html#113"><abbr title="App\Http\Controllers\Admin\DashboardController::aggregateTopEntities">aggregateTopEntities</abbr></a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#167"><abbr title="App\Http\Controllers\PhotoController::chunkFinish">chunkFinish</abbr></a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoMediaController.php.html#63"><abbr title="App\Http\Controllers\PhotoMediaController::relativePath">relativePath</abbr></a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="Print/PrintConfig.php.html#21"><abbr title="App\Print\PrintConfig::options">options</abbr></a></td><td class="text-right">56</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#267"><abbr title="App\Http\Controllers\GalleryController::resolvePublicPath">resolvePublicPath</abbr></a></td><td class="text-right">42</td></tr>
+       <tr><td><a href="Services/ExifReader.php.html#32"><abbr title="App\Services\ExifReader::pickDate">pickDate</abbr></a></td><td class="text-right">42</td></tr>
+       <tr><td><a href="Services/GalleryImportService.php.html#152"><abbr title="App\Services\GalleryImportService::chooseDateFromExif">chooseDateFromExif</abbr></a></td><td class="text-right">42</td></tr>
+       <tr><td><a href="Console/Commands/EnsureDatabaseState.php.html#14"><abbr title="App\Console\Commands\EnsureDatabaseState::handle">handle</abbr></a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#77"><abbr title="App\Http\Controllers\PhotoController::upload">upload</abbr></a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoMediaController.php.html#86"><abbr title="App\Http\Controllers\PhotoMediaController::boolConfig">boolConfig</abbr></a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="Services/ExifReader.php.html#57"><abbr title="App\Services\ExifReader::flatten">flatten</abbr></a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#128"><abbr title="App\Services\PhotoProcessor::gdSave">gdSave</abbr></a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="Services/PhotoTransformer.php.html#98"><abbr title="App\Services\PhotoTransformer::gdSave">gdSave</abbr></a></td><td class="text-right">30</td></tr>
+       <tr><td><a href="Models/Gallery.php.html#61"><abbr title="App\Models\Gallery::getThumbnailUrlAttribute">getThumbnailUrlAttribute</abbr></a></td><td class="text-right">21</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/UserManagementController.php.html#27"><abbr title="App\Http\Controllers\Admin\UserManagementController::store">store</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/AuthenticatedSessionController.php.html#66"><abbr title="App\Http\Controllers\Auth\AuthenticatedSessionController::verify">verify</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Http/Middleware/RedirectIfAuthenticated.php.html#18"><abbr title="App\Http\Middleware\RedirectIfAuthenticated::handle">handle</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Jobs/ProcessAnalyticsEvent.php.html#24"><abbr title="App\Jobs\ProcessAnalyticsEvent::handle">handle</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#189"><abbr title="App\Services\PhotoProcessor::cleanupTemps">cleanupTemps</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Services/PhotoTransformer.php.html#11"><abbr title="App\Services\PhotoTransformer::transform">transform</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Services/PhotoTransformer.php.html#124"><abbr title="App\Services\PhotoTransformer::gdManualFlip">gdManualFlip</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Services/PhotoTransformer.php.html#150"><abbr title="App\Services\PhotoTransformer::toFilesystemPath">toFilesystemPath</abbr></a></td><td class="text-right">20</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#67"><abbr title="App\Support\BotGuard::shouldBlock">shouldBlock</abbr></a></td><td class="text-right">19</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#159"><abbr title="App\Support\BotGuard::isBlockedIp">isBlockedIp</abbr></a></td><td class="text-right">19</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#302"><abbr title="App\Support\BotGuard::extractTokens">extractTokens</abbr></a></td><td class="text-right">18</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#259"><abbr title="App\Support\BotGuard::boolConfig">boolConfig</abbr></a></td><td class="text-right">17</td></tr>
+       <tr><td><a href="Policies/GalleryPolicy.php.html#21"><abbr title="App\Policies\GalleryPolicy::view">view</abbr></a></td><td class="text-right">15</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#109"><abbr title="App\Http\Controllers\GalleryController::show">show</abbr></a></td><td class="text-right">14</td></tr>
+       <tr><td><a href="Support/ExifHelper.php.html#65"><abbr title="App\Support\ExifHelper::readGpsCoord">readGpsCoord</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Console/Commands/EnsureDatabaseState.php.html#37"><abbr title="App\Console\Commands\EnsureDatabaseState::parseRequestedGroups">parseRequestedGroups</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/RegisteredUserController.php.html#35"><abbr title="App\Http\Controllers\Auth\RegisteredUserController::store">store</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/VerifyEmailController.php.html#21"><abbr title="App\Http\Controllers\Auth\VerifyEmailController::__invoke">__invoke</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#41"><abbr title="App\Http\Controllers\GalleryController::index">index</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#79"><abbr title="App\Http\Controllers\GalleryController::store">store</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#227"><abbr title="App\Http\Controllers\GalleryController::update">update</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#257"><abbr title="App\Http\Controllers\GalleryController::destroy">destroy</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoMediaController.php.html#105"><abbr title="App\Http\Controllers\PhotoMediaController::streamMeta">streamMeta</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Services/ExifReader.php.html#47"><abbr title="App\Services\ExifReader::exiftoolAvailable">exiftoolAvailable</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Services/GalleryImportService.php.html#95"><abbr title="App\Services\GalleryImportService::imageFiles">imageFiles</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Services/GalleryImportService.php.html#142"><abbr title="App\Services\GalleryImportService::exiftoolAvailable">exiftoolAvailable</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#103"><abbr title="App\Services\PhotoProcessor::makeTempFile">makeTempFile</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#143"><abbr title="App\Services\PhotoProcessor::gdResizeMax">gdResizeMax</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#154"><abbr title="App\Services\PhotoProcessor::imagickResizeMax">imagickResizeMax</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Services/PhotoTransformer.php.html#113"><abbr title="App\Services\PhotoTransformer::gdResizeMax">gdResizeMax</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Services/PhotoTransformer.php.html#140"><abbr title="App\Services\PhotoTransformer::imagickResizeMax">imagickResizeMax</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Models/Photo.php.html#105"><abbr title="App\Models\Photo::toRelativePath">toRelativePath</abbr></a></td><td class="text-right">10</td></tr>
+       <tr><td><a href="Support/Analytics.php.html#18"><abbr title="App\Support\Analytics::record">record</abbr></a></td><td class="text-right">9</td></tr>
+       <tr><td><a href="Models/Setting.php.html#42"><abbr title="App\Models\Setting::setValueAttribute">setValueAttribute</abbr></a></td><td class="text-right">8</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#144"><abbr title="App\Support\BotGuard::matchesBlockedRegex">matchesBlockedRegex</abbr></a></td><td class="text-right">8</td></tr>
+       <tr><td><a href="Http/Middleware/TrackAnalytics.php.html#22"><abbr title="App\Http\Middleware\TrackAnalytics::shouldTrack">shouldTrack</abbr></a></td><td class="text-right">8</td></tr>
+       <tr><td><a href="Models/Photo.php.html#86"><abbr title="App\Models\Photo::resolvePublicUrl">resolvePublicUrl</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#348"><abbr title="App\Support\BotGuard::uniqueTokens">uniqueTokens</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Support/Analytics.php.html#134"><abbr title="App\Support\Analytics::detectDevice">detectDevice</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Console/Commands/ImportGalleries.php.html#13"><abbr title="App\Console\Commands\ImportGalleries::handle">handle</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/ContactController.php.html#17"><abbr title="App\Http\Controllers\Admin\ContactController::show">show</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/Admin/DashboardController.php.html#18"><abbr title="App\Http\Controllers\Admin\DashboardController::index">index</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/EmailVerificationNotificationController.php.html#15"><abbr title="App\Http\Controllers\Auth\EmailVerificationNotificationController::store">store</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/Auth/RegisteredUserController.php.html#22"><abbr title="App\Http\Controllers\Auth\RegisteredUserController::create">create</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#116"><abbr title="App\Http\Controllers\PhotoController::transform">transform</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#133"><abbr title="App\Http\Controllers\PhotoController::chunkStart">chunkStart</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/PhotoController.php.html#143"><abbr title="App\Http\Controllers\PhotoController::chunkUpload">chunkUpload</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/SettingsController.php.html#20"><abbr title="App\Http\Controllers\SettingController::updateSetting">updateSetting</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Middleware/Authenticate.php.html#13"><abbr title="App\Http\Middleware\Authenticate::redirectTo">redirectTo</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Middleware/UploadTuning.php.html#10"><abbr title="App\Http\Middleware\UploadTuning::handle">handle</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#39"><abbr title="App\Http\Requests\Auth\LoginRequest::authenticate">authenticate</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Requests/Auth/LoginRequest.php.html#59"><abbr title="App\Http\Requests\Auth\LoginRequest::ensureIsNotRateLimited">ensureIsNotRateLimited</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Jobs/SubmitOrderJob.php.html#21"><abbr title="App\Jobs\SubmitOrderJob::handle">handle</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Models/Setting.php.html#57"><abbr title="App\Models\Setting::getValueAttribute">getValueAttribute</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Print/PrintConfig.php.html#12"><abbr title="App\Print\PrintConfig::sandbox">sandbox</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Print/PrintConfig.php.html#52"><abbr title="App\Print\PrintConfig::endpoint">endpoint</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Print/ProviderRegistry.php.html#28"><abbr title="App\Print\ProviderRegistry::make">make</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Print/Providers/ArteloProvider.php.html#12"><abbr title="App\Print\Providers\ArteloProvider::supports">supports</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Print/Providers/FinerWorksProvider.php.html#12"><abbr title="App\Print\Providers\FinerWorksProvider::supports">supports</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Print/Providers/LumaprintsProvider.php.html#12"><abbr title="App\Print\Providers\LumaprintsProvider::supports">supports</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Print/Providers/PictoremProvider.php.html#12"><abbr title="App\Print\Providers\PictoremProvider::supports">supports</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#10"><abbr title="App\Services\PhotoProcessor::import">import</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#43"><abbr title="App\Services\PhotoProcessor::storeOriginal">storeOriginal</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Services/PhotoProcessor.php.html#179"><abbr title="App\Services\PhotoProcessor::storeFile">storeFile</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#350"><abbr title="App\Http\Controllers\GalleryController::accessSubmit">accessSubmit</abbr></a></td><td class="text-right">5</td></tr>
+       <tr><td><a href="Support/ExifHelper.php.html#86"><abbr title="App\Support\ExifHelper::rationalToFloat">rationalToFloat</abbr></a></td><td class="text-right">5</td></tr>
+       <tr><td><a href="Models/Photo.php.html#63"><abbr title="App\Models\Photo::deleteFilePath">deleteFilePath</abbr></a></td><td class="text-right">4</td></tr>
+       <tr><td><a href="Support/BotGuard.php.html#286"><abbr title="App\Support\BotGuard::configValue">configValue</abbr></a></td><td class="text-right">3</td></tr>
+       <tr><td><a href="Http/Controllers/GalleryController.php.html#293"><abbr title="App\Http\Controllers\GalleryController::adminGenerateCode">adminGenerateCode</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="Http/Middleware/EnsureFeatureEnabled.php.html#10"><abbr title="App\Http\Middleware\EnsureFeatureEnabled::handle">handle</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="Http/Controllers/CartController.php.html#76"><abbr title="App\Http\Controllers\CartController::removeItem">removeItem</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="Providers/AuthServiceProvider.php.html#24"><abbr title="App\Providers\AuthServiceProvider::boot">boot</abbr></a></td><td class="text-right">2</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <footer>
+    <hr/>
+    <p>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 10.1.16</a> using <a href="https://www.php.net/" target="_top">PHP 8.3.6</a> and <a href="https://phpunit.de/">PHPUnit 10.5.55</a> at Sat Oct 4 1:52:39 UTC 2025.</small>
+    </p>
+   </footer>
+  </div>
+  <script src="_js/jquery.min.js?v=10.1.16" type="text/javascript"></script>
+  <script src="_js/d3.min.js?v=10.1.16" type="text/javascript"></script>
+  <script src="_js/nv.d3.min.js?v=10.1.16" type="text/javascript"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#classCoverageDistribution svg')
+      .datum(getCoverageDistributionData([43,1,0,0,4,0,4,3,3,1,7,20], "Class Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#methodCoverageDistribution svg')
+      .datum(getCoverageDistributionData([153,0,0,1,3,0,5,6,3,11,6,61], "Method Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getCoverageDistributionData(data, label) {
+    var labels = [
+      '0%',
+      '0-10%',
+      '10-20%',
+      '20-30%',
+      '30-40%',
+      '40-50%',
+      '50-60%',
+      '60-70%',
+      '70-80%',
+      '80-90%',
+      '90-100%',
+      '100%'
+    ];
+    var values = [];
+    $.each(labels, function(key) {
+      values.push({x: labels[key], y: data[key]});
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Cyclomatic Complexity');
+
+    d3.select('#classComplexity svg')
+      .datum(getComplexityData([[0,8,"<a href=\"Console\/Commands\/EnsureDatabaseState.php.html#8\">App\\Console\\Commands\\EnsureDatabaseState<\/a>"],[0,2,"<a href=\"Console\/Commands\/ImportGalleries.php.html#8\">App\\Console\\Commands\\ImportGalleries<\/a>"],[66.66666666666666,2,"<a href=\"Console\/Kernel.php.html#8\">App\\Console\\Kernel<\/a>"],[98.93617021276596,18,"<a href=\"Ensurers\/DefaultSettingsEnsurer.php.html#7\">App\\Ensurers\\DefaultSettingsEnsurer<\/a>"],[100,1,"<a href=\"Exceptions\/Handler.php.html#8\">App\\Exceptions\\Handler<\/a>"],[0,5,"<a href=\"Http\/Controllers\/Admin\/ContactController.php.html#9\">App\\Http\\Controllers\\Admin\\ContactController<\/a>"],[0,19,"<a href=\"Http\/Controllers\/Admin\/DashboardController.php.html#16\">App\\Http\\Controllers\\Admin\\DashboardController<\/a>"],[0,6,"<a href=\"Http\/Controllers\/Admin\/NewsController.php.html#10\">App\\Http\\Controllers\\Admin\\NewsController<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Admin\/OrdersController.php.html#9\">App\\Http\\Controllers\\Admin\\OrdersController<\/a>"],[0,10,"<a href=\"Http\/Controllers\/Admin\/SettingsController.php.html#10\">App\\Http\\Controllers\\Admin\\SettingsController<\/a>"],[0,5,"<a href=\"Http\/Controllers\/Admin\/UserManagementController.php.html#14\">App\\Http\\Controllers\\Admin\\UserManagementController<\/a>"],[0,7,"<a href=\"Http\/Controllers\/Auth\/AuthenticatedSessionController.php.html#19\">App\\Http\\Controllers\\Auth\\AuthenticatedSessionController<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Auth\/EmailVerificationNotificationController.php.html#10\">App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/EmailVerificationPromptController.php.html#12\">App\\Http\\Controllers\\Auth\\EmailVerificationPromptController<\/a>"],[0,5,"<a href=\"Http\/Controllers\/Auth\/RegisteredUserController.php.html#17\">App\\Http\\Controllers\\Auth\\RegisteredUserController<\/a>"],[0,3,"<a href=\"Http\/Controllers\/Auth\/VerifyEmailController.php.html#16\">App\\Http\\Controllers\\Auth\\VerifyEmailController<\/a>"],[93.75,9,"<a href=\"Http\/Controllers\/CartController.php.html#11\">App\\Http\\Controllers\\CartController<\/a>"],[0,2,"<a href=\"Http\/Controllers\/ContactController.php.html#8\">App\\Http\\Controllers\\ContactController<\/a>"],[100,0,"<a href=\"Http\/Controllers\/Controller.php.html#9\">App\\Http\\Controllers\\Controller<\/a>"],[35.521235521235525,39,"<a href=\"Http\/Controllers\/GalleryController.php.html#15\">App\\Http\\Controllers\\GalleryController<\/a>"],[100,2,"<a href=\"Http\/Controllers\/LandingPageController.php.html#9\">App\\Http\\Controllers\\LandingPageController<\/a>"],[0,2,"<a href=\"Http\/Controllers\/NewsController.php.html#8\">App\\Http\\Controllers\\NewsController<\/a>"],[0,25,"<a href=\"Http\/Controllers\/PhotoController.php.html#13\">App\\Http\\Controllers\\PhotoController<\/a>"],[0,23,"<a href=\"Http\/Controllers\/PhotoMediaController.php.html#12\">App\\Http\\Controllers\\PhotoMediaController<\/a>"],[100,4,"<a href=\"Http\/Controllers\/ProfileController.php.html#14\">App\\Http\\Controllers\\ProfileController<\/a>"],[0,3,"<a href=\"Http\/Controllers\/SettingsController.php.html#12\">App\\Http\\Controllers\\SettingController<\/a>"],[100,0,"<a href=\"Http\/Kernel.php.html#7\">App\\Http\\Kernel<\/a>"],[0,2,"<a href=\"Http\/Middleware\/Authenticate.php.html#8\">App\\Http\\Middleware\\Authenticate<\/a>"],[100,0,"<a href=\"Http\/Middleware\/EncryptCookies.php.html#7\">App\\Http\\Middleware\\EncryptCookies<\/a>"],[75,2,"<a href=\"Http\/Middleware\/EnsureFeatureEnabled.php.html#8\">App\\Http\\Middleware\\EnsureFeatureEnabled<\/a>"],[95.23809523809523,3,"<a href=\"Http\/Middleware\/HandleInertiaRequests.php.html#8\">App\\Http\\Middleware\\HandleInertiaRequests<\/a>"],[100,0,"<a href=\"Http\/Middleware\/PreventRequestsDuringMaintenance.php.html#7\">App\\Http\\Middleware\\PreventRequestsDuringMaintenance<\/a>"],[0,4,"<a href=\"Http\/Middleware\/RedirectIfAuthenticated.php.html#11\">App\\Http\\Middleware\\RedirectIfAuthenticated<\/a>"],[77.77777777777779,9,"<a href=\"Http\/Middleware\/TrackAnalytics.php.html#9\">App\\Http\\Middleware\\TrackAnalytics<\/a>"],[100,0,"<a href=\"Http\/Middleware\/TrimStrings.php.html#7\">App\\Http\\Middleware\\TrimStrings<\/a>"],[0,1,"<a href=\"Http\/Middleware\/TrustHosts.php.html#7\">App\\Http\\Middleware\\TrustHosts<\/a>"],[100,0,"<a href=\"Http\/Middleware\/TrustProxies.php.html#8\">App\\Http\\Middleware\\TrustProxies<\/a>"],[0,2,"<a href=\"Http\/Middleware\/UploadTuning.php.html#8\">App\\Http\\Middleware\\UploadTuning<\/a>"],[100,0,"<a href=\"Http\/Middleware\/ValidateSignature.php.html#7\">App\\Http\\Middleware\\ValidateSignature<\/a>"],[100,0,"<a href=\"Http\/Middleware\/VerifyCsrfToken.php.html#7\">App\\Http\\Middleware\\VerifyCsrfToken<\/a>"],[0,7,"<a href=\"Http\/Requests\/Auth\/LoginRequest.php.html#12\">App\\Http\\Requests\\Auth\\LoginRequest<\/a>"],[100,1,"<a href=\"Http\/Requests\/ProfileUpdateRequest.php.html#9\">App\\Http\\Requests\\ProfileUpdateRequest<\/a>"],[5,5,"<a href=\"Jobs\/ProcessAnalyticsEvent.php.html#13\">App\\Jobs\\ProcessAnalyticsEvent<\/a>"],[0,3,"<a href=\"Jobs\/SubmitOrderJob.php.html#15\">App\\Jobs\\SubmitOrderJob<\/a>"],[33.33333333333333,2,"<a href=\"Mail\/GalleryAccessCodeMail.php.html#10\">App\\Mail\\GalleryAccessCodeMail<\/a>"],[0,4,"<a href=\"Mail\/LoginOtpMail.php.html#11\">App\\Mail\\LoginOtpMail<\/a>"],[0,1,"<a href=\"Models\/AnalyticsEvent.php.html#8\">App\\Models\\AnalyticsEvent<\/a>"],[100,0,"<a href=\"Models\/AnalyticsSession.php.html#8\">App\\Models\\AnalyticsSession<\/a>"],[50,2,"<a href=\"Models\/Cart.php.html#8\">App\\Models\\Cart<\/a>"],[50,2,"<a href=\"Models\/CartItem.php.html#8\">App\\Models\\CartItem<\/a>"],[100,0,"<a href=\"Models\/ContactMessage.php.html#8\">App\\Models\\ContactMessage<\/a>"],[35.294117647058826,9,"<a href=\"Models\/Gallery.php.html#11\">App\\Models\\Gallery<\/a>"],[100,1,"<a href=\"Models\/GalleryAccessCode.php.html#8\">App\\Models\\GalleryAccessCode<\/a>"],[0,1,"<a href=\"Models\/Invoice.php.html#8\">App\\Models\\Invoice<\/a>"],[100,5,"<a href=\"Models\/NewsPost.php.html#9\">App\\Models\\NewsPost<\/a>"],[33.33333333333333,3,"<a href=\"Models\/Order.php.html#8\">App\\Models\\Order<\/a>"],[0,2,"<a href=\"Models\/OrderItem.php.html#8\">App\\Models\\OrderItem<\/a>"],[72.5,22,"<a href=\"Models\/Photo.php.html#10\">App\\Models\\Photo<\/a>"],[0,1,"<a href=\"Models\/Role.php.html#8\">App\\Models\\Role<\/a>"],[65.21739130434783,19,"<a href=\"Models\/Setting.php.html#10\">App\\Models\\Setting<\/a>"],[0,2,"<a href=\"Models\/User.php.html#12\">App\\Models\\User<\/a>"],[0,1,"<a href=\"Notifications\/CustomVerifyEmail.php.html#8\">App\\Notifications\\CustomVerifyEmail<\/a>"],[69.23076923076923,18,"<a href=\"Policies\/GalleryPolicy.php.html#8\">App\\Policies\\GalleryPolicy<\/a>"],[0,12,"<a href=\"Print\/PrintConfig.php.html#5\">App\\Print\\PrintConfig<\/a>"],[0,5,"<a href=\"Print\/ProviderRegistry.php.html#8\">App\\Print\\ProviderRegistry<\/a>"],[0,3,"<a href=\"Print\/Providers\/ArteloProvider.php.html#10\">App\\Print\\Providers\\ArteloProvider<\/a>"],[0,3,"<a href=\"Print\/Providers\/FinerWorksProvider.php.html#10\">App\\Print\\Providers\\FinerWorksProvider<\/a>"],[0,3,"<a href=\"Print\/Providers\/LumaprintsProvider.php.html#10\">App\\Print\\Providers\\LumaprintsProvider<\/a>"],[0,2,"<a href=\"Print\/Providers\/NullProvider.php.html#9\">App\\Print\\Providers\\NullProvider<\/a>"],[0,3,"<a href=\"Print\/Providers\/PictoremProvider.php.html#10\">App\\Print\\Providers\\PictoremProvider<\/a>"],[100,2,"<a href=\"Providers\/AppServiceProvider.php.html#8\">App\\Providers\\AppServiceProvider<\/a>"],[81.81818181818183,2,"<a href=\"Providers\/AuthServiceProvider.php.html#10\">App\\Providers\\AuthServiceProvider<\/a>"],[0,1,"<a href=\"Providers\/BroadcastServiceProvider.php.html#8\">App\\Providers\\BroadcastServiceProvider<\/a>"],[100,2,"<a href=\"Providers\/EventServiceProvider.php.html#10\">App\\Providers\\EventServiceProvider<\/a>"],[50,1,"<a href=\"Providers\/PrintServiceProvider.php.html#8\">App\\Providers\\PrintServiceProvider<\/a>"],[90,2,"<a href=\"Providers\/RouteServiceProvider.php.html#11\">App\\Providers\\RouteServiceProvider<\/a>"],[93.33333333333333,15,"<a href=\"Providers\/SettingsServiceProvider.php.html#11\">App\\Providers\\SettingsServiceProvider<\/a>"],[0,26,"<a href=\"Services\/ExifReader.php.html#5\">App\\Services\\ExifReader<\/a>"],[0,35,"<a href=\"Services\/GalleryImportService.php.html#10\">App\\Services\\GalleryImportService<\/a>"],[0,37,"<a href=\"Services\/PhotoProcessor.php.html#8\">App\\Services\\PhotoProcessor<\/a>"],[0,37,"<a href=\"Services\/PhotoTransformer.php.html#9\">App\\Services\\PhotoTransformer<\/a>"],[90.80459770114942,35,"<a href=\"Support\/Analytics.php.html#11\">App\\Support\\Analytics<\/a>"],[54.91329479768786,102,"<a href=\"Support\/BotGuard.php.html#8\">App\\Support\\BotGuard<\/a>"],[92,35,"<a href=\"Support\/ExifHelper.php.html#7\">App\\Support\\ExifHelper<\/a>"],[100,3,"<a href=\"Support\/Ordering\/OrderBuilder.php.html#9\">App\\Support\\Ordering\\OrderBuilder<\/a>"],[100,7,"<a href=\"Support\/Pricing.php.html#8\">App\\Support\\Pricing<\/a>"]], 'Class Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Method Complexity');
+
+    d3.select('#methodComplexity svg')
+      .datum(getComplexityData([[0,5,"<a href=\"Console\/Commands\/EnsureDatabaseState.php.html#14\">App\\Console\\Commands\\EnsureDatabaseState::handle<\/a>"],[0,3,"<a href=\"Console\/Commands\/EnsureDatabaseState.php.html#37\">App\\Console\\Commands\\EnsureDatabaseState::parseRequestedGroups<\/a>"],[0,2,"<a href=\"Console\/Commands\/ImportGalleries.php.html#13\">App\\Console\\Commands\\ImportGalleries::handle<\/a>"],[0,1,"<a href=\"Console\/Kernel.php.html#13\">App\\Console\\Kernel::schedule<\/a>"],[100,1,"<a href=\"Console\/Kernel.php.html#21\">App\\Console\\Kernel::commands<\/a>"],[100,1,"<a href=\"Ensurers\/DefaultSettingsEnsurer.php.html#9\">App\\Ensurers\\DefaultSettingsEnsurer::run<\/a>"],[100,1,"<a href=\"Ensurers\/DefaultSettingsEnsurer.php.html#21\">App\\Ensurers\\DefaultSettingsEnsurer::ensureThemeDefaults<\/a>"],[100,1,"<a href=\"Ensurers\/DefaultSettingsEnsurer.php.html#30\">App\\Ensurers\\DefaultSettingsEnsurer::ensureGeneralDefaults<\/a>"],[100,1,"<a href=\"Ensurers\/DefaultSettingsEnsurer.php.html#39\">App\\Ensurers\\DefaultSettingsEnsurer::ensureSecurityDefaults<\/a>"],[100,1,"<a href=\"Ensurers\/DefaultSettingsEnsurer.php.html#71\">App\\Ensurers\\DefaultSettingsEnsurer::ensureLandingDefaults<\/a>"],[100,1,"<a href=\"Ensurers\/DefaultSettingsEnsurer.php.html#82\">App\\Ensurers\\DefaultSettingsEnsurer::ensureAnalyticsDefaults<\/a>"],[100,1,"<a href=\"Ensurers\/DefaultSettingsEnsurer.php.html#90\">App\\Ensurers\\DefaultSettingsEnsurer::ensureFeatureDefaults<\/a>"],[100,2,"<a href=\"Ensurers\/DefaultSettingsEnsurer.php.html#97\">App\\Ensurers\\DefaultSettingsEnsurer::ensureSalesDefaults<\/a>"],[100,3,"<a href=\"Ensurers\/DefaultSettingsEnsurer.php.html#114\">App\\Ensurers\\DefaultSettingsEnsurer::repairSecretPlaceholders<\/a>"],[94.44444444444444,6,"<a href=\"Ensurers\/DefaultSettingsEnsurer.php.html#130\">App\\Ensurers\\DefaultSettingsEnsurer::upsert<\/a>"],[100,1,"<a href=\"Exceptions\/Handler.php.html#24\">App\\Exceptions\\Handler::register<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/ContactController.php.html#11\">App\\Http\\Controllers\\Admin\\ContactController::index<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Admin\/ContactController.php.html#17\">App\\Http\\Controllers\\Admin\\ContactController::show<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/ContactController.php.html#25\">App\\Http\\Controllers\\Admin\\ContactController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/ContactController.php.html#34\">App\\Http\\Controllers\\Admin\\ContactController::destroy<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Admin\/DashboardController.php.html#18\">App\\Http\\Controllers\\Admin\\DashboardController::index<\/a>"],[0,10,"<a href=\"Http\/Controllers\/Admin\/DashboardController.php.html#29\">App\\Http\\Controllers\\Admin\\DashboardController::buildAnalyticsSummary<\/a>"],[0,7,"<a href=\"Http\/Controllers\/Admin\/DashboardController.php.html#113\">App\\Http\\Controllers\\Admin\\DashboardController::aggregateTopEntities<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/NewsController.php.html#12\">App\\Http\\Controllers\\Admin\\NewsController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/NewsController.php.html#18\">App\\Http\\Controllers\\Admin\\NewsController::create<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/NewsController.php.html#23\">App\\Http\\Controllers\\Admin\\NewsController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/NewsController.php.html#37\">App\\Http\\Controllers\\Admin\\NewsController::edit<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/NewsController.php.html#42\">App\\Http\\Controllers\\Admin\\NewsController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/NewsController.php.html#54\">App\\Http\\Controllers\\Admin\\NewsController::destroy<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/OrdersController.php.html#11\">App\\Http\\Controllers\\Admin\\OrdersController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/OrdersController.php.html#17\">App\\Http\\Controllers\\Admin\\OrdersController::show<\/a>"],[0,9,"<a href=\"Http\/Controllers\/Admin\/SettingsController.php.html#12\">App\\Http\\Controllers\\Admin\\SettingsController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/SettingsController.php.html#59\">App\\Http\\Controllers\\Admin\\SettingsController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Admin\/UserManagementController.php.html#16\">App\\Http\\Controllers\\Admin\\UserManagementController::index<\/a>"],[0,4,"<a href=\"Http\/Controllers\/Admin\/UserManagementController.php.html#27\">App\\Http\\Controllers\\Admin\\UserManagementController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/AuthenticatedSessionController.php.html#24\">App\\Http\\Controllers\\Auth\\AuthenticatedSessionController::create<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/AuthenticatedSessionController.php.html#34\">App\\Http\\Controllers\\Auth\\AuthenticatedSessionController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/AuthenticatedSessionController.php.html#55\">App\\Http\\Controllers\\Auth\\AuthenticatedSessionController::destroy<\/a>"],[0,4,"<a href=\"Http\/Controllers\/Auth\/AuthenticatedSessionController.php.html#66\">App\\Http\\Controllers\\Auth\\AuthenticatedSessionController::verify<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Auth\/EmailVerificationNotificationController.php.html#15\">App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/Auth\/EmailVerificationPromptController.php.html#17\">App\\Http\\Controllers\\Auth\\EmailVerificationPromptController::__invoke<\/a>"],[0,2,"<a href=\"Http\/Controllers\/Auth\/RegisteredUserController.php.html#22\">App\\Http\\Controllers\\Auth\\RegisteredUserController::create<\/a>"],[0,3,"<a href=\"Http\/Controllers\/Auth\/RegisteredUserController.php.html#35\">App\\Http\\Controllers\\Auth\\RegisteredUserController::store<\/a>"],[0,3,"<a href=\"Http\/Controllers\/Auth\/VerifyEmailController.php.html#21\">App\\Http\\Controllers\\Auth\\VerifyEmailController::__invoke<\/a>"],[100,2,"<a href=\"Http\/Controllers\/CartController.php.html#13\">App\\Http\\Controllers\\CartController::currentCart<\/a>"],[0,1,"<a href=\"Http\/Controllers\/CartController.php.html#25\">App\\Http\\Controllers\\CartController::index<\/a>"],[100,1,"<a href=\"Http\/Controllers\/CartController.php.html#31\">App\\Http\\Controllers\\CartController::add<\/a>"],[100,2,"<a href=\"Http\/Controllers\/CartController.php.html#62\">App\\Http\\Controllers\\CartController::updateItem<\/a>"],[80,2,"<a href=\"Http\/Controllers\/CartController.php.html#76\">App\\Http\\Controllers\\CartController::removeItem<\/a>"],[100,1,"<a href=\"Http\/Controllers\/CartController.php.html#86\">App\\Http\\Controllers\\CartController::clear<\/a>"],[0,1,"<a href=\"Http\/Controllers\/ContactController.php.html#10\">App\\Http\\Controllers\\ContactController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/ContactController.php.html#15\">App\\Http\\Controllers\\ContactController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/GalleryController.php.html#18\">App\\Http\\Controllers\\GalleryController::adminIndex<\/a>"],[0,3,"<a href=\"Http\/Controllers\/GalleryController.php.html#41\">App\\Http\\Controllers\\GalleryController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/GalleryController.php.html#73\">App\\Http\\Controllers\\GalleryController::create<\/a>"],[0,3,"<a href=\"Http\/Controllers\/GalleryController.php.html#79\">App\\Http\\Controllers\\GalleryController::store<\/a>"],[64.86486486486487,10,"<a href=\"Http\/Controllers\/GalleryController.php.html#109\">App\\Http\\Controllers\\GalleryController::show<\/a>"],[0,1,"<a href=\"Http\/Controllers\/GalleryController.php.html#207\">App\\Http\\Controllers\\GalleryController::edit<\/a>"],[0,3,"<a href=\"Http\/Controllers\/GalleryController.php.html#227\">App\\Http\\Controllers\\GalleryController::update<\/a>"],[0,3,"<a href=\"Http\/Controllers\/GalleryController.php.html#257\">App\\Http\\Controllers\\GalleryController::destroy<\/a>"],[0,6,"<a href=\"Http\/Controllers\/GalleryController.php.html#267\">App\\Http\\Controllers\\GalleryController::resolvePublicPath<\/a>"],[64.86486486486487,2,"<a href=\"Http\/Controllers\/GalleryController.php.html#293\">App\\Http\\Controllers\\GalleryController::adminGenerateCode<\/a>"],[0,1,"<a href=\"Http\/Controllers\/GalleryController.php.html#344\">App\\Http\\Controllers\\GalleryController::accessForm<\/a>"],[80,5,"<a href=\"Http\/Controllers\/GalleryController.php.html#350\">App\\Http\\Controllers\\GalleryController::accessSubmit<\/a>"],[100,2,"<a href=\"Http\/Controllers\/LandingPageController.php.html#11\">App\\Http\\Controllers\\LandingPageController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/NewsController.php.html#10\">App\\Http\\Controllers\\NewsController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/NewsController.php.html#19\">App\\Http\\Controllers\\NewsController::show<\/a>"],[0,1,"<a href=\"Http\/Controllers\/PhotoController.php.html#15\">App\\Http\\Controllers\\PhotoController::index<\/a>"],[0,1,"<a href=\"Http\/Controllers\/PhotoController.php.html#21\">App\\Http\\Controllers\\PhotoController::create<\/a>"],[0,1,"<a href=\"Http\/Controllers\/PhotoController.php.html#26\">App\\Http\\Controllers\\PhotoController::store<\/a>"],[0,1,"<a href=\"Http\/Controllers\/PhotoController.php.html#41\">App\\Http\\Controllers\\PhotoController::show<\/a>"],[0,1,"<a href=\"Http\/Controllers\/PhotoController.php.html#46\">App\\Http\\Controllers\\PhotoController::edit<\/a>"],[0,1,"<a href=\"Http\/Controllers\/PhotoController.php.html#51\">App\\Http\\Controllers\\PhotoController::update<\/a>"],[0,1,"<a href=\"Http\/Controllers\/PhotoController.php.html#71\">App\\Http\\Controllers\\PhotoController::destroy<\/a>"],[0,5,"<a href=\"Http\/Controllers\/PhotoController.php.html#77\">App\\Http\\Controllers\\PhotoController::upload<\/a>"],[0,2,"<a href=\"Http\/Controllers\/PhotoController.php.html#116\">App\\Http\\Controllers\\PhotoController::transform<\/a>"],[0,2,"<a href=\"Http\/Controllers\/PhotoController.php.html#133\">App\\Http\\Controllers\\PhotoController::chunkStart<\/a>"],[0,2,"<a href=\"Http\/Controllers\/PhotoController.php.html#143\">App\\Http\\Controllers\\PhotoController::chunkUpload<\/a>"],[0,7,"<a href=\"Http\/Controllers\/PhotoController.php.html#167\">App\\Http\\Controllers\\PhotoController::chunkFinish<\/a>"],[0,8,"<a href=\"Http\/Controllers\/PhotoMediaController.php.html#14\">App\\Http\\Controllers\\PhotoMediaController::web<\/a>"],[0,7,"<a href=\"Http\/Controllers\/PhotoMediaController.php.html#63\">App\\Http\\Controllers\\PhotoMediaController::relativePath<\/a>"],[0,5,"<a href=\"Http\/Controllers\/PhotoMediaController.php.html#86\">App\\Http\\Controllers\\PhotoMediaController::boolConfig<\/a>"],[0,3,"<a href=\"Http\/Controllers\/PhotoMediaController.php.html#105\">App\\Http\\Controllers\\PhotoMediaController::streamMeta<\/a>"],[100,1,"<a href=\"Http\/Controllers\/ProfileController.php.html#19\">App\\Http\\Controllers\\ProfileController::edit<\/a>"],[100,2,"<a href=\"Http\/Controllers\/ProfileController.php.html#30\">App\\Http\\Controllers\\ProfileController::update<\/a>"],[100,1,"<a href=\"Http\/Controllers\/ProfileController.php.html#46\">App\\Http\\Controllers\\ProfileController::destroy<\/a>"],[0,1,"<a href=\"Http\/Controllers\/SettingsController.php.html#14\">App\\Http\\Controllers\\SettingController::index<\/a>"],[0,2,"<a href=\"Http\/Controllers\/SettingsController.php.html#20\">App\\Http\\Controllers\\SettingController::updateSetting<\/a>"],[0,2,"<a href=\"Http\/Middleware\/Authenticate.php.html#13\">App\\Http\\Middleware\\Authenticate::redirectTo<\/a>"],[75,2,"<a href=\"Http\/Middleware\/EnsureFeatureEnabled.php.html#10\">App\\Http\\Middleware\\EnsureFeatureEnabled::handle<\/a>"],[100,1,"<a href=\"Http\/Middleware\/HandleInertiaRequests.php.html#20\">App\\Http\\Middleware\\HandleInertiaRequests::version<\/a>"],[95,2,"<a href=\"Http\/Middleware\/HandleInertiaRequests.php.html#30\">App\\Http\\Middleware\\HandleInertiaRequests::share<\/a>"],[0,4,"<a href=\"Http\/Middleware\/RedirectIfAuthenticated.php.html#18\">App\\Http\\Middleware\\RedirectIfAuthenticated::handle<\/a>"],[100,2,"<a href=\"Http\/Middleware\/TrackAnalytics.php.html#11\">App\\Http\\Middleware\\TrackAnalytics::handle<\/a>"],[71.42857142857143,7,"<a href=\"Http\/Middleware\/TrackAnalytics.php.html#22\">App\\Http\\Middleware\\TrackAnalytics::shouldTrack<\/a>"],[0,1,"<a href=\"Http\/Middleware\/TrustHosts.php.html#14\">App\\Http\\Middleware\\TrustHosts::hosts<\/a>"],[0,2,"<a href=\"Http\/Middleware\/UploadTuning.php.html#10\">App\\Http\\Middleware\\UploadTuning::handle<\/a>"],[0,1,"<a href=\"Http\/Requests\/Auth\/LoginRequest.php.html#17\">App\\Http\\Requests\\Auth\\LoginRequest::authorize<\/a>"],[0,1,"<a href=\"Http\/Requests\/Auth\/LoginRequest.php.html#27\">App\\Http\\Requests\\Auth\\LoginRequest::rules<\/a>"],[0,2,"<a href=\"Http\/Requests\/Auth\/LoginRequest.php.html#39\">App\\Http\\Requests\\Auth\\LoginRequest::authenticate<\/a>"],[0,2,"<a href=\"Http\/Requests\/Auth\/LoginRequest.php.html#59\">App\\Http\\Requests\\Auth\\LoginRequest::ensureIsNotRateLimited<\/a>"],[0,1,"<a href=\"Http\/Requests\/Auth\/LoginRequest.php.html#80\">App\\Http\\Requests\\Auth\\LoginRequest::throttleKey<\/a>"],[100,1,"<a href=\"Http\/Requests\/ProfileUpdateRequest.php.html#16\">App\\Http\\Requests\\ProfileUpdateRequest::rules<\/a>"],[100,1,"<a href=\"Jobs\/ProcessAnalyticsEvent.php.html#19\">App\\Jobs\\ProcessAnalyticsEvent::__construct<\/a>"],[0,4,"<a href=\"Jobs\/ProcessAnalyticsEvent.php.html#24\">App\\Jobs\\ProcessAnalyticsEvent::handle<\/a>"],[0,1,"<a href=\"Jobs\/SubmitOrderJob.php.html#19\">App\\Jobs\\SubmitOrderJob::__construct<\/a>"],[0,2,"<a href=\"Jobs\/SubmitOrderJob.php.html#21\">App\\Jobs\\SubmitOrderJob::handle<\/a>"],[100,1,"<a href=\"Mail\/GalleryAccessCodeMail.php.html#14\">App\\Mail\\GalleryAccessCodeMail::__construct<\/a>"],[0,1,"<a href=\"Mail\/GalleryAccessCodeMail.php.html#21\">App\\Mail\\GalleryAccessCodeMail::build<\/a>"],[0,1,"<a href=\"Mail\/LoginOtpMail.php.html#20\">App\\Mail\\LoginOtpMail::__construct<\/a>"],[0,1,"<a href=\"Mail\/LoginOtpMail.php.html#25\">App\\Mail\\LoginOtpMail::envelope<\/a>"],[0,1,"<a href=\"Mail\/LoginOtpMail.php.html#32\">App\\Mail\\LoginOtpMail::content<\/a>"],[0,1,"<a href=\"Mail\/LoginOtpMail.php.html#42\">App\\Mail\\LoginOtpMail::attachments<\/a>"],[0,1,"<a href=\"Models\/AnalyticsEvent.php.html#24\">App\\Models\\AnalyticsEvent::session<\/a>"],[100,1,"<a href=\"Models\/Cart.php.html#16\">App\\Models\\Cart::items<\/a>"],[0,1,"<a href=\"Models\/Cart.php.html#17\">App\\Models\\Cart::user<\/a>"],[0,1,"<a href=\"Models\/CartItem.php.html#24\">App\\Models\\CartItem::cart<\/a>"],[100,1,"<a href=\"Models\/CartItem.php.html#25\">App\\Models\\CartItem::photo<\/a>"],[100,1,"<a href=\"Models\/Gallery.php.html#43\">App\\Models\\Gallery::photos<\/a>"],[0,1,"<a href=\"Models\/Gallery.php.html#48\">App\\Models\\Gallery::accessCodes<\/a>"],[66.66666666666666,1,"<a href=\"Models\/Gallery.php.html#53\">App\\Models\\Gallery::booted<\/a>"],[25,6,"<a href=\"Models\/Gallery.php.html#61\">App\\Models\\Gallery::getThumbnailUrlAttribute<\/a>"],[100,1,"<a href=\"Models\/GalleryAccessCode.php.html#23\">App\\Models\\GalleryAccessCode::gallery<\/a>"],[0,1,"<a href=\"Models\/Invoice.php.html#23\">App\\Models\\Invoice::order<\/a>"],[100,1,"<a href=\"Models\/NewsPost.php.html#21\">App\\Models\\NewsPost::author<\/a>"],[100,4,"<a href=\"Models\/NewsPost.php.html#26\">App\\Models\\NewsPost::booted<\/a>"],[100,1,"<a href=\"Models\/Order.php.html#27\">App\\Models\\Order::items<\/a>"],[0,1,"<a href=\"Models\/Order.php.html#28\">App\\Models\\Order::invoices<\/a>"],[0,1,"<a href=\"Models\/Order.php.html#29\">App\\Models\\Order::user<\/a>"],[0,1,"<a href=\"Models\/OrderItem.php.html#24\">App\\Models\\OrderItem::order<\/a>"],[0,1,"<a href=\"Models\/OrderItem.php.html#25\">App\\Models\\OrderItem::photo<\/a>"],[100,1,"<a href=\"Models\/Photo.php.html#38\">App\\Models\\Photo::gallery<\/a>"],[66.66666666666666,1,"<a href=\"Models\/Photo.php.html#43\">App\\Models\\Photo::booted<\/a>"],[100,2,"<a href=\"Models\/Photo.php.html#50\">App\\Models\\Photo::deleteFiles<\/a>"],[80,4,"<a href=\"Models\/Photo.php.html#63\">App\\Models\\Photo::deleteFilePath<\/a>"],[100,1,"<a href=\"Models\/Photo.php.html#76\">App\\Models\\Photo::getWebUrlAttribute<\/a>"],[100,1,"<a href=\"Models\/Photo.php.html#81\">App\\Models\\Photo::getThumbUrlAttribute<\/a>"],[60,5,"<a href=\"Models\/Photo.php.html#86\">App\\Models\\Photo::resolvePublicUrl<\/a>"],[58.333333333333336,7,"<a href=\"Models\/Photo.php.html#105\">App\\Models\\Photo::toRelativePath<\/a>"],[0,1,"<a href=\"Models\/Role.php.html#14\">App\\Models\\Role::users<\/a>"],[0,1,"<a href=\"Models\/Setting.php.html#18\">App\\Models\\Setting::scopeGroup<\/a>"],[0,1,"<a href=\"Models\/Setting.php.html#22\">App\\Models\\Setting::scopeSubGroup<\/a>"],[100,7,"<a href=\"Models\/Setting.php.html#26\">App\\Models\\Setting::isSecret<\/a>"],[57.14285714285714,6,"<a href=\"Models\/Setting.php.html#42\">App\\Models\\Setting::setValueAttribute<\/a>"],[50,4,"<a href=\"Models\/Setting.php.html#57\">App\\Models\\Setting::getValueAttribute<\/a>"],[0,1,"<a href=\"Models\/User.php.html#45\">App\\Models\\User::role<\/a>"],[0,1,"<a href=\"Models\/User.php.html#49\">App\\Models\\User::sendEmailVerificationNotification<\/a>"],[0,1,"<a href=\"Notifications\/CustomVerifyEmail.php.html#10\">App\\Notifications\\CustomVerifyEmail::toMail<\/a>"],[0,1,"<a href=\"Policies\/GalleryPolicy.php.html#13\">App\\Policies\\GalleryPolicy::viewAny<\/a>"],[81.81818181818183,14,"<a href=\"Policies\/GalleryPolicy.php.html#21\">App\\Policies\\GalleryPolicy::view<\/a>"],[0,1,"<a href=\"Policies\/GalleryPolicy.php.html#69\">App\\Policies\\GalleryPolicy::create<\/a>"],[0,1,"<a href=\"Policies\/GalleryPolicy.php.html#77\">App\\Policies\\GalleryPolicy::update<\/a>"],[0,1,"<a href=\"Policies\/GalleryPolicy.php.html#85\">App\\Policies\\GalleryPolicy::delete<\/a>"],[0,1,"<a href=\"Print\/PrintConfig.php.html#7\">App\\Print\\PrintConfig::providerKey<\/a>"],[0,2,"<a href=\"Print\/PrintConfig.php.html#12\">App\\Print\\PrintConfig::sandbox<\/a>"],[0,7,"<a href=\"Print\/PrintConfig.php.html#21\">App\\Print\\PrintConfig::options<\/a>"],[0,2,"<a href=\"Print\/PrintConfig.php.html#52\">App\\Print\\PrintConfig::endpoint<\/a>"],[0,1,"<a href=\"Print\/ProviderRegistry.php.html#13\">App\\Print\\ProviderRegistry::__construct<\/a>"],[0,1,"<a href=\"Print\/ProviderRegistry.php.html#18\">App\\Print\\ProviderRegistry::has<\/a>"],[0,1,"<a href=\"Print\/ProviderRegistry.php.html#23\">App\\Print\\ProviderRegistry::keys<\/a>"],[0,2,"<a href=\"Print\/ProviderRegistry.php.html#28\">App\\Print\\ProviderRegistry::make<\/a>"],[0,2,"<a href=\"Print\/Providers\/ArteloProvider.php.html#12\">App\\Print\\Providers\\ArteloProvider::supports<\/a>"],[0,1,"<a href=\"Print\/Providers\/ArteloProvider.php.html#18\">App\\Print\\Providers\\ArteloProvider::submit<\/a>"],[0,2,"<a href=\"Print\/Providers\/FinerWorksProvider.php.html#12\">App\\Print\\Providers\\FinerWorksProvider::supports<\/a>"],[0,1,"<a href=\"Print\/Providers\/FinerWorksProvider.php.html#18\">App\\Print\\Providers\\FinerWorksProvider::submit<\/a>"],[0,2,"<a href=\"Print\/Providers\/LumaprintsProvider.php.html#12\">App\\Print\\Providers\\LumaprintsProvider::supports<\/a>"],[0,1,"<a href=\"Print\/Providers\/LumaprintsProvider.php.html#18\">App\\Print\\Providers\\LumaprintsProvider::submit<\/a>"],[0,1,"<a href=\"Print\/Providers\/NullProvider.php.html#11\">App\\Print\\Providers\\NullProvider::submit<\/a>"],[0,1,"<a href=\"Print\/Providers\/NullProvider.php.html#31\">App\\Print\\Providers\\NullProvider::supports<\/a>"],[0,2,"<a href=\"Print\/Providers\/PictoremProvider.php.html#12\">App\\Print\\Providers\\PictoremProvider::supports<\/a>"],[0,1,"<a href=\"Print\/Providers\/PictoremProvider.php.html#18\">App\\Print\\Providers\\PictoremProvider::submit<\/a>"],[100,1,"<a href=\"Providers\/AppServiceProvider.php.html#13\">App\\Providers\\AppServiceProvider::register<\/a>"],[100,1,"<a href=\"Providers\/AppServiceProvider.php.html#21\">App\\Providers\\AppServiceProvider::boot<\/a>"],[81.81818181818183,2,"<a href=\"Providers\/AuthServiceProvider.php.html#24\">App\\Providers\\AuthServiceProvider::boot<\/a>"],[0,1,"<a href=\"Providers\/BroadcastServiceProvider.php.html#13\">App\\Providers\\BroadcastServiceProvider::boot<\/a>"],[100,1,"<a href=\"Providers\/EventServiceProvider.php.html#26\">App\\Providers\\EventServiceProvider::boot<\/a>"],[100,1,"<a href=\"Providers\/EventServiceProvider.php.html#34\">App\\Providers\\EventServiceProvider::shouldDiscoverEvents<\/a>"],[50,1,"<a href=\"Providers\/PrintServiceProvider.php.html#10\">App\\Providers\\PrintServiceProvider::register<\/a>"],[90,2,"<a href=\"Providers\/RouteServiceProvider.php.html#25\">App\\Providers\\RouteServiceProvider::boot<\/a>"],[100,1,"<a href=\"Providers\/SettingsServiceProvider.php.html#16\">App\\Providers\\SettingsServiceProvider::register<\/a>"],[93.10344827586206,14,"<a href=\"Providers\/SettingsServiceProvider.php.html#24\">App\\Providers\\SettingsServiceProvider::boot<\/a>"],[0,12,"<a href=\"Services\/ExifReader.php.html#7\">App\\Services\\ExifReader::read<\/a>"],[0,6,"<a href=\"Services\/ExifReader.php.html#32\">App\\Services\\ExifReader::pickDate<\/a>"],[0,3,"<a href=\"Services\/ExifReader.php.html#47\">App\\Services\\ExifReader::exiftoolAvailable<\/a>"],[0,5,"<a href=\"Services\/ExifReader.php.html#57\">App\\Services\\ExifReader::flatten<\/a>"],[0,12,"<a href=\"Services\/GalleryImportService.php.html#16\">App\\Services\\GalleryImportService::import<\/a>"],[0,3,"<a href=\"Services\/GalleryImportService.php.html#95\">App\\Services\\GalleryImportService::imageFiles<\/a>"],[0,11,"<a href=\"Services\/GalleryImportService.php.html#109\">App\\Services\\GalleryImportService::readExif<\/a>"],[0,3,"<a href=\"Services\/GalleryImportService.php.html#142\">App\\Services\\GalleryImportService::exiftoolAvailable<\/a>"],[0,6,"<a href=\"Services\/GalleryImportService.php.html#152\">App\\Services\\GalleryImportService::chooseDateFromExif<\/a>"],[0,2,"<a href=\"Services\/PhotoProcessor.php.html#10\">App\\Services\\PhotoProcessor::import<\/a>"],[0,2,"<a href=\"Services\/PhotoProcessor.php.html#43\">App\\Services\\PhotoProcessor::storeOriginal<\/a>"],[0,1,"<a href=\"Services\/PhotoProcessor.php.html#53\">App\\Services\\PhotoProcessor::sanitizeFileName<\/a>"],[0,8,"<a href=\"Services\/PhotoProcessor.php.html#60\">App\\Services\\PhotoProcessor::makeDerivatives<\/a>"],[0,3,"<a href=\"Services\/PhotoProcessor.php.html#103\">App\\Services\\PhotoProcessor::makeTempFile<\/a>"],[0,1,"<a href=\"Services\/PhotoProcessor.php.html#119\">App\\Services\\PhotoProcessor::gdLoad<\/a>"],[0,5,"<a href=\"Services\/PhotoProcessor.php.html#128\">App\\Services\\PhotoProcessor::gdSave<\/a>"],[0,3,"<a href=\"Services\/PhotoProcessor.php.html#143\">App\\Services\\PhotoProcessor::gdResizeMax<\/a>"],[0,3,"<a href=\"Services\/PhotoProcessor.php.html#154\">App\\Services\\PhotoProcessor::imagickResizeMax<\/a>"],[0,1,"<a href=\"Services\/PhotoProcessor.php.html#164\">App\\Services\\PhotoProcessor::webRelativePath<\/a>"],[0,1,"<a href=\"Services\/PhotoProcessor.php.html#169\">App\\Services\\PhotoProcessor::thumbRelativePath<\/a>"],[0,1,"<a href=\"Services\/PhotoProcessor.php.html#174\">App\\Services\\PhotoProcessor::originalRelativePath<\/a>"],[0,2,"<a href=\"Services\/PhotoProcessor.php.html#179\">App\\Services\\PhotoProcessor::storeFile<\/a>"],[0,4,"<a href=\"Services\/PhotoProcessor.php.html#189\">App\\Services\\PhotoProcessor::cleanupTemps<\/a>"],[0,4,"<a href=\"Services\/PhotoTransformer.php.html#11\">App\\Services\\PhotoTransformer::transform<\/a>"],[0,13,"<a href=\"Services\/PhotoTransformer.php.html#32\">App\\Services\\PhotoTransformer::transformWithGdOrImagick<\/a>"],[0,1,"<a href=\"Services\/PhotoTransformer.php.html#89\">App\\Services\\PhotoTransformer::gdLoad<\/a>"],[0,5,"<a href=\"Services\/PhotoTransformer.php.html#98\">App\\Services\\PhotoTransformer::gdSave<\/a>"],[0,3,"<a href=\"Services\/PhotoTransformer.php.html#113\">App\\Services\\PhotoTransformer::gdResizeMax<\/a>"],[0,4,"<a href=\"Services\/PhotoTransformer.php.html#124\">App\\Services\\PhotoTransformer::gdManualFlip<\/a>"],[0,3,"<a href=\"Services\/PhotoTransformer.php.html#140\">App\\Services\\PhotoTransformer::imagickResizeMax<\/a>"],[0,4,"<a href=\"Services\/PhotoTransformer.php.html#150\">App\\Services\\PhotoTransformer::toFilesystemPath<\/a>"],[100,1,"<a href=\"Support\/Analytics.php.html#13\">App\\Support\\Analytics::enabled<\/a>"],[88.88888888888889,9,"<a href=\"Support\/Analytics.php.html#18\">App\\Support\\Analytics::record<\/a>"],[100,1,"<a href=\"Support\/Analytics.php.html#62\">App\\Support\\Analytics::recordPrivateGalleryView<\/a>"],[0,1,"<a href=\"Support\/Analytics.php.html#72\">App\\Support\\Analytics::recordConversion<\/a>"],[91.66666666666666,9,"<a href=\"Support\/Analytics.php.html#77\">App\\Support\\Analytics::buildMeta<\/a>"],[100,4,"<a href=\"Support\/Analytics.php.html#113\">App\\Support\\Analytics::normalizePath<\/a>"],[83.33333333333334,6,"<a href=\"Support\/Analytics.php.html#134\">App\\Support\\Analytics::detectDevice<\/a>"],[100,3,"<a href=\"Support\/Analytics.php.html#159\">App\\Support\\Analytics::referrerHost<\/a>"],[100,1,"<a href=\"Support\/Analytics.php.html#169\">App\\Support\\Analytics::shouldCaptureReferrer<\/a>"],[72.22222222222221,15,"<a href=\"Support\/BotGuard.php.html#67\">App\\Support\\BotGuard::shouldBlock<\/a>"],[100,1,"<a href=\"Support\/BotGuard.php.html#105\">App\\Support\\BotGuard::isEnabled<\/a>"],[100,1,"<a href=\"Support\/BotGuard.php.html#110\">App\\Support\\BotGuard::allowBlankUserAgent<\/a>"],[0,1,"<a href=\"Support\/BotGuard.php.html#115\">App\\Support\\BotGuard::requiresBrowserHeaders<\/a>"],[100,5,"<a href=\"Support\/BotGuard.php.html#120\">App\\Support\\BotGuard::isAllowListed<\/a>"],[100,4,"<a href=\"Support\/BotGuard.php.html#133\">App\\Support\\BotGuard::isBlockedAgent<\/a>"],[33.33333333333333,4,"<a href=\"Support\/BotGuard.php.html#144\">App\\Support\\BotGuard::matchesBlockedRegex<\/a>"],[50,9,"<a href=\"Support\/BotGuard.php.html#159\">App\\Support\\BotGuard::isBlockedIp<\/a>"],[0,8,"<a href=\"Support\/BotGuard.php.html#192\">App\\Support\\BotGuard::looksLikeBrowserRequest<\/a>"],[100,2,"<a href=\"Support\/BotGuard.php.html#220\">App\\Support\\BotGuard::blockedAgents<\/a>"],[100,1,"<a href=\"Support\/BotGuard.php.html#229\">App\\Support\\BotGuard::allowedAgents<\/a>"],[100,1,"<a href=\"Support\/BotGuard.php.html#236\">App\\Support\\BotGuard::explicitAllowedAgents<\/a>"],[100,1,"<a href=\"Support\/BotGuard.php.html#244\">App\\Support\\BotGuard::defaultAllowedAgents<\/a>"],[100,1,"<a href=\"Support\/BotGuard.php.html#249\">App\\Support\\BotGuard::blockedAgentPatterns<\/a>"],[100,1,"<a href=\"Support\/BotGuard.php.html#254\">App\\Support\\BotGuard::blockedIps<\/a>"],[30.76923076923077,6,"<a href=\"Support\/BotGuard.php.html#259\">App\\Support\\BotGuard::boolConfig<\/a>"],[88.88888888888889,3,"<a href=\"Support\/BotGuard.php.html#286\">App\\Support\\BotGuard::configValue<\/a>"],[60,11,"<a href=\"Support\/BotGuard.php.html#302\">App\\Support\\BotGuard::extractTokens<\/a>"],[80,6,"<a href=\"Support\/BotGuard.php.html#348\">App\\Support\\BotGuard::uniqueTokens<\/a>"],[36.84210526315789,21,"<a href=\"Support\/BotGuard.php.html#369\">App\\Support\\BotGuard::ipMatchesCidr<\/a>"],[100,4,"<a href=\"Support\/ExifHelper.php.html#9\">App\\Support\\ExifHelper::filterForGallery<\/a>"],[94.73684210526315,13,"<a href=\"Support\/ExifHelper.php.html#29\">App\\Support\\ExifHelper::pickMapped<\/a>"],[100,1,"<a href=\"Support\/ExifHelper.php.html#58\">App\\Support\\ExifHelper::extractGps<\/a>"],[85.71428571428571,12,"<a href=\"Support\/ExifHelper.php.html#65\">App\\Support\\ExifHelper::readGpsCoord<\/a>"],[80,5,"<a href=\"Support\/ExifHelper.php.html#86\">App\\Support\\ExifHelper::rationalToFloat<\/a>"],[100,3,"<a href=\"Support\/Ordering\/OrderBuilder.php.html#11\">App\\Support\\Ordering\\OrderBuilder::fromCart<\/a>"],[100,6,"<a href=\"Support\/Pricing.php.html#10\">App\\Support\\Pricing::resolveMarkupPercent<\/a>"],[100,1,"<a href=\"Support\/Pricing.php.html#18\">App\\Support\\Pricing::applyMarkup<\/a>"]], 'Method Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getComplexityData(data, label) {
+    var values = [];
+    $.each(data, function(key) {
+      var value = Math.round(data[key][0]*100) / 100;
+      values.push({
+        x: value,
+        y: data[key][1],
+        class: data[key][2],
+        size: 0.05,
+        shape: 'diamond'
+      });
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+});
+  </script>
+ </body>
+</html>

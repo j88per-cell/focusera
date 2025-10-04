@@ -148,6 +148,20 @@ stdout_logfile=/var/log/focusera/queue.log
 
 Restart Supervisor after adding the config (`sudo supervisorctl reread && sudo supervisorctl update`).
 
+### Testing & Coverage
+
+-   Run the fast feedback suite with `php artisan test` or `vendor/bin/phpunit`. The PHPUnit configuration now defaults to an in-memory SQLite database, so no additional `.env` changes are required.
+-   Feature flags that gate cart/ordering logic are enabled automatically inside the tests; no local setup changes are needed.
+-   For code coverage, install and enable Xdebug (or another coverage driver) for your PHP CLI binary, then execute:
+
+    ```bash
+    XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html build/coverage/html
+    ```
+
+    The HTML report will be generated in `build/coverage/html/index.html`; open it in your browser to inspect hotspots. A Clover XML artefact is also emitted at `build/coverage/clover.xml` for CI pipelines.
+
+Check your CLI Xdebug status with `php -m | grep xdebug`. If it is missing, install it via `pecl install xdebug` (Linux/macOS) or the appropriate package manager for your operating system, and enable it in `php.ini`.
+
 ---
 
 ## Roadmap / TODO

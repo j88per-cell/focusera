@@ -59,6 +59,7 @@ class BotGuardTest extends TestCase
             '/media/photos/1',
             'GET',
             server: [
+                'HTTP_USER_AGENT' => '',
                 'HTTP_ACCEPT' => 'image/avif,image/webp,*/*',
                 'REMOTE_ADDR' => '203.0.113.5',
             ],
@@ -94,7 +95,7 @@ class BotGuardTest extends TestCase
             '/media/photos/1',
             'GET',
             server: [
-                'HTTP_USER_AGENT' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0 Safari/537.36',
+                'HTTP_USER_AGENT' => 'CustomClient/1.0',
                 'HTTP_ACCEPT' => 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
                 'REMOTE_ADDR' => '198.51.100.42',
             ],
