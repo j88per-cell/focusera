@@ -32,6 +32,13 @@ Built on the popular **Laravel** framework, it can run on a wide variety of host
 
 ## Getting Started
 
+### Release Tags
+
+-   `laravel10-final` &mdash; Last release on Laravel 10.
+-   `v11.0-upgrade` &mdash; First release on Laravel 11 (current main branch).
+
+The application version reported by Composer is now `1.11.0`, which tracks the Laravel 11 baseline. Future major bumps (for example, Laravel 12) will increment the first two digits to keep the project and framework in sync.
+
 ### Prerequisites
 
 -   PHP 8.2+
@@ -66,9 +73,9 @@ SESSION_DRIVER=database
 
 The core application depends on the packages below (see `composer.json` for the full list):
 
--   `laravel/framework` `^10.10` and related first-party packages such as `laravel/breeze`, `laravel/sanctum`, and `laravel/tinker`.
+-   `laravel/framework` `^11.0` and related first-party packages such as `laravel/breeze` `^2.0`, `laravel/sanctum` `^4.0`, and `laravel/tinker` `^2.9`.
 -   Image handling stack: `spatie/image` `^3.8` and `spatie/image-optimizer` `^1.8`.
--   Supporting utilities including `filp/whoops` `^2.18`, `guzzlehttp/guzzle` `^7.2`, `inertiajs/inertia-laravel` `^0.6.8`, and `kalnoy/nestedset` `^6.0`.
+-   Supporting utilities including `filp/whoops` `^2.18`, `guzzlehttp/guzzle` `^7.2`, `inertiajs/inertia-laravel` `^1.0`, `kalnoy/nestedset` `^6.0`, and `nunomaduro/collision` `^8.1`.
 
 Make sure your PHP version satisfies the `^8.2` platform requirement so Composer can resolve these packages.
 
@@ -104,7 +111,7 @@ Seeding populates:
 ### Configuration & Admin Setup
 
 -   Log in using the OTP flow (enter an email for an existing user; OTP is mailed via the configured driver).
--   To create the initial admin account, browse directly to `/register` (no menu link). The very first user is automatically assigned the **Admin** role. After one user exists, self-registration is disabled and `/register` returns 403.
+-   To create the initial admin account, browse directly to `/register` (no menu link). The very first user is automatically assigned the **Admin** role. Afterwards, registration follows the `ALLOW_REGISTRATION` feature flag—set it to `true` in `.env` to keep `/register` available.
 -   Ongoing user registration isn’t available, an admin can invite additional teammates (editors, photographers, etc.) via **Admin → Users** and assign roles on the fly.
 -   Navigate to **Admin → Settings** to manage:
     -   **Site → theme → active**: theme selector auto-populates from `resources/js/Themes/*`.

@@ -89,6 +89,7 @@ class DefaultSettingsEnsurer
 
     protected function ensureFeatureDefaults(): void
     {
+        $this->upsert('features', null, 'registration', '1');
         $this->upsert('features', null, 'featured_galleries', '1');
         $this->upsert('features', null, 'news', '1');
         $this->upsert('features', null, 'sales', '0');

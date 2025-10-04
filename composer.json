@@ -1,7 +1,8 @@
 {
     "name": "laravel/laravel",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "Self-hosted photography platform built on Laravel.",
+    "version": "1.11.0",
     "keywords": [
         "laravel",
         "framework"

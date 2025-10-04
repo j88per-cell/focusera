@@ -21,3 +21,4 @@ yarn-error.log
 \n+# Local export artifacts
 theme-system-export/
 theme-system.zip
+build/coverage*
